@@ -1,0 +1,13 @@
+{
+  "name": "rxjs-state",
+  "version": "0.0.0",
+  "description": "State management with rxjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "react-scripts test",
+    "lint": "eslint --max-warnings 0 \"src/**/*.ts*\" && prettier --check src/",
+    "fix": "eslint --fix \"src/**/*.ts*\" && prettier --write \"src/**/*.(ts*|scss)\""
+  },
+  "author": "David Lai",
+  "license": "ISC"
+}
