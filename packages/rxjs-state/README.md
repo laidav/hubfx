@@ -38,7 +38,18 @@
 
 1. create new library and start migration - DONE
 
-1. REFACTOR FORMS to include validators in the state of the control
+1. REFACTOR FORMS
+
+- update state builder to include validators in the FormControl
+
+  - update tests
+
+- update reducers builder since validators will be available in the state
+
+  - update tests
+
+- update effects builder since validators will be avaiable in the state
+  - update tests
 
 # TODOS
 
