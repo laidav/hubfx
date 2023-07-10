@@ -2,9 +2,10 @@ import { MessageHub } from '../Models/MessageHub';
 import { Observable, Subject, merge, OperatorFunction } from 'rxjs';
 import { Action } from '../Models/Action';
 import { share } from 'rxjs/operators';
+import { Effect } from '../Models/Effect';
 
 export const MessageHubFactory = (
-  effects$: OperatorFunction<Action<unknown>, Action<unknown>>[] = [],
+  effects$: Effect<unknown, unknown>[] = [],
 ): MessageHub => {
   const dispatcher$ = new Subject<Action<unknown>>();
 

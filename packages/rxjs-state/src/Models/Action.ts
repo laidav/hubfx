@@ -1,4 +1,4 @@
-export interface Action<T> {
+export interface Action<T = undefined> {
   type: string;
-  payload: T;
+  payload?: T;
 }
