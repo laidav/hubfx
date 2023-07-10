@@ -1,4 +1,7 @@
-export interface Action<T = undefined> {
+export type Action<T = undefined> = {
   type: string;
-  payload?: T;
-}
+} & (T extends undefined
+  ? {}
+  : {
+      payload: T;
+    });

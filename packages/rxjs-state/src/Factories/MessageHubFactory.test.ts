@@ -28,7 +28,10 @@ describe('MessageHubFactory', () => {
       (action$: Observable<Action<string>>) =>
         action$.pipe(
           switchMap((action) =>
-            of({ type: TEST_ACTION_SUCCESS, payload: 4 }).pipe(delay(2000)),
+            of({
+              type: TEST_ACTION_SUCCESS,
+              payload: action.payload + ' hi',
+            }).pipe(delay(2000)),
           ),
         ),
     );
@@ -38,7 +41,7 @@ describe('MessageHubFactory', () => {
     messages$.subscribe((message) => {
       if (message.type === TEST_ACTION_SUCCESS) {
         expect(message.type).toBe(TEST_ACTION_SUCCESS);
-        expect(message.payload).toBe(4);
+        expect(message.payload).toBe('test hi');
         done();
       }
     });
