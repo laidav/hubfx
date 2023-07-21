@@ -60,7 +60,7 @@ export const formBuilder = <T>(
   config: AbstractControlConfig,
 ): StreamConfig<AbstractControl<T>> => {
   const initialState: AbstractControl<T> = buildControlState(config);
-  const effects$ = buildFormEffects(config, formsReducer);
+  const effects$ = buildFormEffects(config);
 
   return {
     initialState,

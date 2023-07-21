@@ -17,13 +17,12 @@ import {
   FormsReducer,
 } from './Models/Forms';
 import { asyncValidationResponseSuccess } from './Forms.actions';
-import { getFormControl } from './FormsReducer.reducer';
+import { getFormControl, formsReducer } from './FormsReducer.reducer';
 import { Effect } from '../Models/Effect';
 import { isChildControl } from './FormHelpers';
 
 export const buildFormEffects = <T>(
   config: AbstractControlConfig,
-  reducer: FormsReducer,
 ): Effect<unknown, ControlAsyncValidationResponse>[] => {
   let asyncValidators$: Effect<unknown, ControlAsyncValidationResponse>[] = [];
 
@@ -63,7 +62,7 @@ export const buildFormEffects = <T>(
 
               return {
                 controlRef: changeControlRef,
-                newState: reducer(state, action),
+                newState: formsReducer(state, action),
               };
             },
           ),
