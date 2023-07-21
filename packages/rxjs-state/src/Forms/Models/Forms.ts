@@ -37,6 +37,7 @@ export interface FormControl<T> {
   validating?: boolean;
   validators?: ValidatorFn[];
   asyncValidators?: ValidatorAsyncFn[];
+  config: AbstractControlConfig;
 }
 
 export interface FormGroup<T> extends FormControl<T> {

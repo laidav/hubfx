@@ -63,6 +63,7 @@ export const buildControlState = <T>(
       validating: false,
       controls,
       errors,
+      config: controlConfig,
     };
 
     return result;
@@ -138,6 +139,7 @@ export const buildControlState = <T>(
       validating: false,
       valid: !arrayControlHasError && !controlsHasErrors,
       errors,
+      config: controlConfig,
     };
     return result;
     // Form Field
@@ -158,6 +160,7 @@ export const buildControlState = <T>(
       valid: errors ? Object.values(errors).every((error) => !error) : true,
       validating: false,
       errors,
+      config: controlConfig,
     };
 
     return result;

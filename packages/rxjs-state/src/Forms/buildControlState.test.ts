@@ -11,6 +11,7 @@ import {
   FormControlType,
 } from './Models/Forms';
 import { required, email } from './Validators';
+import { uniqueEmail, blacklistedEmail } from './AsyncValidators';
 import { buildControlState } from './buildControlState';
 
 describe('buildControlState', () => {
@@ -32,6 +33,7 @@ describe('buildControlState', () => {
       errors: {
         required: true,
       },
+      config: config.formGroupControls.firstName,
     } as FormControl<string>);
   });
 
@@ -48,6 +50,7 @@ describe('buildControlState', () => {
       valid: false,
       value: initialValue,
       pristineValue: initialValue,
+      config: config.formGroupControls.doctorInfo,
       errors: {
         firstNameNotSameAsLast: true,
       },
@@ -61,6 +64,8 @@ describe('buildControlState', () => {
           },
           pristineValue: '',
           value: '',
+          config: (<FormGroupConfig>config.formGroupControls.doctorInfo)
+            .formGroupControls.firstName,
         },
         lastName: {
           ...BASE_FORM_CONTROL,
@@ -71,6 +76,8 @@ describe('buildControlState', () => {
           },
           pristineValue: '',
           value: '',
+          config: (<FormGroupConfig>config.formGroupControls.doctorInfo)
+            .formGroupControls.lastName,
         },
         email: {
           ...BASE_FORM_CONTROL,
@@ -82,6 +89,8 @@ describe('buildControlState', () => {
           },
           pristineValue: '',
           value: '',
+          config: (<FormGroupConfig>config.formGroupControls.doctorInfo)
+            .formGroupControls.email,
         },
       },
     } as FormGroup<DoctorInfo>;
@@ -96,12 +105,31 @@ describe('buildControlState', () => {
       lastName: 'Bob',
       email: 'DrBobbob.com',
     };
+    const testConfig = {
+      controlType: FormControlType.Group,
+      validators: [firstNameNotSameAsLast],
+      formGroupControls: {
+        firstName: {
+          initialValue: initialValue.firstName,
+          validators: [required],
+        } as FormControlConfig<string>,
+        lastName: {
+          initialValue: initialValue.lastName,
+          validators: [required],
+        } as FormControlConfig<string>,
+        email: {
+          initialValue: initialValue.email,
+          validators: [required, email],
+        } as FormControlConfig<string>,
+      },
+    } as FormGroupConfig;
     const expectedValue: FormGroup<DoctorInfo> = {
       ...BASE_FORM_CONTROL,
       controlRef: ['doctorInfo'],
       submitting: false,
       valid: false,
       value: initialValue,
+      config: testConfig,
       pristineValue: initialValue,
       errors: {
         firstNameNotSameAsLast: false,
@@ -116,6 +144,7 @@ describe('buildControlState', () => {
           },
           pristineValue: 'Dr',
           value: 'Dr',
+          config: testConfig.formGroupControls.firstName,
         },
         lastName: {
           ...BASE_FORM_CONTROL,
@@ -126,6 +155,7 @@ describe('buildControlState', () => {
           },
           pristineValue: 'Bob',
           value: 'Bob',
+          config: testConfig.formGroupControls.lastName,
         },
         email: {
           ...BASE_FORM_CONTROL,
@@ -137,32 +167,13 @@ describe('buildControlState', () => {
           },
           pristineValue: 'DrBobbob.com',
           value: 'DrBobbob.com',
+          config: testConfig.formGroupControls.email,
         },
       },
     } as FormGroup<DoctorInfo>;
-    expect(
-      buildControlState(
-        {
-          controlType: FormControlType.Group,
-          validators: [firstNameNotSameAsLast],
-          formGroupControls: {
-            firstName: {
-              initialValue: initialValue.firstName,
-              validators: [required],
-            } as FormControlConfig<string>,
-            lastName: {
-              initialValue: initialValue.lastName,
-              validators: [required],
-            } as FormControlConfig<string>,
-            email: {
-              initialValue: initialValue.email,
-              validators: [required, email],
-            } as FormControlConfig<string>,
-          },
-        } as FormGroupConfig,
-        ['doctorInfo'],
-      ),
-    ).toEqual(expectedValue);
+    expect(buildControlState(testConfig, ['doctorInfo'])).toEqual(
+      expectedValue,
+    );
   });
 
   it('should build the control state for for type array with empty initial value', () => {
@@ -177,6 +188,7 @@ describe('buildControlState', () => {
       value: [],
       pristineValue: [],
       valid: false,
+      config: config.formGroupControls.emergencyContacts,
       errors: {
         required: true,
       },
@@ -200,10 +212,12 @@ describe('buildControlState', () => {
     ];
     const nonEmptyConfig = {
       ...(config.formGroupControls
-        .emergencyContacts as FormArrayConfig<unknown>),
+        .emergencyContacts as FormArrayConfig<Contact>),
       initialValue,
-    };
+    } as FormArrayConfig<unknown>;
+
     expect(buildControlState(nonEmptyConfig, ['emergencyContacts'])).toEqual({
+      config: nonEmptyConfig,
       controls: [
         {
           ...BASE_FORM_CONTROL,
@@ -215,6 +229,25 @@ describe('buildControlState', () => {
           errors: {
             firstNameNotSameAsLast: false,
           },
+          config: {
+            ...(<FormGroupConfig>nonEmptyConfig.arrayControlsTemplate),
+            formGroupControls: {
+              firstName: {
+                initialValue: 'Homer',
+                validators: [required],
+              },
+              lastName: {
+                initialValue: 'Simpson',
+                validators: [required],
+              },
+              email: {
+                initialValue: 'homer@homer.com',
+                validators: [required, email],
+                asyncValidators: [uniqueEmail, blacklistedEmail],
+              },
+              relation: { initialValue: 'friend', validators: [required] },
+            },
+          },
           controls: {
             firstName: {
               ...BASE_FORM_CONTROL,
@@ -225,6 +258,11 @@ describe('buildControlState', () => {
               },
               pristineValue: 'Homer',
               value: 'Homer',
+              config: {
+                ...(<FormGroupConfig>nonEmptyConfig.arrayControlsTemplate)
+                  .formGroupControls.firstName,
+                initialValue: 'Homer',
+              },
             },
             lastName: {
               ...BASE_FORM_CONTROL,
@@ -235,6 +273,11 @@ describe('buildControlState', () => {
               },
               pristineValue: 'Simpson',
               value: 'Simpson',
+              config: {
+                ...(<FormGroupConfig>nonEmptyConfig.arrayControlsTemplate)
+                  .formGroupControls.lastName,
+                initialValue: 'Simpson',
+              },
             },
             email: {
               ...BASE_FORM_CONTROL,
@@ -246,6 +289,11 @@ describe('buildControlState', () => {
               },
               pristineValue: 'homer@homer.com',
               value: 'homer@homer.com',
+              config: {
+                ...(<FormGroupConfig>nonEmptyConfig.arrayControlsTemplate)
+                  .formGroupControls.email,
+                initialValue: 'homer@homer.com',
+              },
             },
             relation: {
               ...BASE_FORM_CONTROL,
@@ -256,6 +304,11 @@ describe('buildControlState', () => {
               },
               pristineValue: 'friend',
               value: 'friend',
+              config: {
+                ...(<FormGroupConfig>nonEmptyConfig.arrayControlsTemplate)
+                  .formGroupControls.relation,
+                initialValue: 'friend',
+              },
             },
           } as { [key: string]: FormControl<unknown> },
         } as FormGroup<unknown>,
@@ -269,6 +322,25 @@ describe('buildControlState', () => {
           errors: {
             firstNameNotSameAsLast: false,
           },
+          config: {
+            ...(<FormGroupConfig>nonEmptyConfig.arrayControlsTemplate),
+            formGroupControls: {
+              firstName: {
+                initialValue: 'moe',
+                validators: [required],
+              },
+              lastName: {
+                initialValue: 'syzlak',
+                validators: [required],
+              },
+              email: {
+                initialValue: 'moe@moe.com',
+                validators: [required, email],
+                asyncValidators: [uniqueEmail, blacklistedEmail],
+              },
+              relation: { initialValue: 'friend', validators: [required] },
+            },
+          },
           controls: {
             firstName: {
               ...BASE_FORM_CONTROL,
@@ -279,6 +351,11 @@ describe('buildControlState', () => {
               },
               pristineValue: 'moe',
               value: 'moe',
+              config: {
+                ...(<FormGroupConfig>nonEmptyConfig.arrayControlsTemplate)
+                  .formGroupControls.firstName,
+                initialValue: 'moe',
+              },
             },
             lastName: {
               ...BASE_FORM_CONTROL,
@@ -289,6 +366,11 @@ describe('buildControlState', () => {
               },
               pristineValue: 'syzlak',
               value: 'syzlak',
+              config: {
+                ...(<FormGroupConfig>nonEmptyConfig.arrayControlsTemplate)
+                  .formGroupControls.lastName,
+                initialValue: 'syzlak',
+              },
             },
             email: {
               ...BASE_FORM_CONTROL,
@@ -300,6 +382,11 @@ describe('buildControlState', () => {
               },
               pristineValue: 'moe@moe.com',
               value: 'moe@moe.com',
+              config: {
+                ...(<FormGroupConfig>nonEmptyConfig.arrayControlsTemplate)
+                  .formGroupControls.email,
+                initialValue: 'moe@moe.com',
+              },
             },
             relation: {
               ...BASE_FORM_CONTROL,
@@ -310,6 +397,11 @@ describe('buildControlState', () => {
               },
               pristineValue: 'friend',
               value: 'friend',
+              config: {
+                ...(<FormGroupConfig>nonEmptyConfig.arrayControlsTemplate)
+                  .formGroupControls.relation,
+                initialValue: 'friend',
+              },
             },
           } as { [key: string]: FormControl<unknown> },
         } as FormGroup<unknown>,
@@ -348,6 +440,7 @@ describe('buildControlState', () => {
       errors: {
         firstNameNotSameAsLast: true,
       },
+      config,
       controls: {
         firstName: {
           ...BASE_FORM_CONTROL,
@@ -358,6 +451,7 @@ describe('buildControlState', () => {
           errors: {
             required: true,
           },
+          config: config.formGroupControls.firstName,
         },
         lastName: {
           ...BASE_FORM_CONTROL,
@@ -368,6 +462,7 @@ describe('buildControlState', () => {
           errors: {
             required: true,
           },
+          config: config.formGroupControls.lastName,
         },
         email: {
           ...BASE_FORM_CONTROL,
@@ -379,6 +474,7 @@ describe('buildControlState', () => {
             email: false,
             required: true,
           },
+          config: config.formGroupControls.email,
         },
         phone: {
           ...BASE_FORM_CONTROL,
@@ -390,6 +486,7 @@ describe('buildControlState', () => {
             required: true,
             phoneNumber: false,
           },
+          config: config.formGroupControls.phone,
         },
         emergencyContacts: {
           ...BASE_FORM_CONTROL,
@@ -400,6 +497,7 @@ describe('buildControlState', () => {
           errors: {
             required: true,
           },
+          config: config.formGroupControls.emergencyContacts,
           controls: [],
         },
         doctorInfo: {
@@ -420,6 +518,7 @@ describe('buildControlState', () => {
           errors: {
             firstNameNotSameAsLast: true,
           },
+          config: config.formGroupControls.doctorInfo,
           controls: {
             firstName: {
               ...BASE_FORM_CONTROL,
@@ -430,6 +529,8 @@ describe('buildControlState', () => {
               errors: {
                 required: true,
               },
+              config: (<FormGroupConfig>config.formGroupControls.doctorInfo)
+                .formGroupControls.firstName,
             },
             lastName: {
               ...BASE_FORM_CONTROL,
@@ -440,6 +541,8 @@ describe('buildControlState', () => {
               errors: {
                 required: true,
               },
+              config: (<FormGroupConfig>config.formGroupControls.doctorInfo)
+                .formGroupControls.lastName,
             },
             email: {
               ...BASE_FORM_CONTROL,
@@ -451,6 +554,8 @@ describe('buildControlState', () => {
                 email: false,
                 required: true,
               },
+              config: (<FormGroupConfig>config.formGroupControls.doctorInfo)
+                .formGroupControls.email,
             },
           },
         },
