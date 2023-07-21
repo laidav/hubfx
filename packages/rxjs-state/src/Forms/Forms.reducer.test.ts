@@ -730,6 +730,7 @@ describe('buildFormsReducer', () => {
       controls: {
         ...initialState.controls,
         firstName: {
+          ...initialState.controls.firstName,
           controlRef: ['firstName'],
           pristineValue: '',
           value: 'Homer',
