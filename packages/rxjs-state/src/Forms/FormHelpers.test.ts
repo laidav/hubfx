@@ -2,6 +2,7 @@ import { getControlConfig } from './FormHelpers';
 import { config } from './Tests/config';
 import { FormArrayConfig, FormGroupConfig } from './Models/Forms';
 import { EmergencyContact } from './Tests/Models/EmergencyContact';
+import { getValueFromControlConfig } from './FormHelpers';
 
 describe('getControlConfig', () => {
   it('should get the controlConfig by ControlRef', () => {
@@ -35,5 +36,61 @@ describe('getControlConfig', () => {
       (<FormGroupConfig>config.formGroupControls.doctorInfo).formGroupControls
         .firstName,
     );
+  });
+});
+
+describe('getValueFromConfig', () => {
+  it('should return the correct initial empty value from config', () => {
+    expect(getValueFromControlConfig(config)).toEqual({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      emergencyContacts: [],
+      doctorInfo: {
+        firstName: '',
+        lastName: '',
+        email: '',
+      },
+    });
+  });
+  it('should return the correct non-empty value from config', () => {
+    const intialValue = [
+      {
+        firstName: 'Homer',
+        lastName: 'Simpson',
+        email: 'homer@homer.com',
+        relation: 'friend',
+      },
+      {
+        firstName: 'moe',
+        lastName: 'syzlak',
+        email: 'moe@moe.com',
+        relation: 'friend',
+      },
+    ];
+    expect(
+      getValueFromControlConfig({
+        ...config,
+        formGroupControls: {
+          ...config.formGroupControls,
+          emergencyContacts: {
+            ...config.formGroupControls.emergencyContacts,
+            initialValue: intialValue,
+          },
+        },
+      } as FormGroupConfig),
+    ).toEqual({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      emergencyContacts: intialValue,
+      doctorInfo: {
+        firstName: '',
+        lastName: '',
+        email: '',
+      },
+    });
   });
 });

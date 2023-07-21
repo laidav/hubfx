@@ -7,7 +7,7 @@ import {
   syncValidate,
   handleAsyncValidationResponseSuccess,
 } from './Forms.reducer';
-import { buildControlState } from './FormHelpers';
+import { buildControlState } from './buildControlState';
 import { config, firstNameNotSameAsLast } from './Tests/config';
 import { controlChange } from './Forms.actions';
 import {

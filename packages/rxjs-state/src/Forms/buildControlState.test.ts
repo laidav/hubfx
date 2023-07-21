@@ -1,5 +1,4 @@
 import { config, firstNameNotSameAsLast } from './Tests/config';
-import { getValueFromControlConfig, buildControlState } from './FormHelpers';
 import { Contact } from './Tests/Models/Contact';
 import { DoctorInfo } from './Tests/Models/DoctorInfo';
 import {
@@ -12,62 +11,7 @@ import {
   FormControlType,
 } from './Models/Forms';
 import { required, email } from './Validators';
-
-describe('getValueFromConfig', () => {
-  it('should return the correct initial empty value from config', () => {
-    expect(getValueFromControlConfig(config)).toEqual({
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      emergencyContacts: [],
-      doctorInfo: {
-        firstName: '',
-        lastName: '',
-        email: '',
-      },
-    });
-  });
-  it('should return the correct non-empty value from config', () => {
-    const intialValue = [
-      {
-        firstName: 'Homer',
-        lastName: 'Simpson',
-        email: 'homer@homer.com',
-        relation: 'friend',
-      },
-      {
-        firstName: 'moe',
-        lastName: 'syzlak',
-        email: 'moe@moe.com',
-        relation: 'friend',
-      },
-    ];
-    expect(
-      getValueFromControlConfig({
-        ...config,
-        formGroupControls: {
-          ...config.formGroupControls,
-          emergencyContacts: {
-            ...config.formGroupControls.emergencyContacts,
-            initialValue: intialValue,
-          },
-        },
-      } as FormGroupConfig),
-    ).toEqual({
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      emergencyContacts: intialValue,
-      doctorInfo: {
-        firstName: '',
-        lastName: '',
-        email: '',
-      },
-    });
-  });
-});
+import { buildControlState } from './buildControlState';
 
 describe('buildControlState', () => {
   const BASE_FORM_CONTROL = {

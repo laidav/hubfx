@@ -2,12 +2,12 @@ import { Observable } from 'rxjs';
 import { scan } from 'rxjs/operators';
 import { ofType } from '../Operators/ofType';
 import { Action } from '../Models/Action';
-import { buildFormEffects } from './FormsEffectsBuilder';
+import { buildFormEffects } from './buildFormEffects';
 import { buildFormsReducer } from './Forms.reducer';
 import { config } from './Tests/config';
 import { MessageHubFactory } from '../Factories/MessageHubFactory';
 import { controlChange } from './Forms.actions';
-import { buildControlState } from './FormHelpers';
+import { buildControlState } from './buildControlState';
 import {
   ControlAsyncValidationResponse,
   FormArrayConfig,
