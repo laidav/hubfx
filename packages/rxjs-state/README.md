@@ -34,9 +34,8 @@
 
 - this new model can be bound with any UI library for rendering
 
-- # 2023 07 10 (Mon)
+- # 2023 07 21 (Fri)
 
-1. create new library and start migration - DONE
 
 1. REFACTOR FORMS
 
