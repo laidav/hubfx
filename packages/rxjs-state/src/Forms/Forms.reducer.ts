@@ -1,3 +1,4 @@
+import cloneDeep from 'lodash.clonedeep';
 import { Action } from '../Models/Action';
 import {
   FORMS_CONTROL_CHANGE,
@@ -231,7 +232,7 @@ export const handleAsyncValidationResponseSuccess = <T>(
   controlRef: ControlRef,
   errors: FormErrors,
 ): AbstractControl<T> => {
-  const newState = JSON.parse(JSON.stringify(control)) as AbstractControl<T>;
+  const newState = cloneDeep(control) as AbstractControl<T>;
 
   const newControl = getFormControl(controlRef, newState);
   newControl.validating = false;
