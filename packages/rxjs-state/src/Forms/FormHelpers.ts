@@ -9,7 +9,7 @@ import {
 } from './Models/Forms';
 import { StreamConfig } from '../Models/Stream';
 import { MessageHubFactory } from '../Factories/MessageHubFactory';
-import { buildFormsReducer } from './Forms.reducer';
+import { formsReducer } from './FormsReducer.reducer';
 import { buildFormEffects } from './buildFormEffects';
 import { buildControlState } from './buildControlState';
 
@@ -60,7 +60,6 @@ export const formBuilder = <T>(
   config: AbstractControlConfig,
 ): StreamConfig<AbstractControl<T>> => {
   const initialState: AbstractControl<T> = buildControlState(config);
-  const formsReducer = buildFormsReducer(config);
   const effects$ = buildFormEffects(config, formsReducer);
 
   return {

@@ -218,35 +218,33 @@ export const handleAsyncValidationResponseSuccess = <T>(
   return newState;
 };
 
-export const buildFormsReducer =
-  (): FormsReducer =>
-  <T>(
-    state: AbstractControl<T>,
-    action: Action<unknown>,
-  ): AbstractControl<T> => {
-    switch (action.type) {
-      case FORMS_CONTROL_CHANGE:
-        const { controlRef, value } = <ControlChange<unknown, FormControl<T>>>(
-          action.payload
-        );
+export const formsReducer = <T>(
+  state: AbstractControl<T>,
+  action: Action<unknown>,
+): AbstractControl<T> => {
+  switch (action.type) {
+    case FORMS_CONTROL_CHANGE:
+      const { controlRef, value } = <ControlChange<unknown, FormControl<T>>>(
+        action.payload
+      );
 
-        const result = syncValidate(updateValues(state, controlRef, value));
+      const result = syncValidate(updateValues(state, controlRef, value));
 
-        return result;
-      case FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS:
-        const { controlRef: asyncValidationCtrlRef, errors } = <
-          ControlAsyncValidationResponse
-        >action.payload;
+      return result;
+    case FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS:
+      const { controlRef: asyncValidationCtrlRef, errors } = <
+        ControlAsyncValidationResponse
+      >action.payload;
 
-        return syncValidate(
-          handleAsyncValidationResponseSuccess(
-            state,
-            asyncValidationCtrlRef,
-            errors,
-          ),
-        );
+      return syncValidate(
+        handleAsyncValidationResponseSuccess(
+          state,
+          asyncValidationCtrlRef,
+          errors,
+        ),
+      );
 
-      default:
-        return state;
-    }
-  };
+    default:
+      return state;
+  }
+};

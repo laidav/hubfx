@@ -1,13 +1,13 @@
 import {
-  buildFormsReducer,
+  formsReducer,
   getFormControl,
   updateValues,
   updateDirty,
   syncValidate,
   handleAsyncValidationResponseSuccess,
-} from './Forms.reducer';
+} from './FormsReducer.reducer';
 import { buildControlState } from './buildControlState';
-import { config, firstNameNotSameAsLast } from './Tests/config';
+import { config } from './Tests/config';
 import { controlChange } from './Forms.actions';
 import {
   FormGroup,
@@ -19,7 +19,6 @@ import {
 import { Contact } from './Tests/Models/Contact';
 import { EmergencyContact } from './Tests/Models/EmergencyContact';
 import { DoctorInfo } from './Tests/Models/DoctorInfo';
-import { required, email } from './Validators';
 
 describe('updateValues', () => {
   it('should update values only for a FormControl in a FormGroup', () => {
@@ -399,7 +398,7 @@ describe('syncValidate', () => {
       ['firstName'],
       'Homer',
     ) as FormGroup<Contact>;
-    expect(syncValidate(valuesUpdatedState, config)).toEqual({
+    expect(syncValidate(valuesUpdatedState)).toEqual({
       ...valuesUpdatedState,
       errors: {
         firstNameNotSameAsLast: false,
@@ -430,7 +429,7 @@ describe('syncValidate', () => {
       ['doctorInfo', 'firstName'],
       'Dr First Name',
     ) as FormGroup<Contact>;
-    expect(syncValidate(valuesUpdatedState, config)).toEqual({
+    expect(syncValidate(valuesUpdatedState)).toEqual({
       ...valuesUpdatedState,
       controls: {
         ...valuesUpdatedState.controls,
@@ -669,7 +668,6 @@ describe('handleAsyncValidationResponseSuccess', () => {
 
 describe('buildFormsReducer', () => {
   const initialState = buildControlState(config) as FormGroup<Contact>;
-  const formsReducer = buildFormsReducer();
 
   it('should build proper reducer and react to update value', () => {
     expect(

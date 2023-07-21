@@ -17,7 +17,7 @@ import {
   FormsReducer,
 } from './Models/Forms';
 import { asyncValidationResponseSuccess } from './Forms.actions';
-import { getFormControl } from './Forms.reducer';
+import { getFormControl } from './FormsReducer.reducer';
 import { Effect } from '../Models/Effect';
 import { isChildControl } from './FormHelpers';
 
