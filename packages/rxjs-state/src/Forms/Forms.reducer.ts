@@ -23,34 +23,8 @@ import {
 } from './Models/Forms';
 import { ControlRef } from './Models/Forms';
 
-export const getControlValidators = <T>(
-  controlRef: ControlRef,
-  config: AbstractControlConfig,
-): ValidatorFn[] | undefined => {
-  if (!controlRef.length) {
-    return config.validators;
-  }
-
-  if (config.controlType === FormControlType.Group) {
-    const newRef = controlRef.slice();
-    newRef.shift();
-    return getControlValidators(
-      newRef,
-      (<FormGroupConfig>config).formGroupControls[controlRef[0] as string],
-    );
-  } else if (config.controlType === FormControlType.Array) {
-    const newRef = controlRef.slice();
-    newRef.shift();
-    return getControlValidators(
-      newRef,
-      (<FormArrayConfig<T>>config).arrayControlsTemplate,
-    );
-  }
-};
-
 export const syncValidate = <T>(
   control: AbstractControl<T>,
-  config: AbstractControlConfig,
 ): AbstractControl<T> => {
   let newControl: AbstractControl<T> = {
     ...control,
@@ -62,7 +36,7 @@ export const syncValidate = <T>(
     const controls = (<FormArray<T>>control).controls;
     newControl = {
       ...newControl,
-      controls: controls.map((control) => syncValidate(control, config)),
+      controls: controls.map((control) => syncValidate(control)),
     } as FormArray<T>;
 
     controlsHasErrors = (<FormArray<T>>newControl).controls.some((control) => {
@@ -81,7 +55,7 @@ export const syncValidate = <T>(
           result: { [key: string]: AbstractControl<unknown> },
           [key, control],
         ) => {
-          result[key] = syncValidate(control, config);
+          result[key] = syncValidate(control);
           return result;
         },
         {},
@@ -99,7 +73,7 @@ export const syncValidate = <T>(
     );
   }
 
-  const validators = getControlValidators(control.controlRef, config);
+  const validators = control.config.validators;
   const errors = validators?.reduce((errors, validator) => {
     return {
       ...errors,
@@ -245,7 +219,7 @@ export const handleAsyncValidationResponseSuccess = <T>(
 };
 
 export const buildFormsReducer =
-  (config: AbstractControlConfig): FormsReducer =>
+  (): FormsReducer =>
   <T>(
     state: AbstractControl<T>,
     action: Action<unknown>,
@@ -256,10 +230,7 @@ export const buildFormsReducer =
           action.payload
         );
 
-        const result = syncValidate(
-          updateValues(state, controlRef, value),
-          config,
-        );
+        const result = syncValidate(updateValues(state, controlRef, value));
 
         return result;
       case FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS:
@@ -273,7 +244,6 @@ export const buildFormsReducer =
             asyncValidationCtrlRef,
             errors,
           ),
-          config,
         );
 
       default:

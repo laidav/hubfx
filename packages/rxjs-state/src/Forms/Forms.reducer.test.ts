@@ -3,7 +3,6 @@ import {
   getFormControl,
   updateValues,
   updateDirty,
-  getControlValidators,
   syncValidate,
   handleAsyncValidationResponseSuccess,
 } from './Forms.reducer';
@@ -387,39 +386,10 @@ describe('updateDirty', () => {
   });
 });
 
-describe('getControlValidators', () => {
-  it('should get the correct validators for a FormControls, FormGroups and FormArrays', () => {
-    expect(getControlValidators(['firstName'], config)).toEqual([required]);
-    expect(getControlValidators(['email'], config)).toEqual([required, email]);
-    expect(getControlValidators(['emergencyContacts'], config)).toEqual([
-      required,
-    ]);
-    expect(getControlValidators(['emergencyContacts', 0], config)).toEqual([
-      firstNameNotSameAsLast,
-    ]);
-    expect(
-      getControlValidators(['emergencyContacts', 0, 'relation'], config),
-    ).toEqual([required]);
-    expect(
-      getControlValidators(['emergencyContacts', 0, 'email'], config),
-    ).toEqual([required, email]);
-    expect(getControlValidators(['doctorInfo'], config)).toEqual([
-      firstNameNotSameAsLast,
-    ]);
-    expect(getControlValidators(['doctorInfo', 'firstName'], config)).toEqual([
-      required,
-    ]);
-    expect(getControlValidators(['doctorInfo', 'email'], config)).toEqual([
-      required,
-      email,
-    ]);
-  });
-});
-
 describe('syncValidate', () => {
   it('should verify intitial state is not valid', () => {
     const initialState = buildControlState(config) as FormGroup<Contact>;
-    expect(syncValidate(initialState, config)).toEqual(initialState);
+    expect(syncValidate(initialState)).toEqual(initialState);
   });
 
   it('should validate only for a FormControl in a FormGroup', () => {
@@ -532,7 +502,7 @@ describe('syncValidate', () => {
       'syzlak',
     ) as FormGroup<Contact>;
 
-    expect(syncValidate(valuesUpdatedState, config)).toEqual({
+    expect(syncValidate(valuesUpdatedState)).toEqual({
       ...valuesUpdatedState,
       controls: {
         ...valuesUpdatedState.controls,
@@ -699,7 +669,7 @@ describe('handleAsyncValidationResponseSuccess', () => {
 
 describe('buildFormsReducer', () => {
   const initialState = buildControlState(config) as FormGroup<Contact>;
-  const formsReducer = buildFormsReducer(config);
+  const formsReducer = buildFormsReducer();
 
   it('should build proper reducer and react to update value', () => {
     expect(
