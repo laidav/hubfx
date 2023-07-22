@@ -1,5 +1,5 @@
 import { of, delay, Observable, mergeMap, tap } from 'rxjs';
-import { ValidatorAsyncFn } from '../Models/Forms';
+import { ValidatorAsyncFn } from './Models/Forms';
 
 export const uniqueEmail: ValidatorAsyncFn = (value$: Observable<unknown>) => {
   // return of({ uniqueEmail: true }).pipe(delay(1000));

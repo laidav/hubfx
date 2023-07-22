@@ -1,128 +1,104 @@
-import { Observable, combineLatest } from 'rxjs';
-import { map, filter, withLatestFrom } from 'rxjs/operators';
+import { Observable, forkJoin, merge } from 'rxjs';
+import { map, mergeMap } from 'rxjs/operators';
 import { Action } from '../Models/Action';
 import { FORMS_CONTROL_CHANGE } from './Forms.actions';
 import { ofType } from '../Operators/ofType';
 import {
   AbstractControl,
-  AbstractControlConfig,
-  FormGroupConfig,
-  FormArrayConfig,
   ControlChange,
-  FormControlType,
   FormErrors,
-  ValidatorAsyncFn,
   ControlAsyncValidationResponse,
   ControlRef,
-  FormsReducer,
 } from './Models/Forms';
 import { asyncValidationResponseSuccess } from './Forms.actions';
 import { getFormControl, formsReducer } from './FormsReducer.reducer';
 import { Effect } from '../Models/Effect';
-import { isChildControl } from './FormHelpers';
 
-export const buildFormEffects = <T>(
-  config: AbstractControlConfig,
-): Effect<unknown, ControlAsyncValidationResponse>[] => {
-  let asyncValidators$: Effect<unknown, ControlAsyncValidationResponse>[] = [];
+export const buildFormEffects = <T>(): Effect<
+  unknown,
+  ControlAsyncValidationResponse
+>[] => {
+  const effect$: Effect<unknown, ControlAsyncValidationResponse> = (
+    dispatcher$,
+  ) => {
+    const action$ = dispatcher$.pipe(ofType(FORMS_CONTROL_CHANGE));
 
-  const buildConfigEffect = (
-    config: AbstractControlConfig,
-    controlRef: ControlRef = [],
-  ): void => {
-    if (config.asyncValidators && config.asyncValidators.length) {
-      const effect$: Effect<unknown, ControlAsyncValidationResponse> = (
-        dispatcher$,
-      ) => {
-        const action$ = dispatcher$.pipe(
-          ofType(FORMS_CONTROL_CHANGE),
-          filter(({ payload }: Action<unknown>) => {
-            const { controlRef: changeControlRef } = payload as ControlChange<
-              unknown,
-              T
-            >;
-            return isChildControl(changeControlRef, controlRef);
-          }),
-        );
+    const newState$ = action$.pipe(
+      map(
+        (
+          action: Action<unknown>,
+        ): {
+          controlRef: ControlRef;
+          newState: AbstractControl<T>;
+        } => {
+          const { state, controlRef: changeControlRef } =
+            action.payload as ControlChange<unknown, T>;
 
-        const newState$ = action$.pipe(
-          map(
-            (
-              action: Action<unknown>,
-            ): {
-              controlRef: ControlRef;
-              newState: AbstractControl<T>;
-            } => {
-              const { state, controlRef: changeControlRef } =
-                action.payload as ControlChange<unknown, T>;
+          if (!state) {
+            throw 'current state is required for async validation';
+          }
 
-              if (!state) {
-                throw 'current state is required for async validation';
-              }
+          return {
+            controlRef: changeControlRef,
+            newState: formsReducer(state, action),
+          };
+        },
+      ),
+    );
 
-              return {
-                controlRef: changeControlRef,
-                newState: formsReducer(state, action),
-              };
-            },
-          ),
-        );
+    const controls$: Observable<AbstractControl<unknown>[]> = newState$.pipe(
+      map(({ controlRef, newState }) =>
+        controlRef.reduce((acc, key, index) => {
+          acc = acc.concat(
+            getFormControl(controlRef.slice(0, index), newState),
+          );
+          return acc;
+        }, []),
+      ),
+    );
 
-        const localControl$ = newState$.pipe(
-          map(({ newState, controlRef: changeControlRef }) => {
-            const control = getFormControl(
-              controlRef.reduce((ref: ControlRef, key, index): ControlRef => {
-                ref = ref.concat(changeControlRef[index]);
-                return ref;
-              }, []),
-              newState,
+    const validationResultsForControls$ = controls$.pipe(
+      mergeMap((controls) => {
+        const controlValidationResponses$ = controls.reduce(
+          (acc: Observable<ControlAsyncValidationResponse>[], control) => {
+            const localValue$ = newState$.pipe(
+              map(
+                ({ newState }) =>
+                  getFormControl(control.controlRef, newState).value,
+              ),
             );
+            const validatorsFns$ =
+              control.config.asyncValidators?.reduce(
+                (acc: Observable<FormErrors>[], validator) => {
+                  const obs$ = validator(localValue$);
+                  acc = acc.concat(obs$);
+                  return acc;
+                },
+                [],
+              ) || [];
 
-            return control;
-          }),
-        );
+            const controlErrors$: Observable<ControlAsyncValidationResponse> =
+              forkJoin(validatorsFns$).pipe(
+                map((validationResults) => ({
+                  controlRef: control.controlRef,
+                  errors: Object.assign({}, ...validationResults),
+                })),
+              );
 
-        const validators$ = (<ValidatorAsyncFn[]>config.asyncValidators).reduce(
-          (result: Observable<FormErrors>[], validator) => {
-            const localValue$ = localControl$.pipe(map(({ value }) => value));
-            const formErrors$ = validator(localValue$);
-            result = result.concat(formErrors$);
-            return result;
+            acc = acc.concat(controlErrors$);
+            return acc;
           },
           [],
         );
 
-        const mergedErrors: Observable<ControlAsyncValidationResponse> =
-          combineLatest(validators$).pipe(
-            withLatestFrom(localControl$),
-            map(([validatorsResult, control]) => ({
-              //Map proper reference here as well for index and array validator
-              controlRef: control.controlRef,
-              errors: Object.assign({}, ...validatorsResult) as FormErrors,
-            })),
-          );
+        return merge(...controlValidationResponses$);
+      }),
+    );
 
-        return mergedErrors.pipe(
-          map((response) => asyncValidationResponseSuccess(response)),
-        );
-      };
-
-      asyncValidators$ = asyncValidators$.concat(effect$);
-    }
-
-    if (config.controlType === FormControlType.Group) {
-      Object.entries((<FormGroupConfig>config).formGroupControls).forEach(
-        ([key, controlConfig]) => {
-          buildConfigEffect(controlConfig, controlRef.concat(key));
-        },
-      );
-    } else if (config.controlType === FormControlType.Array) {
-      const { arrayControlsTemplate } = config as FormArrayConfig<T>;
-
-      buildConfigEffect(arrayControlsTemplate, controlRef.concat('*'));
-    }
+    return validationResultsForControls$.pipe(
+      map((response) => asyncValidationResponseSuccess(response)),
+    );
   };
 
-  buildConfigEffect(config);
-  return asyncValidators$;
+  return [effect$];
 };

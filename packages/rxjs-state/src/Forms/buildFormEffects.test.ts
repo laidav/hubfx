@@ -16,7 +16,7 @@ import { FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS } from './Forms.actions
 
 describe('buildFormEffects', () => {
   const initialState = buildControlState(config);
-  const effects$ = buildFormEffects(config);
+  const effects$ = buildFormEffects();
   const { dispatcher$, messages$ } = MessageHubFactory(effects$);
 
   const asyncValidationMessages = (actions$: Observable<Action<unknown>>) =>
