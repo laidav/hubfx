@@ -10,7 +10,7 @@ import {
 import { StreamConfig } from '../Models/Stream';
 import { MessageHubFactory } from '../Factories/MessageHubFactory';
 import { formsReducer } from './FormsReducer.reducer';
-import { buildFormEffects } from './buildFormEffects';
+import { buildFormEffects } from './formEffect';
 import { buildControlState } from './buildControlState';
 
 export const getControlConfig = (

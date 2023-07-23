@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { scan, tap } from 'rxjs/operators';
 import { ofType } from '../Operators/ofType';
 import { Action } from '../Models/Action';
-import { buildFormEffects } from './buildFormEffects';
+import { formEffect$ } from './formEffect';
 import { config } from './Tests/config';
 import { MessageHubFactory } from '../Factories/MessageHubFactory';
 import { controlChange } from './Forms.actions';
@@ -16,7 +16,6 @@ import { FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS } from './Forms.actions
 describe('buildFormEffects', () => {
   let dispatcher$, messages$;
   const initialState = buildControlState(config);
-  const effects$ = buildFormEffects();
 
   const asyncValidationMessages = (actions$: Observable<Action<unknown>>) =>
     actions$.pipe(
@@ -28,7 +27,7 @@ describe('buildFormEffects', () => {
       ),
     );
   beforeEach(() => {
-    const hub = MessageHubFactory(effects$);
+    const hub = MessageHubFactory([formEffect$]);
 
     dispatcher$ = hub.dispatcher$;
     messages$ = hub.messages$;

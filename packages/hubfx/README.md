@@ -36,9 +36,9 @@
 
 - # 2023 07 23 (Sun)
 
-1. Rename repo to rx-hub
+1. Rename repo to hubfx - DONE
 
-- publish to npm
+- publish to npm - DONE
 
 1. more async validation tests, to see how streams are affected by changes in other fields, debouncing and switchMap
 
