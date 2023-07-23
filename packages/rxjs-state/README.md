@@ -35,55 +35,76 @@
 - this new model can be bound with any UI library for rendering
 
 - # 2023 07 21 (Fri)
+- # 2023 07 22 (Sat)
 
+1. REFACTOR FORMS - DONE
 
-1. REFACTOR FORMS
+- update state builder to include validators in the FormControl - DONE
 
-- update state builder to include validators in the FormControl
+  - update tests - DONE
 
-  - update tests
+- update reducers builder since validators will be available in the state - DONE
 
-- update reducers builder since validators will be available in the state
+  - update tests - DONE
 
-  - update tests
+- update effects builder since validators will be avaiable in the state - DONE
+  - update tests - DONE
 
-- update effects builder since validators will be avaiable in the state
-  - update tests
+- # 2023 07 23 (Sun)
+
+1. more async validation tests, to see how streams are affected by changes in other fields, debouncing and switchMap
 
 # TODOS
 
-1. async validation on value update should set validating to true - IN PROGRESS
+1. async validation on value update should set validating to true in reducer - IN PROGRESS
 
 1. handling adding and removing array items
 
-1. SHOULD INITIALIZE and async validate at beginning
-
-- local value startWith operator of the initial value of the config?
+- local value startWith operator of the initial value of the config? - DONE
 
 1. reset form , and set Pristine value
 
+
 ## CLEAN UP TODOS
 
+### FORMS
 - prioritize clean up items!
+
+1. need a way of handling custom actions with the form
+
+- custom reducers/effects to merge with form?
+
+1. need a way of handling custom actions with the form
+
+- custom reducers/effects to merge with form?
 
 1. Dynamically adding/removing controls to formGroup?
 
-1. better way to copy compare objects than JSON STRINGIFY
+1. SHOULD INITIALIZE and async validate at beginning?
 
-1. used withLatestFrom in FormsEffectsBuilder for getting the controlRef
+1. better way to copy compare objects than JSON STRINGIFY?
 
-1. Effect actions should be labeled as such
+1. used withLatestFrom in FormsEffectsBuilder for getting the controlRef - DONE
 
 1. update touched action in reducer. handle
 
 - create update touched reducer (state, controlRef)
   - it will be called when user updates value and when user has action TOUCH CONTROL
 
-1. need a way of handling custom actions with the form
+1. optional typing for action payload - DONE
 
-- custom reducers/effects to merge with form?
+1. Consider submitting property on Form Group?
 
-1. optional typing for action payload
+### Other Items
+1. Documentation
+
+  - one way in one way out rule
+
+1. Better api 
+
+  - hub.state({ reducer, ...otherOptions }) ?
+
+1. rename repo to RxHub
 
 1. add a tap option for neccessary side effects
 
@@ -97,6 +118,8 @@
 
 1. reduce boilerplate some how?
 
-1. Consider submitting property on Form Group?
+### React project 
 
-- tool for this?
+1. binding hooks and form components
+
+1. default props? can we make the components as dumb as possible
