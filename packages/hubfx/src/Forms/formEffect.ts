@@ -29,7 +29,7 @@ export const formEffect$: Effect<unknown, ControlAsyncValidationResponse> = (
         newState: AbstractControl<unknown>;
       } => {
         const { state, controlRef: changeControlRef } =
-          action.payload as ControlChange<unknown, T>;
+          action.payload as ControlChange<unknown, unknown>;
 
         if (!state) {
           throw 'current state is required for async validation';
