@@ -28,37 +28,37 @@ describe('buildFormEffects', () => {
       ),
     );
 
-  // it('FormGroup should trigger async validation on group value fields ', (done) => {
-  //   messages$.pipe(asyncValidationMessages).subscribe((messages) => {
-  //     if (messages.length === 2) {
-  //       expect(messages).toEqual([
-  //         {
-  //           type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-  //           payload: {
-  //             controlRef: [],
-  //             errors: { uniqueFirstAndLastName: true },
-  //           },
-  //         },
-  //         {
-  //           type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-  //           payload: {
-  //             controlRef: ['doctorInfo'],
-  //             errors: { uniqueFirstAndLastName: true },
-  //           },
-  //         },
-  //       ]);
-  //       done();
-  //     }
-  //   });
+  it('FormGroup should trigger async validation on group value fields ', (done) => {
+    messages$.pipe(asyncValidationMessages).subscribe((messages) => {
+      if (messages.length === 2) {
+        expect(messages).toEqual([
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: [],
+              errors: { uniqueFirstAndLastName: true },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['doctorInfo'],
+              errors: { uniqueFirstAndLastName: true },
+            },
+          },
+        ]);
+        done();
+      }
+    });
 
-  //   dispatcher$.next(
-  //     controlChange({
-  //       controlRef: ['doctorInfo', 'firstName'],
-  //       value: 'Doctor change',
-  //       state: initialState,
-  //     }),
-  //   );
-  // });
+    dispatcher$.next(
+      controlChange({
+        controlRef: ['doctorInfo', 'firstName'],
+        value: 'Doctor change',
+        state: initialState,
+      }),
+    );
+  });
 
   it('FormArray should trigger async validation', (done) => {
     const initialValue = [
