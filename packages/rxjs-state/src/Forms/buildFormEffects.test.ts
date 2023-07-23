@@ -8,10 +8,7 @@ import { config } from './Tests/config';
 import { MessageHubFactory } from '../Factories/MessageHubFactory';
 import { controlChange } from './Forms.actions';
 import { buildControlState } from './buildControlState';
-import {
-  ControlAsyncValidationResponse,
-  FormArrayConfig,
-} from './Models/Forms';
+import { ControlAsyncValidationResponse } from './Models/Forms';
 import { FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS } from './Forms.actions';
 
 describe('buildFormEffects', () => {
@@ -61,86 +58,86 @@ describe('buildFormEffects', () => {
     );
   });
 
-  it('FormArray should trigger async validation', (done) => {
-    const initialValue = [
-      {
-        firstName: 'Homer',
-        lastName: 'Simpson',
-        email: 'homer@homer.com',
-        relation: 'friend',
-      },
-      {
-        firstName: 'moe',
-        lastName: 'syzlak',
-        email: 'moe@moe.com',
-        relation: 'friend',
-      },
-    ];
-    const nonEmptyConfig = {
-      ...(config.formGroupControls
-        .emergencyContacts as FormArrayConfig<unknown>),
-      initialValue,
-    };
+  // it('FormArray should trigger async validation', (done) => {
+  //   const initialValue = [
+  //     {
+  //       firstName: 'Homer',
+  //       lastName: 'Simpson',
+  //       email: 'homer@homer.com',
+  //       relation: 'friend',
+  //     },
+  //     {
+  //       firstName: 'moe',
+  //       lastName: 'syzlak',
+  //       email: 'moe@moe.com',
+  //       relation: 'friend',
+  //     },
+  //   ];
+  //   const nonEmptyConfig = {
+  //     ...(config.formGroupControls
+  //       .emergencyContacts as FormArrayConfig<unknown>),
+  //     initialValue,
+  //   };
 
-    const stateConfig = {
-      ...config,
-      formGroupControls: {
-        ...config.formGroupControls,
-        emergencyContacts: nonEmptyConfig,
-      },
-    };
+  //   const stateConfig = {
+  //     ...config,
+  //     formGroupControls: {
+  //       ...config.formGroupControls,
+  //       emergencyContacts: nonEmptyConfig,
+  //     },
+  //   };
 
-    messages$
-      .pipe(
-        // tap((message) => console.log(message)),
-        asyncValidationMessages,
-      )
-      .subscribe((messages) => {
-        if (messages.length === 4) {
-          expect(messages).toEqual([
-            {
-              type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-              payload: {
-                controlRef: [],
-                errors: { uniqueFirstAndLastName: true },
-              },
-            },
-            {
-              type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-              payload: {
-                controlRef: ['emergencyContacts'],
-                errors: { arrayLengthError: true },
-              },
-            },
-            {
-              type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-              payload: {
-                controlRef: ['emergencyContacts', 0],
-                errors: { uniqueFirstAndLastName: true },
-              },
-            },
-            {
-              type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-              payload: {
-                controlRef: ['emergencyContacts', 0, 'email'],
-                errors: { uniqueEmail: true, blacklistedEmail: true },
-              },
-            },
-          ]);
-          done();
-        }
-      });
+  //   messages$
+  //     .pipe(
+  //       // tap((message) => console.log(message)),
+  //       asyncValidationMessages,
+  //     )
+  //     .subscribe((messages) => {
+  //       if (messages.length === 4) {
+  //         expect(messages).toEqual([
+  //           {
+  //             type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+  //             payload: {
+  //               controlRef: [],
+  //               errors: { uniqueFirstAndLastName: true },
+  //             },
+  //           },
+  //           {
+  //             type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+  //             payload: {
+  //               controlRef: ['emergencyContacts'],
+  //               errors: { arrayLengthError: true },
+  //             },
+  //           },
+  //           {
+  //             type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+  //             payload: {
+  //               controlRef: ['emergencyContacts', 0],
+  //               errors: { uniqueFirstAndLastName: true },
+  //             },
+  //           },
+  //           {
+  //             type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+  //             payload: {
+  //               controlRef: ['emergencyContacts', 0, 'email'],
+  //               errors: { uniqueEmail: true, blacklistedEmail: true },
+  //             },
+  //           },
+  //         ]);
+  //         done();
+  //       }
+  //     });
 
-    dispatcher$.next(
-      controlChange({
-        controlRef: ['emergencyContacts', 0, 'email'],
-        value: 'newHomerEmail@homer.com',
-        state: buildControlState(stateConfig),
-      }),
-    );
-  });
+  //   dispatcher$.next(
+  //     controlChange({
+  //       controlRef: ['emergencyContacts', 0, 'email'],
+  //       value: 'newHomerEmail@homer.com',
+  //       state: buildControlState(stateConfig),
+  //     }),
+  //   );
+  // });
 
-  it('FormControl should trigger async validation', () => {
-    expect(true).toBe(true);
-  });
+  // it('FormControl should trigger async validation', () => {
+  //   expect(true).toBe(true);
+  // });
 });

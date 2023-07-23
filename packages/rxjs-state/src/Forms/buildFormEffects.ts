@@ -1,5 +1,5 @@
 import { Observable, forkJoin, merge } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { map, mergeMap, tap, startWith } from 'rxjs/operators';
 import { Action } from '../Models/Action';
 import { FORMS_CONTROL_CHANGE } from './Forms.actions';
 import { ofType } from '../Operators/ofType';
@@ -13,6 +13,7 @@ import {
 import { asyncValidationResponseSuccess } from './Forms.actions';
 import { getFormControl, formsReducer } from './FormsReducer.reducer';
 import { Effect } from '../Models/Effect';
+import { getValueFromControlConfig } from './FormHelpers';
 
 export const buildFormEffects = <T>(): Effect<
   unknown,
@@ -60,12 +61,18 @@ export const buildFormEffects = <T>(): Effect<
     const validationResultsForControls$ = controls$.pipe(
       mergeMap((controls) => {
         const controlValidationResponses$ = controls.reduce(
-          (acc: Observable<ControlAsyncValidationResponse>[], control) => {
+          (
+            acc: Observable<ControlAsyncValidationResponse>[],
+            control,
+            index,
+          ) => {
             const localValue$ = newState$.pipe(
               map(
                 ({ newState }) =>
-                  getFormControl(control.controlRef, newState).value,
+                  getFormControl(control.controlRef.slice(0, index), newState)
+                    .value,
               ),
+              startWith(getValueFromControlConfig(control.config)),
             );
             const validatorsFns$ =
               control.config.asyncValidators?.reduce(
@@ -78,10 +85,10 @@ export const buildFormEffects = <T>(): Effect<
               ) || [];
 
             const controlErrors$: Observable<ControlAsyncValidationResponse> =
-              forkJoin(validatorsFns$).pipe(
+              merge(...validatorsFns$).pipe(
                 map((validationResults) => ({
                   controlRef: control.controlRef,
-                  errors: Object.assign({}, ...validationResults),
+                  errors: Object.assign({}, validationResults),
                 })),
               );
 
