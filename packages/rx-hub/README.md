@@ -34,23 +34,9 @@
 
 - this new model can be bound with any UI library for rendering
 
-- # 2023 07 21 (Fri)
-- # 2023 07 22 (Sat)
-
-1. REFACTOR FORMS - DONE
-
-- update state builder to include validators in the FormControl - DONE
-
-  - update tests - DONE
-
-- update reducers builder since validators will be available in the state - DONE
-
-  - update tests - DONE
-
-- update effects builder since validators will be avaiable in the state - DONE
-  - update tests - DONE
-
 - # 2023 07 23 (Sun)
+
+1. Rename repo to rx-hub
 
 1. more async validation tests, to see how streams are affected by changes in other fields, debouncing and switchMap
 
@@ -59,8 +45,6 @@
 1. async validation on value update should set validating to true in reducer - IN PROGRESS
 
 1. handling adding and removing array items
-
-- local value startWith operator of the initial value of the config? - DONE
 
 1. reset form , and set Pristine value
 
@@ -79,14 +63,11 @@
 
 1. better way to copy compare objects than JSON STRINGIFY?
 
-1. used withLatestFrom in FormsEffectsBuilder for getting the controlRef - DONE
 
 1. update touched action in reducer. handle
 
 - create update touched reducer (state, controlRef)
   - it will be called when user updates value and when user has action TOUCH CONTROL
-
-1. optional typing for action payload - DONE
 
 1. Consider submitting property on Form Group?
 
@@ -98,6 +79,10 @@
 1. Better api 
 
   - hub.state({ reducer, ...otherOptions }) ?
+
+  - hub.dispatch();
+
+  - hub.messages$
 
 1. rename repo to RxHub
 
