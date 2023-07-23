@@ -68,17 +68,12 @@
 ## CLEAN UP TODOS
 
 ### FORMS
-- prioritize clean up items!
-
-1. need a way of handling custom actions with the form
-
-- custom reducers/effects to merge with form?
-
-1. need a way of handling custom actions with the form
-
-- custom reducers/effects to merge with form?
 
 1. Dynamically adding/removing controls to formGroup?
+
+1. need a way of handling custom actions with the form
+
+- custom reducers/effects to merge with form?
 
 1. SHOULD INITIALIZE and async validate at beginning?
 
