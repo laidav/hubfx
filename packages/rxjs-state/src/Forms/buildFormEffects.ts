@@ -1,4 +1,4 @@
-import { Observable, forkJoin, merge } from 'rxjs';
+import { Observable, forkJoin, merge, combineLatest } from 'rxjs';
 import { map, mergeMap, tap, startWith } from 'rxjs/operators';
 import { Action } from '../Models/Action';
 import { FORMS_CONTROL_CHANGE } from './Forms.actions';
@@ -49,12 +49,14 @@ export const buildFormEffects = <T>(): Effect<
 
     const controls$: Observable<AbstractControl<unknown>[]> = newState$.pipe(
       map(({ controlRef, newState }) =>
-        controlRef.reduce((acc, key, index) => {
-          acc = acc.concat(
-            getFormControl(controlRef.slice(0, index), newState),
-          );
-          return acc;
-        }, []),
+        [getFormControl([], newState)].concat(
+          controlRef.reduce((acc, key, index) => {
+            acc = acc.concat(
+              getFormControl(controlRef.slice(0, index + 1), newState),
+            );
+            return acc;
+          }, []),
+        ),
       ),
     );
 
@@ -74,6 +76,7 @@ export const buildFormEffects = <T>(): Effect<
               ),
               startWith(getValueFromControlConfig(control.config)),
             );
+
             const validatorsFns$ =
               control.config.asyncValidators?.reduce(
                 (acc: Observable<FormErrors>[], validator) => {
@@ -85,10 +88,10 @@ export const buildFormEffects = <T>(): Effect<
               ) || [];
 
             const controlErrors$: Observable<ControlAsyncValidationResponse> =
-              merge(...validatorsFns$).pipe(
+              combineLatest(validatorsFns$).pipe(
                 map((validationResults) => ({
                   controlRef: control.controlRef,
-                  errors: Object.assign({}, validationResults),
+                  errors: Object.assign({}, ...validationResults),
                 })),
               );
 

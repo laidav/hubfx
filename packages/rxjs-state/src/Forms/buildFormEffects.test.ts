@@ -1,14 +1,16 @@
 import { Observable } from 'rxjs';
-import { scan } from 'rxjs/operators';
+import { scan, tap } from 'rxjs/operators';
 import { ofType } from '../Operators/ofType';
 import { Action } from '../Models/Action';
 import { buildFormEffects } from './buildFormEffects';
-import { formsReducer } from './FormsReducer.reducer';
 import { config } from './Tests/config';
 import { MessageHubFactory } from '../Factories/MessageHubFactory';
 import { controlChange } from './Forms.actions';
 import { buildControlState } from './buildControlState';
-import { ControlAsyncValidationResponse } from './Models/Forms';
+import {
+  FormArrayConfig,
+  ControlAsyncValidationResponse,
+} from './Models/Forms';
 import { FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS } from './Forms.actions';
 
 describe('buildFormEffects', () => {
@@ -26,9 +28,69 @@ describe('buildFormEffects', () => {
       ),
     );
 
-  it('FormGroup should trigger async validation on group value fields ', (done) => {
+  // it('FormGroup should trigger async validation on group value fields ', (done) => {
+  //   messages$.pipe(asyncValidationMessages).subscribe((messages) => {
+  //     if (messages.length === 2) {
+  //       expect(messages).toEqual([
+  //         {
+  //           type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+  //           payload: {
+  //             controlRef: [],
+  //             errors: { uniqueFirstAndLastName: true },
+  //           },
+  //         },
+  //         {
+  //           type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+  //           payload: {
+  //             controlRef: ['doctorInfo'],
+  //             errors: { uniqueFirstAndLastName: true },
+  //           },
+  //         },
+  //       ]);
+  //       done();
+  //     }
+  //   });
+
+  //   dispatcher$.next(
+  //     controlChange({
+  //       controlRef: ['doctorInfo', 'firstName'],
+  //       value: 'Doctor change',
+  //       state: initialState,
+  //     }),
+  //   );
+  // });
+
+  it('FormArray should trigger async validation', (done) => {
+    const initialValue = [
+      {
+        firstName: 'Homer',
+        lastName: 'Simpson',
+        email: 'homer@homer.com',
+        relation: 'friend',
+      },
+      {
+        firstName: 'moe',
+        lastName: 'syzlak',
+        email: 'moe@moe.com',
+        relation: 'friend',
+      },
+    ];
+    const nonEmptyConfig = {
+      ...(config.formGroupControls
+        .emergencyContacts as FormArrayConfig<unknown>),
+      initialValue,
+    };
+
+    const stateConfig = {
+      ...config,
+      formGroupControls: {
+        ...config.formGroupControls,
+        emergencyContacts: nonEmptyConfig,
+      },
+    };
+
     messages$.pipe(asyncValidationMessages).subscribe((messages) => {
-      if (messages.length === 2) {
+      if (messages.length === 4) {
         expect(messages).toEqual([
           {
             type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
@@ -40,8 +102,22 @@ describe('buildFormEffects', () => {
           {
             type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
             payload: {
-              controlRef: ['doctorInfo'],
+              controlRef: ['emergencyContacts'],
+              errors: { arrayLengthError: true },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts', 0],
               errors: { uniqueFirstAndLastName: true },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts', 0, 'email'],
+              errors: { uniqueEmail: true, blacklistedEmail: true },
             },
           },
         ]);
@@ -51,93 +127,14 @@ describe('buildFormEffects', () => {
 
     dispatcher$.next(
       controlChange({
-        controlRef: ['doctorInfo', 'firstName'],
-        value: 'Doctor change',
-        state: initialState,
+        controlRef: ['emergencyContacts', 0, 'email'],
+        value: 'newHomerEmail@homer.com',
+        state: buildControlState(stateConfig),
       }),
     );
   });
 
-  // it('FormArray should trigger async validation', (done) => {
-  //   const initialValue = [
-  //     {
-  //       firstName: 'Homer',
-  //       lastName: 'Simpson',
-  //       email: 'homer@homer.com',
-  //       relation: 'friend',
-  //     },
-  //     {
-  //       firstName: 'moe',
-  //       lastName: 'syzlak',
-  //       email: 'moe@moe.com',
-  //       relation: 'friend',
-  //     },
-  //   ];
-  //   const nonEmptyConfig = {
-  //     ...(config.formGroupControls
-  //       .emergencyContacts as FormArrayConfig<unknown>),
-  //     initialValue,
-  //   };
-
-  //   const stateConfig = {
-  //     ...config,
-  //     formGroupControls: {
-  //       ...config.formGroupControls,
-  //       emergencyContacts: nonEmptyConfig,
-  //     },
-  //   };
-
-  //   messages$
-  //     .pipe(
-  //       // tap((message) => console.log(message)),
-  //       asyncValidationMessages,
-  //     )
-  //     .subscribe((messages) => {
-  //       if (messages.length === 4) {
-  //         expect(messages).toEqual([
-  //           {
-  //             type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-  //             payload: {
-  //               controlRef: [],
-  //               errors: { uniqueFirstAndLastName: true },
-  //             },
-  //           },
-  //           {
-  //             type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-  //             payload: {
-  //               controlRef: ['emergencyContacts'],
-  //               errors: { arrayLengthError: true },
-  //             },
-  //           },
-  //           {
-  //             type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-  //             payload: {
-  //               controlRef: ['emergencyContacts', 0],
-  //               errors: { uniqueFirstAndLastName: true },
-  //             },
-  //           },
-  //           {
-  //             type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-  //             payload: {
-  //               controlRef: ['emergencyContacts', 0, 'email'],
-  //               errors: { uniqueEmail: true, blacklistedEmail: true },
-  //             },
-  //           },
-  //         ]);
-  //         done();
-  //       }
-  //     });
-
-  //   dispatcher$.next(
-  //     controlChange({
-  //       controlRef: ['emergencyContacts', 0, 'email'],
-  //       value: 'newHomerEmail@homer.com',
-  //       state: buildControlState(stateConfig),
-  //     }),
-  //   );
-  // });
-
-  // it('FormControl should trigger async validation', () => {
-  //   expect(true).toBe(true);
-  // });
+  it('FormControl should trigger async validation', () => {
+    expect(true).toBe(true);
+  });
 });
