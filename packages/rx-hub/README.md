@@ -38,6 +38,8 @@
 
 1. Rename repo to rx-hub
 
+- publish to npm
+
 1. more async validation tests, to see how streams are affected by changes in other fields, debouncing and switchMap
 
 # TODOS
