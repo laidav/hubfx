@@ -1,5 +1,5 @@
 {
-  "name": "rxjs-hub",
+  "name": "rxhub",
   "version": "0.0.0",
   "description": "State management with rxjs",
   "main": "index.js",
