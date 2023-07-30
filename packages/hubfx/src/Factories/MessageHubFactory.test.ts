@@ -8,7 +8,7 @@ describe('MessageHubFactory', () => {
   const TEST_ACTION = 'TEST_ACTION';
 
   it('should detect a test action dispatch', (done) => {
-    const { dispatcher$, messages$ } = MessageHubFactory();
+    const { messages$, dispatch } = MessageHubFactory();
 
     messages$.subscribe((message) => {
       if (message.type === TEST_ACTION) {
@@ -17,7 +17,7 @@ describe('MessageHubFactory', () => {
       }
     });
 
-    dispatcher$.next({ type: TEST_ACTION, payload: 'test' });
+    dispatch({ type: TEST_ACTION, payload: 'test' });
   });
 
   it('should detect an effect', (done) => {
@@ -36,16 +36,16 @@ describe('MessageHubFactory', () => {
         ),
     );
 
-    const { dispatcher$, messages$ } = MessageHubFactory([effect$]);
+    const { messages$, dispatch } = MessageHubFactory([effect$]);
 
     messages$.subscribe((message) => {
       if (message.type === TEST_ACTION_SUCCESS) {
         expect(message.type).toBe(TEST_ACTION_SUCCESS);
-        expect(message.payload).toBe('test hi');
+        expect((<Action<string>>message).payload).toBe('test hi');
         done();
       }
     });
 
-    dispatcher$.next({ type: TEST_ACTION, payload: 'test' });
+    dispatch({ type: TEST_ACTION, payload: 'test' });
   });
 });
