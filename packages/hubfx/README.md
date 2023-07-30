@@ -34,13 +34,21 @@
 
 - this new model can be bound with any UI library for rendering
 
-- # 2023 07 23 (Sun)
+- CONCLUDED was approaching effects all wrong
 
-1. Rename repo to hubfx - DONE
+- NOW TO REFACTOR using merge all and creating effects dynamically as part of actions
 
-- publish to npm - DONE
+- # 2023 07 30 (Sun)
 
-1. more async validation tests, to see how streams are affected by changes in other fields, debouncing and switchMap
+1. REFACTOR Message Hub and more tests
+
+- update Message hub api
+
+- update actions interface
+
+- implement scoped effects, see branch as reference
+
+- create dictionary to track scoped effects 
 
 # TODOS
 
