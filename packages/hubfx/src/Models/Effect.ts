@@ -1,4 +1,4 @@
 import { OperatorFunction } from 'rxjs';
-import { Action } from './Action';
+import { ActionType } from './Action';
 
-export type Effect<T, S> = OperatorFunction<Action<T>, Action<S>>;
+export type Effect<T, S> = OperatorFunction<ActionType<T>, ActionType<S>>;
