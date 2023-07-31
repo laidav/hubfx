@@ -14,8 +14,8 @@ export const MessageHubFactory = (
   const dispatcher$ = new ReplaySubject<ActionType>(1);
 
   const genericEffects = effects$.reduce(
-    (result: Observable<ActionType<unknown>>[], effect$) => {
-      return result.concat(dispatcher$.pipe(effect$));
+    (result: Observable<ActionType<unknown>>[], effect) => {
+      return result.concat(dispatcher$.pipe(effect));
     },
     [],
   );
