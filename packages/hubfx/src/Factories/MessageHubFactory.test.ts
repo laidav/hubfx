@@ -65,6 +65,9 @@ describe('MessageHubFactory', () => {
       dispatch = hub.dispatch;
       messages$ = hub.messages$;
       messages = [];
+      subscription = messages$.subscribe((message) => {
+        messages = messages.concat(message);
+      });
     });
 
     afterEach(() => {
@@ -88,10 +91,6 @@ describe('MessageHubFactory', () => {
         scopedEffects: [switchMapEffect],
       };
 
-      subscription = messages$.subscribe((message) => {
-        messages = messages.concat(message);
-      });
-
       dispatch(action);
       assertMessages(
         [
@@ -111,10 +110,6 @@ describe('MessageHubFactory', () => {
         payload: 'test action with scopped effect',
         scopedEffects: [switchMapEffect],
       };
-
-      subscription = messages$.subscribe((message) => {
-        messages = messages.concat(message);
-      });
 
       dispatch(action);
 
