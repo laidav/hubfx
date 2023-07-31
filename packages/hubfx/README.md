@@ -42,13 +42,17 @@
 
 1. REFACTOR Message Hub and more tests
 
-- update Message hub api
+- update Message hub api - DONE
 
-- update actions interface
+- update actions interface - DONE
 
-- implement scoped effects, see branch as reference
+- implement scoped effects, see branch as reference - DONE
 
-- create dictionary to track scoped effects 
+- create dictionary to track scoped effects  - DONE
+
+- more test cases
+
+- refactor scoped effects for action into dictionary?
 
 # TODOS
 
