@@ -60,12 +60,11 @@ export const formBuilder = <T>(
   config: AbstractControlConfig,
 ): StreamConfig<AbstractControl<T>> => {
   const initialState: AbstractControl<T> = buildControlState(config);
-  const effects$ = buildFormEffects();
 
   return {
     initialState,
     reducer: formsReducer,
-    messageHub: MessageHubFactory(effects$),
+    messageHub: MessageHubFactory(),
   };
 };
 
