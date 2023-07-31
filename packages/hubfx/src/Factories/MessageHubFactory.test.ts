@@ -53,6 +53,12 @@ describe('MessageHubFactory', () => {
     let dispatch;
     let messages$;
     let subscription: Subscription;
+    const assertMessages = (expectedMessages, done, timeout = 1000) => {
+      setTimeout(() => {
+        expect(messages).toEqual(expectedMessages);
+        done();
+      }, timeout);
+    };
 
     beforeEach(() => {
       const hub = MessageHubFactory();
@@ -87,17 +93,16 @@ describe('MessageHubFactory', () => {
       });
 
       dispatch(action);
-      setTimeout(() => {
-        expect(messages).toEqual([
+      assertMessages(
+        [
           action,
           {
             type: TEST_ACTION_SUCCESS,
             payload: 'test action with scopped effect succeeded',
           },
-        ]);
-
-        done();
-      }, 1000);
+        ],
+        done,
+      );
     });
 
     it('switchMap in effect should cancel previous inner observables', (done) => {
@@ -120,8 +125,8 @@ describe('MessageHubFactory', () => {
         dispatch(action);
       }, 200);
 
-      setTimeout(() => {
-        expect(messages).toEqual([
+      assertMessages(
+        [
           action,
           action,
           {
@@ -133,10 +138,9 @@ describe('MessageHubFactory', () => {
             type: TEST_ACTION_SUCCESS,
             payload: 'test action with scopped effect succeeded',
           },
-        ]);
-
-        done();
-      }, 1000);
+        ],
+        done,
+      );
     });
   });
 
