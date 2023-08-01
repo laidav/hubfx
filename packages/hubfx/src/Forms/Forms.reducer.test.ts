@@ -676,6 +676,7 @@ describe('buildFormsReducer', () => {
         controlChange({
           value: 'Homer',
           controlRef: ['firstName'],
+          state: initialState,
         }),
       ),
     ).toEqual({

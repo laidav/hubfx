@@ -62,7 +62,7 @@ export type ControlRef = (string | number)[];
 export interface ControlChange<T, S> {
   value: T;
   controlRef: ControlRef;
-  state?: AbstractControl<S>;
+  state: AbstractControl<S>;
 }
 
 export interface ControlAsyncValidationResponse {
