@@ -1,10 +1,9 @@
-import { map, filter } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Action } from '../Models/Action';
 import { ControlChange, ControlAsyncValidationResponse } from './Models/Forms';
 import { getFormControl } from './FormsReducer.reducer';
 import { Effect } from '../Models/Effect';
 import { FormErrors } from './Models/Forms';
-import { ofType } from '../Operators/ofType';
 
 export const FORMS_CONTROL_CHANGE = 'FORMS_CONTROL_CHANGE';
 export const controlChange = <T, S>(
@@ -21,12 +20,7 @@ export const controlChange = <T, S>(
       const effect: Effect<unknown, FormErrors> = (actions$) => {
         return actions$
           .pipe(
-            ofType(FORMS_CONTROL_CHANGE),
-            filter(
-              (action: Action<ControlChange<T, S>>) =>
-                action.payload.controlRef === controlRef,
-            ),
-            map((action) => {
+            map((action: Action<ControlChange<T, S>>) => {
               return action.payload.value;
             }),
           )
