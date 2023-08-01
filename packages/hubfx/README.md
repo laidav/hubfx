@@ -34,14 +34,16 @@
 
 - this new model can be bound with any UI library for rendering
 
-- CONCLUDED was approaching effects all wrong
-
-- NOW TO REFACTOR using merge all and creating effects dynamically as part of actions
-
 - # 2023 08 01 (Sun)
 1. Async validation effects - IN PROGRESS
 
   - action creator to map argument to proper key/payload/effect action
+
+    - async validations should be dynamically registered on field add, not change
+
+    - also need to add effects during initial build
+
+    - is it reliable that controlRef can be independently scoped from what the control/data actaully are?
 
   - test messages
 
