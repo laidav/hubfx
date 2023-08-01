@@ -53,11 +53,26 @@ describe('MessageHubFactory', () => {
     let dispatch;
     let messages$;
     let subscription: Subscription;
-    const assertMessages = (expectedMessages, done, timeout = 1000) => {
+    const assertMessages = (
+      expectedMessages: Action<unknown>[],
+      done,
+      timeout = 1000,
+    ) => {
       setTimeout(() => {
         expect(messages).toEqual(expectedMessages);
         done();
       }, timeout);
+    };
+
+    const staggeredDispatch = (
+      action: Action<unknown>,
+      intervals: number[],
+    ) => {
+      intervals.forEach((interval) => {
+        setTimeout(() => {
+          dispatch(action);
+        }, interval);
+      });
     };
 
     beforeEach(() => {
@@ -79,7 +94,18 @@ describe('MessageHubFactory', () => {
         switchMap((action) =>
           of({
             type: TEST_ACTION_SUCCESS,
-            payload: action.payload + ' succeeded',
+            payload: action.payload + ' switchMap succeeded',
+          }).pipe(delay(100)),
+        ),
+      );
+
+    const debounceEffect = (action$: Observable<Action<string>>) =>
+      action$.pipe(
+        debounceTime(60),
+        mergeMap((action) =>
+          of({
+            type: TEST_ACTION_SUCCESS,
+            payload: action.payload + ' debounceTime and mergeMap succeeded',
           }).pipe(delay(100)),
         ),
       );
@@ -87,7 +113,7 @@ describe('MessageHubFactory', () => {
     it('should detect a scoped effect', (done) => {
       const action: Action<string> = {
         type: TEST_ACTION,
-        payload: 'test action with scopped effect',
+        payload: 'test action with scoped effect',
         scopedEffects: [switchMapEffect],
       };
 
@@ -97,7 +123,7 @@ describe('MessageHubFactory', () => {
           action,
           {
             type: TEST_ACTION_SUCCESS,
-            payload: 'test action with scopped effect succeeded',
+            payload: 'test action with scoped effect switchMap succeeded',
           },
         ],
         done,
@@ -107,31 +133,63 @@ describe('MessageHubFactory', () => {
     it('switchMap in effect should cancel previous inner observables', (done) => {
       const action: Action<string> = {
         type: TEST_ACTION,
-        payload: 'test action with scopped effect',
+        payload: 'test action with scoped effect',
         scopedEffects: [switchMapEffect],
       };
 
-      dispatch(action);
-
-      setTimeout(() => {
-        dispatch(action);
-      }, 50);
-      setTimeout(() => {
-        dispatch(action);
-      }, 200);
+      staggeredDispatch(action, [0, 50, 200]);
 
       assertMessages(
         [
-          action,
-          action,
+          action, // first dispatch
+          action, // dispatch at 50
           {
             type: TEST_ACTION_SUCCESS,
-            payload: 'test action with scopped effect succeeded',
+            payload: 'test action with scoped effect switchMap succeeded',
           },
-          action,
+          action, // dispatch at 200
           {
             type: TEST_ACTION_SUCCESS,
-            payload: 'test action with scopped effect succeeded',
+            payload: 'test action with scoped effect switchMap succeeded',
+          },
+        ],
+        done,
+      );
+    });
+
+    it('should handle more than one effect each independently', (done) => {
+      const action = {
+        type: TEST_ACTION,
+        payload: 'test action with more that one effect',
+        scopedEffects: [switchMapEffect, debounceEffect],
+      };
+
+      staggeredDispatch(action, [0, 50, 200]);
+
+      assertMessages(
+        [
+          action, // first dispatch
+          action, // dispatch at 50
+          {
+            type: TEST_ACTION_SUCCESS,
+            payload:
+              'test action with more that one effect switchMap succeeded',
+          },
+          action, // dispatch at 200
+          {
+            type: TEST_ACTION_SUCCESS,
+            payload:
+              'test action with more that one effect debounceTime and mergeMap succeeded',
+          },
+          {
+            type: TEST_ACTION_SUCCESS,
+            payload:
+              'test action with more that one effect switchMap succeeded',
+          },
+          {
+            type: TEST_ACTION_SUCCESS,
+            payload:
+              'test action with more that one effect debounceTime and mergeMap succeeded',
           },
         ],
         done,
@@ -139,53 +197,8 @@ describe('MessageHubFactory', () => {
     });
   });
 
-  // scoped effect
-  // // more than one effect
-  // // effects are independent streams
   // scoped effect with keys
   // // indepenedent between streams
-  // // independent in array
 
   // generic effect does not trigger scoped effect
-
-  // it('should detect a scoped effect', (done) => { const action: Action<string> = {
-  //     type: TEST_ACTION,
-  //     payload: 'test action with effect',
-  //     key: 'unique',
-  //     scopedEffects: [
-  //       (action$: Observable<Action<string>>) =>
-  //         action$.pipe(
-  //           debounceTime(400),
-  //           mergeMap((action) =>
-  //             of({
-  //               type: TEST_ACTION_SUCCESS,
-  //               payload: action.payload + ' hi',
-  //             }).pipe(delay(1000)),
-  //           ),
-  //         ),
-  //       (action$: Observable<Action<string>>) =>
-  //         action$.pipe(
-  //           debounceTime(500),
-  //           mergeMap((action) =>
-  //             of({
-  //               type: TEST_ACTION_SUCCESS,
-  //               payload: action.payload + ' hi 2',
-  //             }).pipe(delay(1000)),
-  //           ),
-  //         ),
-  //     ],
-  //   };
-
-  //   const { messages$, dispatch } = MessageHubFactory();
-
-  //   messages$.subscribe((message) => {
-  //     console.log(message);
-  //   });
-
-  //   dispatch(action);
-  //   dispatch({ type: TEST_ACTION, payload: 'no key or effect' });
-  //   setTimeout(() => {
-  //     dispatch(action);
-  //   }, 450);
-  // });
 });
