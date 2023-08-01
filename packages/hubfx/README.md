@@ -38,23 +38,20 @@
 
 - NOW TO REFACTOR using merge all and creating effects dynamically as part of actions
 
-- # 2023 07 30 (Sun)
+- # 2023 08 01 (Sun)
+1. Async validation effects - IN PROGRESS
 
-1. REFACTOR Message Hub and more tests
+  - action creator to map argument to proper key/payload/effect action
 
-- update Message hub api - DONE
+  - test messages
 
-- update actions interface - DONE
+1. UPDATE reducer for async validation
 
-- implement scoped effects, see branch as reference - DONE
+  - async validation on value update should set validating to true in reducer - IN PROGRESS
 
-- create dictionary to track scoped effects  - DONE
-
-- more test cases - DONE
+  - also valid state on parents and control should be false if it is validating
 
 # TODOS
-
-1. async validation on value update should set validating to true in reducer - IN PROGRESS
 
 1. handling adding and removing array items
 
