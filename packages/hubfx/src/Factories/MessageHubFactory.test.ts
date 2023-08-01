@@ -13,6 +13,27 @@ describe('MessageHubFactory', () => {
   let messages$;
   let subscription: Subscription;
 
+  const switchMapEffect = (action$: Observable<Action<string>>) =>
+    action$.pipe(
+      switchMap((action) =>
+        of({
+          type: TEST_ACTION_SUCCESS,
+          payload: action.payload + ' switchMap succeeded',
+        }).pipe(delay(100)),
+      ),
+    );
+
+  const debounceEffect = (action$: Observable<Action<string>>) =>
+    action$.pipe(
+      debounceTime(60),
+      mergeMap((action) =>
+        of({
+          type: TEST_ACTION_SUCCESS,
+          payload: action.payload + ' debounceTime and mergeMap succeeded',
+        }).pipe(delay(100)),
+      ),
+    );
+
   const assertMessages = (
     expectedMessages: Action<unknown>[],
     done,
@@ -83,27 +104,6 @@ describe('MessageHubFactory', () => {
   });
 
   describe('scoped effects', () => {
-    const switchMapEffect = (action$: Observable<Action<string>>) =>
-      action$.pipe(
-        switchMap((action) =>
-          of({
-            type: TEST_ACTION_SUCCESS,
-            payload: action.payload + ' switchMap succeeded',
-          }).pipe(delay(100)),
-        ),
-      );
-
-    const debounceEffect = (action$: Observable<Action<string>>) =>
-      action$.pipe(
-        debounceTime(60),
-        mergeMap((action) =>
-          of({
-            type: TEST_ACTION_SUCCESS,
-            payload: action.payload + ' debounceTime and mergeMap succeeded',
-          }).pipe(delay(100)),
-        ),
-      );
-
     it('should detect a scoped effect', (done) => {
       const action: Action<string> = {
         type: TEST_ACTION,
@@ -248,9 +248,4 @@ describe('MessageHubFactory', () => {
       );
     });
   });
-
-  // scoped effect with keys
-  // // indepenedent between streams
-
-  // generic effect does not trigger scoped effect
 });
