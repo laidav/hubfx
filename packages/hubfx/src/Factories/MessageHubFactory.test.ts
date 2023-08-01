@@ -8,17 +8,50 @@ describe('MessageHubFactory', () => {
   const TEST_ACTION = 'TEST_ACTION';
   const TEST_ACTION_SUCCESS = 'TEST_ACTION_SUCCESS';
 
-  it('should detect a test action dispatch', (done) => {
-    const { messages$, dispatch } = MessageHubFactory();
+  let messages = [];
+  let dispatch;
+  let messages$;
+  let subscription: Subscription;
 
-    messages$.subscribe((message) => {
-      if (message.type === TEST_ACTION) {
-        expect(message.type).toBe(TEST_ACTION);
-        done();
-      }
+  const assertMessages = (
+    expectedMessages: Action<unknown>[],
+    done,
+    timeout = 1000,
+  ) => {
+    setTimeout(() => {
+      expect(messages).toEqual(expectedMessages);
+      done();
+    }, timeout);
+  };
+
+  const staggeredDispatch = (action: Action<unknown>, intervals: number[]) => {
+    intervals.forEach((interval) => {
+      setTimeout(() => {
+        dispatch(action);
+      }, interval);
     });
+  };
+
+  beforeEach(() => {
+    const hub = MessageHubFactory();
+    dispatch = hub.dispatch;
+    messages$ = hub.messages$;
+    messages = [];
+    subscription = messages$.subscribe((message) => {
+      messages = messages.concat(message);
+    });
+  });
+
+  afterEach(() => {
+    subscription.unsubscribe();
+  });
+
+  it('should detect a test action dispatch', (done) => {
+    const action = { type: TEST_ACTION, payload: 'test' };
 
     dispatch({ type: TEST_ACTION, payload: 'test' });
+
+    assertMessages([action], done);
   });
 
   it('should detect a generic effect', (done) => {
@@ -37,11 +70,12 @@ describe('MessageHubFactory', () => {
 
     const { messages$, dispatch } = MessageHubFactory([effect$]);
 
-    messages$.subscribe((message) => {
+    const subscription = messages$.subscribe((message) => {
       if (message.type === TEST_ACTION_SUCCESS) {
         expect(message.type).toBe(TEST_ACTION_SUCCESS);
         expect((<Action<string>>message).payload).toBe('test hi');
         done();
+        subscription.unsubscribe();
       }
     });
 
@@ -49,47 +83,6 @@ describe('MessageHubFactory', () => {
   });
 
   describe('scoped effects', () => {
-    let messages = [];
-    let dispatch;
-    let messages$;
-    let subscription: Subscription;
-
-    const assertMessages = (
-      expectedMessages: Action<unknown>[],
-      done,
-      timeout = 1000,
-    ) => {
-      setTimeout(() => {
-        expect(messages).toEqual(expectedMessages);
-        done();
-      }, timeout);
-    };
-
-    const staggeredDispatch = (
-      action: Action<unknown>,
-      intervals: number[],
-    ) => {
-      intervals.forEach((interval) => {
-        setTimeout(() => {
-          dispatch(action);
-        }, interval);
-      });
-    };
-
-    beforeEach(() => {
-      const hub = MessageHubFactory();
-      dispatch = hub.dispatch;
-      messages$ = hub.messages$;
-      messages = [];
-      subscription = messages$.subscribe((message) => {
-        messages = messages.concat(message);
-      });
-    });
-
-    afterEach(() => {
-      subscription.unsubscribe();
-    });
-
     const switchMapEffect = (action$: Observable<Action<string>>) =>
       action$.pipe(
         switchMap((action) =>
