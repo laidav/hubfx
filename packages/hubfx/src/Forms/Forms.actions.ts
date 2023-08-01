@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Action } from '../Models/Action';
 import { ControlChange, ControlAsyncValidationResponse } from './Models/Forms';
@@ -17,10 +18,12 @@ export const controlChange = <T, S>(
 
   if (asyncValidators && asyncValidators.length) {
     scopedEffects = asyncValidators.reduce((acc, validator) => {
-      const effect: Effect<unknown, FormErrors> = (actions$) => {
+      const effect: Effect<unknown, FormErrors> = (
+        actions$: Observable<Action<ControlChange<T, S>>>,
+      ) => {
         return actions$
           .pipe(
-            map((action: Action<ControlChange<T, S>>) => {
+            map((action) => {
               return action.payload.value;
             }),
           )
