@@ -53,6 +53,7 @@ describe('MessageHubFactory', () => {
     let dispatch;
     let messages$;
     let subscription: Subscription;
+
     const assertMessages = (
       expectedMessages: Action<unknown>[],
       done,
@@ -190,6 +191,64 @@ describe('MessageHubFactory', () => {
             type: TEST_ACTION_SUCCESS,
             payload:
               'test action with more that one effect debounceTime and mergeMap succeeded',
+          },
+        ],
+        done,
+      );
+    });
+
+    it('should handle two action with unique signatures independently', (done) => {
+      const action = {
+        type: TEST_ACTION,
+        payload: 'test action no key',
+        scopedEffects: [switchMapEffect],
+      };
+      const actionTwo = {
+        type: TEST_ACTION,
+        key: 'two',
+        payload: 'test action key two',
+        scopedEffects: [switchMapEffect],
+      };
+      const actionThree = {
+        type: TEST_ACTION,
+        key: 'three',
+        payload: 'test action key three',
+        scopedEffects: [debounceEffect],
+      };
+      staggeredDispatch(action, [0, 50, 200]);
+      staggeredDispatch(actionTwo, [0]);
+      staggeredDispatch(actionThree, [0, 50, 200]);
+
+      assertMessages(
+        [
+          action, // at 0
+          actionTwo, // at 0
+          actionThree, // at 0
+          action, // at 50
+          actionThree, // at 50
+          {
+            type: TEST_ACTION_SUCCESS,
+            payload: 'test action key two switchMap succeeded',
+          },
+          {
+            type: TEST_ACTION_SUCCESS,
+            payload: 'test action no key switchMap succeeded',
+          },
+          action, // at 200
+          actionThree, // at 200
+          {
+            type: TEST_ACTION_SUCCESS,
+            payload:
+              'test action key three debounceTime and mergeMap succeeded',
+          },
+          {
+            type: TEST_ACTION_SUCCESS,
+            payload: 'test action no key switchMap succeeded',
+          },
+          {
+            type: TEST_ACTION_SUCCESS,
+            payload:
+              'test action key three debounceTime and mergeMap succeeded',
           },
         ],
         done,
