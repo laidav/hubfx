@@ -50,9 +50,7 @@
 
 - create dictionary to track scoped effects  - DONE
 
-- more test cases
-
-- refactor scoped effects for action into dictionary?
+- more test cases - DONE
 
 # TODOS
 
@@ -102,8 +100,6 @@
 
 1. add a tap option for neccessary side effects
 
-1. Bug in react use effect on component mount, wrapper not receivign firs dispatch message
-
 - timeout solved it
 
 1. Clean up initil state builder method
@@ -112,8 +108,12 @@
 
 1. reduce boilerplate some how?
 
+1. refactor scoped effects for action into dictionary?
+
 ### React project 
 
 1. binding hooks and form components
 
 1. default props? can we make the components as dumb as possible
+
+1. Bug in react use effect on component mount, wrapper not receivign firs dispatch message
