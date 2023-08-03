@@ -68,8 +68,10 @@ export const MessageHubFactory = (
 
   return {
     messages$,
-    dispatch: (action) => {
-      dispatcher$.next(action);
+    dispatch: (...actions) => {
+      actions.forEach((action) => {
+        dispatcher$.next(action);
+      });
     },
   };
 };
