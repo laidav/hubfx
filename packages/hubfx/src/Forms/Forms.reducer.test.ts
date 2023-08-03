@@ -8,7 +8,7 @@ import {
 } from './FormsReducer.reducer';
 import { buildControlState } from './buildControlState';
 import { config } from './Tests/config';
-import { controlChange } from './Forms.actions';
+import { controlChange, FORMS_CONTROL_CHANGE } from './Forms.actions';
 import {
   FormGroup,
   FormControl,
@@ -671,14 +671,13 @@ describe('buildFormsReducer', () => {
 
   it('should build proper reducer and react to update value', () => {
     expect(
-      formsReducer(
-        initialState,
-        controlChange({
+      formsReducer(initialState, {
+        type: FORMS_CONTROL_CHANGE,
+        payload: {
           value: 'Homer',
           controlRef: ['firstName'],
-          state: initialState,
-        }),
-      ),
+        },
+      }),
     ).toEqual({
       ...initialState,
       errors: {

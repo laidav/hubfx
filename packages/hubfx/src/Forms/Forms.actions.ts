@@ -22,7 +22,7 @@ const getScopedEffectsForControl = <T>(
   if (asyncValidators && asyncValidators.length) {
     scopedEffects = asyncValidators.reduce((acc, validator) => {
       const effect: Effect<T, FormErrors> = (
-        actions$: Observable<Action<ControlChange<T, unknown>>>,
+        actions$: Observable<Action<ControlChange<T>>>,
       ) => {
         return actions$
           .pipe(
@@ -49,13 +49,14 @@ export const FORMS_CONTROL_CHANGE = 'FORMS_CONTROL_CHANGE';
 export const FORMS_GROUP_VALUE_CHANGE = 'FORMS_GROUP_VALUE_CHANGE';
 export const FORMS_ARRAY_VALUE_CHANGE = 'FORMS_ARRAY_VALUE_CHANGE';
 export const controlChange = <T, S>(
-  controlChange: ControlChange<T, S>,
-): Action<ControlChange<T, S>>[] => {
-  const { state, controlRef } = controlChange;
+  controlChange: ControlChange<T>,
+  state: AbstractControl<S>,
+): Action<ControlChange<T>>[] => {
+  const { controlRef } = controlChange;
   const formControls = getControlBranch(controlRef, state);
 
   const actions = formControls.reduce(
-    (acc: Action<ControlChange<T, S>>[], formControl) => {
+    (acc: Action<ControlChange<T>>[], formControl) => {
       let type: string;
       switch (formControl.config.controlType) {
         case FormControlType.Group:

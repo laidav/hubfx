@@ -59,10 +59,9 @@ export interface FormErrors {
 
 export type ControlRef = (string | number)[];
 
-export interface ControlChange<T, S> {
+export interface ControlChange<T> {
   value: T;
   controlRef: ControlRef;
-  state: AbstractControl<S>;
 }
 
 export interface ControlAsyncValidationResponse {
