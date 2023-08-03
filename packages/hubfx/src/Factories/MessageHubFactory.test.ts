@@ -1,38 +1,16 @@
 import { createEffect } from '../Helpers/createEffect';
 import { Observable, Subscription, of } from 'rxjs';
-import { delay, switchMap, mergeMap, debounceTime } from 'rxjs/operators';
+import { delay, switchMap } from 'rxjs/operators';
 import { Action } from '../Models/Action';
 import { MessageHubFactory } from './MessageHubFactory';
+import { switchMapEffect, debounceEffect } from '../Forms/Tests/Effects';
+import { TEST_ACTION, TEST_ACTION_SUCCESS } from '../Forms/Tests/Actions';
 
 describe('MessageHubFactory', () => {
-  const TEST_ACTION = 'TEST_ACTION';
-  const TEST_ACTION_SUCCESS = 'TEST_ACTION_SUCCESS';
-
   let messages = [];
   let dispatch;
   let messages$;
   let subscription: Subscription;
-
-  const switchMapEffect = (action$: Observable<Action<string>>) =>
-    action$.pipe(
-      switchMap((action) =>
-        of({
-          type: TEST_ACTION_SUCCESS,
-          payload: action.payload + ' switchMap succeeded',
-        }).pipe(delay(100)),
-      ),
-    );
-
-  const debounceEffect = (action$: Observable<Action<string>>) =>
-    action$.pipe(
-      debounceTime(60),
-      mergeMap((action) =>
-        of({
-          type: TEST_ACTION_SUCCESS,
-          payload: action.payload + ' debounceTime and mergeMap succeeded',
-        }).pipe(delay(100)),
-      ),
-    );
 
   const assertMessages = (
     expectedMessages: Action<unknown>[],
