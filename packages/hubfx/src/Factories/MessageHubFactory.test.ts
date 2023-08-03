@@ -194,7 +194,7 @@ describe('MessageHubFactory', () => {
       const action = {
         type: TEST_ACTION,
         payload: 'test action no key',
-        scopedEffects: [switchMapEffect],
+        scopedEffects: [switchMapEffect, debounceEffect],
       };
       const actionTwo = {
         type: TEST_ACTION,
@@ -231,12 +231,20 @@ describe('MessageHubFactory', () => {
           actionThree, // at 200
           {
             type: TEST_ACTION_SUCCESS,
+            payload: 'test action no key debounceTime and mergeMap succeeded',
+          },
+          {
+            type: TEST_ACTION_SUCCESS,
             payload:
               'test action key three debounceTime and mergeMap succeeded',
           },
           {
             type: TEST_ACTION_SUCCESS,
             payload: 'test action no key switchMap succeeded',
+          },
+          {
+            type: TEST_ACTION_SUCCESS,
+            payload: 'test action no key debounceTime and mergeMap succeeded',
           },
           {
             type: TEST_ACTION_SUCCESS,
