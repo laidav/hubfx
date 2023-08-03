@@ -35,11 +35,13 @@
 - # 2023 08 03 (Thurs)
 1. Async validation effects - IN PROGRESS
 
-  - action creator to map argument to proper key/payload/effect action
+  - action creator to map argument to proper key/payload/effect action - DONE
 
-    - also return more actions to signal a value change
+    - also return more actions to signal a value change - DONE
 
-  - update hub
+    - NOW DO I GET THE NEW CURRENT VALUE THOUGH to send to the async validation??????
+
+  - update hub - DONE
 
   - test messages
 
