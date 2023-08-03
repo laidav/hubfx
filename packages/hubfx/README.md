@@ -30,8 +30,6 @@
 
     - we can separate concerns and test our application logic via streams
 
-- state is updated with actions and reducers in the stream and all dependencies are explicit
-
 - this new model can be bound with any UI library for rendering
 
 - # 2023 08 01 (Sun)
@@ -39,9 +37,9 @@
 
   - action creator to map argument to proper key/payload/effect action
 
-    - async validations should be dynamically registered on field add, not change
+    - async validations should be dynamically registered on field add, not change - N/A
 
-    - also need to add effects during initial build
+    - also need to add effects during initial build - N/A
 
     - is it reliable that controlRef can be independently scoped from what the control/data actaully are?
 
