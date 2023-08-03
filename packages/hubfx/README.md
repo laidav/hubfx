@@ -41,6 +41,8 @@
 
     - NOW DO I GET THE NEW CURRENT VALUE THOUGH to send to the async validation??????
 
+      - do i have to pass in the reducer as well?
+
   - update hub - DONE
 
   - test messages
