@@ -209,8 +209,8 @@ describe('MessageHubFactory', () => {
         scopedEffects: [debounceEffect],
       };
       staggeredDispatch(action, [0, 50, 200]);
-      staggeredDispatch(actionTwo, [0]);
-      staggeredDispatch(actionThree, [0, 50, 200]);
+      staggeredDispatch(actionTwo, [5]);
+      staggeredDispatch(actionThree, [10, 60, 210]);
 
       assertMessages(
         [
