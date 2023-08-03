@@ -5,10 +5,9 @@ import {
   ControlChange,
   ControlAsyncValidationResponse,
   AbstractControl,
-  ControlRef,
   FormControlType,
 } from './Models/Forms';
-import { getFormControl } from './FormsReducer.reducer';
+import { getControlBranch } from './FormsReducer.reducer';
 import { Effect } from '../Models/Effect';
 import { FormErrors } from './Models/Forms';
 
@@ -53,24 +52,7 @@ export const controlChange = <T, S>(
   controlChange: ControlChange<T, S>,
 ): Action<ControlChange<T, S>>[] => {
   const { state, controlRef } = controlChange;
-  const formControl = getFormControl(controlRef, state);
-
-  const formControls = controlRef.reduce(
-    (acc, key) => {
-      const currentRef = acc.currentRef.concat(key);
-      const formControls = acc.formControls.concat(
-        getFormControl(currentRef, state),
-      );
-      return {
-        currentRef,
-        formControls,
-      };
-    },
-    {
-      currentRef: [] as ControlRef,
-      formControls: [] as AbstractControl<unknown>[],
-    },
-  ).formControls;
+  const formControls = getControlBranch(controlRef, state);
 
   const actions = formControls.reduce(
     (acc: Action<ControlChange<T, S>>[], formControl) => {

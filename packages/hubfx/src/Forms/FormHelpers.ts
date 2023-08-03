@@ -10,8 +10,8 @@ import {
 import { StreamConfig } from '../Models/Stream';
 import { MessageHubFactory } from '../Factories/MessageHubFactory';
 import { formsReducer } from './FormsReducer.reducer';
-import { buildFormEffects } from './formEffect';
 import { buildControlState } from './buildControlState';
+import { getFormControl } from './FormsReducer.reducer';
 
 export const getControlConfig = (
   config: AbstractControlConfig,
