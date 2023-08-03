@@ -32,16 +32,14 @@
 
 - this new model can be bound with any UI library for rendering
 
-- # 2023 08 01 (Sun)
+- # 2023 08 03 (Thurs)
 1. Async validation effects - IN PROGRESS
 
   - action creator to map argument to proper key/payload/effect action
 
-    - async validations should be dynamically registered on field add, not change - N/A
+    - also return more actions to signal a value change
 
-    - also need to add effects during initial build - N/A
-
-    - is it reliable that controlRef can be independently scoped from what the control/data actaully are?
+  - update hub
 
   - test messages
 
@@ -62,6 +60,8 @@
 
 ### FORMS
 
+1. Refactor validators so that asyncValidators actions are observables of the abstract control not just the value
+
 1. Dynamically adding/removing controls to formGroup?
 
 1. need a way of handling custom actions with the form
@@ -72,7 +72,6 @@
 
 1. better way to copy compare objects than JSON STRINGIFY?
 
-
 1. update touched action in reducer. handle
 
 - create update touched reducer (state, controlRef)
@@ -80,10 +79,16 @@
 
 1. Consider submitting property on Form Group?
 
+1. is it reliable that controlRef can be independently scoped from what the control/data actaully are?
+
+  - the scopedEffects timeout can help with this maybe
+
 ### Other Items
 1. Documentation
 
   - one way in one way out rule
+
+1. and a idle timeout for scopedEffects
 
 1. Better api 
 
@@ -92,8 +97,6 @@
   - hub.dispatch();
 
   - hub.messages$
-
-1. rename repo to RxHub
 
 1. add a tap option for neccessary side effects
 
