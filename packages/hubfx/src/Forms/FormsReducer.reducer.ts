@@ -239,9 +239,7 @@ export const formsReducer = <T>(
 ): AbstractControl<T> => {
   switch (action.type) {
     case FORMS_CONTROL_CHANGE:
-      const { controlRef, value } = <ControlChange<unknown, FormControl<T>>>(
-        action.payload
-      );
+      const { controlRef, value } = <ControlChange<unknown>>action.payload;
 
       const result = syncValidate(updateValues(state, controlRef, value));
 
