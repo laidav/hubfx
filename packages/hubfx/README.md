@@ -41,11 +41,11 @@
 
     - NOW DO I GET THE NEW CURRENT VALUE THOUGH to send to the async validation??????
 
-      - do i have to pass in the reducer as well?
+      - do i have to pass in the reducer as well? - DONE pass in reducer to generate new state for formGroup and formArray values - DONE
 
   - update hub - DONE
 
-  - test messages
+  - test cases for messages from ACTIONS
 
 1. UPDATE reducer for async validation
 
