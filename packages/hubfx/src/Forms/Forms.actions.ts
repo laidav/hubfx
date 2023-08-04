@@ -5,7 +5,6 @@ import {
   ControlChange,
   ControlAsyncValidationResponse,
   AbstractControl,
-  FormControlType,
 } from './Models/Forms';
 import { getControlBranch, getFormControl } from './FormsReducer.reducer';
 import { Effect } from '../Models/Effect';
@@ -13,41 +12,39 @@ import { FormErrors } from './Models/Forms';
 
 const getScopedEffectsForControl = <T>(
   formControl: AbstractControl<T>,
-): Effect<T, FormErrors>[] => {
+): Effect<AbstractControl<T>, FormErrors>[] => {
   const { config, controlRef } = formControl;
   const { asyncValidators } = config;
 
-  let scopedEffects: Effect<unknown, FormErrors>[];
+  let scopedEffects: Effect<AbstractControl<T>, FormErrors>[];
 
   if (asyncValidators && asyncValidators.length) {
-    scopedEffects = asyncValidators.reduce((acc, validator) => {
-      const effect: Effect<T, FormErrors> = (
-        actions$: Observable<Action<ControlChange<T>>>,
-      ) => {
-        return actions$
-          .pipe(
-            map((action) => {
-              return action.payload.value;
-            }),
-          )
-          .pipe(
-            validator,
-            map((errors) =>
-              asyncValidationResponseSuccess({ controlRef, errors }),
-            ),
-          );
-      };
+    scopedEffects = asyncValidators.reduce(
+      (acc: Effect<AbstractControl<T>, FormErrors>[], validator) => {
+        const effect: Effect<AbstractControl<T>, FormErrors> = (
+          actions$: Observable<Action<AbstractControl<T>>>,
+        ) => {
+          return actions$
+            .pipe(map(({ payload: newControlState }) => newControlState))
+            .pipe(
+              validator,
+              map((errors) =>
+                asyncValidationResponseSuccess({ controlRef, errors }),
+              ),
+            );
+        };
 
-      return acc.concat(effect);
-    }, []);
+        return acc.concat(effect);
+      },
+      [],
+    );
 
     return scopedEffects;
   }
 };
 
 export const FORMS_CONTROL_CHANGE = 'FORMS_CONTROL_CHANGE';
-export const FORMS_GROUP_VALUE_CHANGE = 'FORMS_GROUP_VALUE_CHANGE';
-export const FORMS_ARRAY_VALUE_CHANGE = 'FORMS_ARRAY_VALUE_CHANGE';
+export const FORMS_VALUE_CHANGE_EFFECT = 'FORMS_ARRAY_VALUE_CHANGE_EFFECT';
 export const controlChange = <T, S>(
   controlChange: ControlChange<T>,
   state: AbstractControl<S>,
@@ -55,7 +52,7 @@ export const controlChange = <T, S>(
     state: AbstractControl<S>,
     action: Action<unknown>,
   ) => AbstractControl<S>,
-): Action<ControlChange<T>>[] => {
+): (Action<ControlChange<T>> | Action<AbstractControl<unknown>>)[] => {
   const { controlRef } = controlChange;
   const formControls = getControlBranch(controlRef, state);
   const newState = reducer(state, {
@@ -64,41 +61,25 @@ export const controlChange = <T, S>(
   });
 
   const actions = formControls.reduce(
-    (acc: Action<ControlChange<T>>[], control) => {
-      let type: string;
-      let payload;
+    (
+      acc: (Action<ControlChange<T>> | Action<AbstractControl<unknown>>)[],
+      control,
+    ) => {
       const { controlRef } = control;
 
-      let newControlValue = getFormControl(controlRef, newState).value;
-
-      switch (control.config.controlType) {
-        case FormControlType.Group:
-          type = FORMS_GROUP_VALUE_CHANGE;
-          payload = {
-            controlRef,
-            value: newControlValue,
-          };
-          break;
-        case FormControlType.Array:
-          type = FORMS_ARRAY_VALUE_CHANGE;
-          payload = {
-            controlRef,
-            value: newControlValue,
-          };
-          break;
-        default:
-          payload = controlChange;
-          type = FORMS_CONTROL_CHANGE;
-      }
-
       return acc.concat({
-        type,
+        type: FORMS_VALUE_CHANGE_EFFECT,
         key: controlRef.join(':'),
-        payload: controlChange,
+        payload: getFormControl(controlRef, newState),
         scopedEffects: getScopedEffectsForControl(control),
       });
     },
-    [],
+    [
+      {
+        type: FORMS_CONTROL_CHANGE,
+        payload: controlChange,
+      },
+    ],
   );
 
   return actions;

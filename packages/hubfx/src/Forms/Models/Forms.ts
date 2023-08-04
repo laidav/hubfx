@@ -72,7 +72,7 @@ export interface ControlAsyncValidationResponse {
 export type ValidatorFn = (value: any) => FormErrors;
 
 export type ValidatorAsyncFn = <T>(
-  value$: Observable<T>,
+  control$: Observable<AbstractControl<T>>,
 ) => Observable<FormErrors>;
 
 export type FormsReducer = <T>(
