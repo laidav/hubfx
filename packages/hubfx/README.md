@@ -32,24 +32,15 @@
 
 - this new model can be bound with any UI library for rendering
 
-- # 2023 08 03 (Thurs)
-1. Async validation effects - IN PROGRESS
+- # 2023 08 04 (Fri)
 
-  - action creator to map argument to proper key/payload/effect action - DONE
-
-    - also return more actions to signal a value change - DONE
-
-    - NOW DO I GET THE NEW CURRENT VALUE THOUGH to send to the async validation??????
-
-      - do i have to pass in the reducer as well? - DONE pass in reducer to generate new state for formGroup and formArray values - DONE
-
-  - update hub - DONE
-
-  - test cases for messages from ACTIONS
+  - test cases for messages from ACTIONS - DONE
 
 1. UPDATE reducer for async validation
 
   - async validation on value update should set validating to true in reducer - IN PROGRESS
+
+    - async validation state needs to be a dictionary, so the entire "validating" field can be derived by each async validator
 
   - also valid state on parents and control should be false if it is validating
 

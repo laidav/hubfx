@@ -11,7 +11,6 @@ import { buildControlState } from './buildControlState';
 import { Action } from '../Models/Action';
 import { formsReducer } from './FormsReducer.reducer';
 import { config as fullConfig } from './Tests/config';
-import { Contact } from './Tests/Models/Contact';
 
 describe('controlChange', () => {
   let messages = [];
