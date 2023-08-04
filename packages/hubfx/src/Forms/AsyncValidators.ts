@@ -1,39 +1,35 @@
-import { of, delay, Observable, mergeMap, tap } from 'rxjs';
+import { of, delay, mergeMap, tap } from 'rxjs';
 import { ValidatorAsyncFn } from './Models/Forms';
 
-export const uniqueEmail: ValidatorAsyncFn = (value$: Observable<unknown>) => {
+export const uniqueEmail: ValidatorAsyncFn = (control$) => {
   // return of({ uniqueEmail: true }).pipe(delay(1000));
-  return value$.pipe(
-    mergeMap((value) => of({ uniqueEmail: true }).pipe(delay(1000))),
+  return control$.pipe(
+    mergeMap((control) => of({ uniqueEmail: true }).pipe(delay(1000))),
   );
 };
 
-export const blacklistedEmail: ValidatorAsyncFn = (
-  value$: Observable<unknown>,
-) => {
+export const blacklistedEmail: ValidatorAsyncFn = (control$) => {
   // return of({ uniqueEmail: true }).pipe(delay(1000));
-  return value$.pipe(
-    mergeMap((value) => of({ blacklistedEmail: true }).pipe(delay(1000))),
+  return control$.pipe(
+    mergeMap((control) => of({ blacklistedEmail: true }).pipe(delay(1000))),
   );
 };
 
-export const uniqueFirstAndLastName: ValidatorAsyncFn = (
-  value$: Observable<unknown>,
-) => {
-  return value$.pipe(
-    // tap((value) => console.log(value, 'in validator')),
-    mergeMap((value) => of({ uniqueFirstAndLastName: true }).pipe(delay(1000))),
+export const uniqueFirstAndLastName: ValidatorAsyncFn = (control$) => {
+  return control$.pipe(
+    // tap((control) => console.log(control, 'in validator')),
+    mergeMap((control) =>
+      of({ uniqueFirstAndLastName: true }).pipe(delay(1000)),
+    ),
   );
 };
 
-export const arrayLengthError: ValidatorAsyncFn = (
-  value$: Observable<unknown>,
-) => {
-  return value$.pipe(
-    mergeMap((value) => of({ arrayLengthError: true }).pipe(delay(1000))),
+export const arrayLengthError: ValidatorAsyncFn = (control$) => {
+  return control$.pipe(
+    mergeMap((control) => of({ arrayLengthError: true }).pipe(delay(1000))),
   );
 };
 
 //Change payload with the state
-//map value to validator
+//map control to validator
 // then send action with controlrRef
