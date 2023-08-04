@@ -161,5 +161,146 @@ describe('controlChange', () => {
     );
   });
 
-  it('should run async validations for multiple form controls and all common anscestors', () => {});
+  it('should run async validations for multiple form controls and all common anscestors', (done) => {
+    const config = cloneDeep(fullConfig);
+
+    config.formGroupControls.emergencyContacts.initialValue = [
+      {
+        firstName: 'Homer',
+        lastName: 'Simpson',
+        email: 'homer@homer.com',
+        relation: 'friend',
+      },
+      {
+        firstName: 'moe',
+        lastName: 'syzlak',
+        email: 'moe@moe.com',
+        relation: 'friend',
+      },
+    ];
+
+    const state = buildControlState(config);
+
+    const actionsOne = controlChange(
+      {
+        controlRef: ['emergencyContacts', 1, 'email'],
+        value: 'moechanged@email.com',
+      },
+      state,
+      formsReducer,
+    );
+
+    const actionsTwo = controlChange(
+      {
+        controlRef: ['emergencyContacts', 0, 'email'],
+        value: 'homerchanged@email.com',
+      },
+      state,
+      formsReducer,
+    );
+
+    dispatch(...actionsOne);
+
+    setTimeout(() => {
+      dispatch(...actionsTwo);
+    }, 0);
+
+    assertMessages(
+      [
+        ...actionsOne,
+        ...actionsTwo,
+        {
+          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+          payload: {
+            controlRef: ['emergencyContacts', 1, 'email'],
+            errors: {
+              uniqueEmail: true,
+            },
+          },
+        },
+        {
+          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+          payload: {
+            controlRef: ['emergencyContacts', 0, 'email'],
+            errors: {
+              uniqueEmail: true,
+            },
+          },
+        },
+        {
+          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+          payload: {
+            controlRef: ['emergencyContacts', 1, 'email'],
+            errors: {
+              blacklistedEmail: true,
+            },
+          },
+        },
+        {
+          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+          payload: {
+            controlRef: ['emergencyContacts', 0, 'email'],
+            errors: {
+              blacklistedEmail: true,
+            },
+          },
+        },
+        {
+          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+          payload: {
+            controlRef: ['emergencyContacts'],
+            errors: {
+              arrayLengthError: true,
+            },
+          },
+        },
+        {
+          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+          payload: {
+            controlRef: ['emergencyContacts'],
+            errors: {
+              arrayLengthError: true,
+            },
+          },
+        },
+        {
+          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+          payload: {
+            controlRef: [],
+            errors: {
+              uniqueFirstAndLastName: true,
+            },
+          },
+        },
+        {
+          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+          payload: {
+            controlRef: ['emergencyContacts', 1],
+            errors: {
+              uniqueFirstAndLastName: true,
+            },
+          },
+        },
+        {
+          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+          payload: {
+            controlRef: [],
+            errors: {
+              uniqueFirstAndLastName: true,
+            },
+          },
+        },
+        {
+          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+          payload: {
+            controlRef: ['emergencyContacts', 0],
+            errors: {
+              uniqueFirstAndLastName: true,
+            },
+          },
+        },
+      ],
+      done,
+    );
+  });
 });
