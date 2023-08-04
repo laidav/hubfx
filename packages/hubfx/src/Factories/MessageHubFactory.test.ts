@@ -189,7 +189,7 @@ describe('MessageHubFactory', () => {
       //TODO: assess timing of dispatches to improve testing
       staggeredDispatch(action, [0, 50, 200]);
       staggeredDispatch(actionTwo, [5]);
-      staggeredDispatch(actionThree, [10, 60, 210]);
+      staggeredDispatch(actionThree, [10, 60, 225]);
 
       assertMessages(
         [
