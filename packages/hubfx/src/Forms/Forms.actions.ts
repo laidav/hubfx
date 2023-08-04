@@ -54,11 +54,11 @@ export const controlChange = <T, S>(
   ) => AbstractControl<S>,
 ): (Action<ControlChange<T>> | Action<AbstractControl<unknown>>)[] => {
   const { controlRef } = controlChange;
-  const formControls = getControlBranch(controlRef, state);
   const newState = reducer(state, {
     type: FORMS_CONTROL_CHANGE,
     payload: controlChange,
   });
+  const formControls = getControlBranch(controlRef, newState);
 
   const actions = formControls.reduce(
     (

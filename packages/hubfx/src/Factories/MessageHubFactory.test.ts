@@ -186,6 +186,7 @@ describe('MessageHubFactory', () => {
         payload: 'test action key three',
         scopedEffects: [debounceEffect],
       };
+      //TODO: assess timing of dispatches to improve testing
       staggeredDispatch(action, [0, 50, 200]);
       staggeredDispatch(actionTwo, [5]);
       staggeredDispatch(actionThree, [10, 60, 210]);

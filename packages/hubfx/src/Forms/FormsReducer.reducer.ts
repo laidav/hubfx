@@ -162,7 +162,7 @@ export const getControlBranch = (
     },
   ).formControls;
 
-  return formControls;
+  return [form].concat(formControls);
 };
 export const updateValues = <T>(
   control: AbstractControl<T>,
