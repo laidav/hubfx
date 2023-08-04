@@ -5,7 +5,7 @@ import {
   controlChange,
   FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
 } from './Forms.actions';
-import { FormControlConfig, FormArrayConfig } from './Models/Forms';
+import { FormControlConfig } from './Models/Forms';
 import { uniqueEmail } from './AsyncValidators';
 import { buildControlState } from './buildControlState';
 import { Action } from '../Models/Action';
