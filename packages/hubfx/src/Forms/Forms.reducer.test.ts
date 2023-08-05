@@ -50,6 +50,7 @@ describe('updateValues', () => {
           errors: {
             required: true,
           },
+          validationStatus: {},
           validating: false,
         },
       },
@@ -96,6 +97,7 @@ describe('updateValues', () => {
               errors: {
                 required: true,
               },
+              validationStatus: {},
               validating: false,
             },
             lastName: {
@@ -110,6 +112,7 @@ describe('updateValues', () => {
               errors: {
                 required: true,
               },
+              validationStatus: {},
               validating: false,
             },
             email: {
@@ -125,6 +128,7 @@ describe('updateValues', () => {
                 email: false,
                 required: true,
               },
+              validationStatus: {},
               validating: false,
             },
           },
@@ -260,6 +264,7 @@ describe('updateDirty', () => {
           errors: {
             required: true,
           },
+          validationStatus: {},
           validating: false,
         },
       },
@@ -297,6 +302,7 @@ describe('updateDirty', () => {
               errors: {
                 required: true,
               },
+              validationStatus: {},
               validating: false,
             },
           },
@@ -416,6 +422,7 @@ describe('syncValidate', () => {
           errors: {
             required: false,
           },
+          validationStatus: {},
           validating: false,
         },
       },
@@ -453,6 +460,7 @@ describe('syncValidate', () => {
               errors: {
                 required: false,
               },
+              validationStatus: {},
               validating: false,
             },
           },
@@ -547,6 +555,7 @@ describe('getFormControl', () => {
   const BASE_FORM_CONTROL = {
     dirty: false,
     touched: false,
+    validationStatus: {},
     validating: false,
   };
 
@@ -708,6 +717,7 @@ describe('buildFormsReducer', () => {
           errors: {
             required: false,
           },
+          validationStatus: {},
           validating: false,
         },
       },
