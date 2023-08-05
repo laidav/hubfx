@@ -45,9 +45,12 @@
     - update abstract control interface to include dictionary for asyncvalidation state
     - update build control state to include empty dictionary (or with the keys)
 
+  - update sync validate so that valid status should be false if there are any controls or child controls validating
+
   - on validation success
     - set validation key to false
     - sync validation to ensure validation field is correct
+
 
 # TODOS
 
@@ -59,6 +62,8 @@
 ## CLEAN UP TODOS
 
 ### FORMS
+
+1. add test cases formsReducer for testing as a whole
 
 1. Refactor validators so that asyncValidators actions are observables of the abstract control not just the value
 

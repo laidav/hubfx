@@ -5,6 +5,7 @@ import {
   updateDirty,
   syncValidate,
   handleAsyncValidationResponseSuccess,
+  handleAsyncValidation,
 } from './FormsReducer.reducer';
 import cloneDeep from 'lodash.clonedeep';
 import { buildControlState } from './buildControlState';
@@ -51,7 +52,7 @@ describe('updateValues', () => {
           errors: {
             required: true,
           },
-          validationStatus: {},
+          asyncValidateInProgress: {},
           validating: false,
         },
       },
@@ -98,7 +99,7 @@ describe('updateValues', () => {
               errors: {
                 required: true,
               },
-              validationStatus: {},
+              asyncValidateInProgress: {},
               validating: false,
             },
             lastName: {
@@ -113,7 +114,7 @@ describe('updateValues', () => {
               errors: {
                 required: true,
               },
-              validationStatus: {},
+              asyncValidateInProgress: {},
               validating: false,
             },
             email: {
@@ -129,7 +130,7 @@ describe('updateValues', () => {
                 email: false,
                 required: true,
               },
-              validationStatus: {},
+              asyncValidateInProgress: {},
               validating: false,
             },
           },
@@ -265,7 +266,7 @@ describe('updateDirty', () => {
           errors: {
             required: true,
           },
-          validationStatus: {},
+          asyncValidateInProgress: {},
           validating: false,
         },
       },
@@ -303,7 +304,7 @@ describe('updateDirty', () => {
               errors: {
                 required: true,
               },
-              validationStatus: {},
+              asyncValidateInProgress: {},
               validating: false,
             },
           },
@@ -423,7 +424,7 @@ describe('syncValidate', () => {
           errors: {
             required: false,
           },
-          validationStatus: {},
+          asyncValidateInProgress: {},
           validating: false,
         },
       },
@@ -461,7 +462,7 @@ describe('syncValidate', () => {
               errors: {
                 required: false,
               },
-              validationStatus: {},
+              asyncValidateInProgress: {},
               validating: false,
             },
           },
@@ -556,7 +557,7 @@ describe('getFormControl', () => {
   const BASE_FORM_CONTROL = {
     dirty: false,
     touched: false,
-    validationStatus: {},
+    asyncValidateInProgress: {},
     validating: false,
   };
 
@@ -605,7 +606,39 @@ describe('getFormControl', () => {
   });
 });
 
-describe('handleAsyncValidation', () => {});
+describe('handleAsyncValidation', () => {
+  it('should update validation', () => {
+    const initialValue = [
+      {
+        firstName: '',
+        lastName: '',
+        email: '',
+        relation: '',
+      },
+    ];
+    const clonedConfig: FormGroupConfig = cloneDeep(config);
+    (<FormArrayConfig<EmergencyContact[]>>(
+      clonedConfig.formGroupControls.emergencyContacts
+    )).initialValue = initialValue;
+    const initialState = buildControlState(clonedConfig) as FormGroup<Contact>;
+
+    const expectedState: FormGroup<Contact> = cloneDeep(initialState);
+    const emergencyContactEmail = (<FormGroup<EmergencyContact>>(
+      (<FormArray<EmergencyContact[]>>expectedState.controls.emergencyContacts)
+        .controls[0]
+    )).controls.email;
+    emergencyContactEmail.validating = true;
+    emergencyContactEmail.asyncValidateInProgress = { 0: true, 1: true };
+
+    const newState = handleAsyncValidation(initialState, [
+      'emergencyContacts',
+      0,
+      'email',
+    ]);
+
+    expect(newState).toEqual(expectedState);
+  });
+});
 
 describe('handleAsyncValidationResponseSuccess', () => {
   it('should update errors for control', () => {
@@ -618,7 +651,7 @@ describe('handleAsyncValidationResponseSuccess', () => {
       },
     ];
     const clonedConfig: FormGroupConfig = cloneDeep(config);
-    (<FormArrayConfig<EmergencyContact>>(
+    (<FormArrayConfig<EmergencyContact[]>>(
       clonedConfig.formGroupControls.emergencyContacts
     )).initialValue = initialValue;
     const initialState = buildControlState(clonedConfig) as FormGroup<Contact>;
@@ -711,7 +744,7 @@ describe('buildFormsReducer', () => {
           errors: {
             required: false,
           },
-          validationStatus: {},
+          asyncValidateInProgress: {},
           validating: false,
         },
       },

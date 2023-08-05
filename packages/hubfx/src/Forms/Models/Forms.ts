@@ -12,7 +12,7 @@ export interface FormGroupConfig extends AbstractControlConfig {
 }
 
 export interface FormArrayConfig<T> extends AbstractControlConfig {
-  initialValue: T[];
+  initialValue: T;
   arrayControlsTemplate: AbstractControlConfig;
 }
 
@@ -34,10 +34,8 @@ export interface FormControl<T> {
   touched: boolean;
   valid: boolean;
   errors?: FormErrors;
-  validationStatus: { [key: string | number]: boolean };
+  asyncValidateInProgress: { [key: string | number]: boolean };
   validating?: boolean;
-  validators?: ValidatorFn[];
-  asyncValidators?: ValidatorAsyncFn[];
   config: AbstractControlConfig;
 }
 

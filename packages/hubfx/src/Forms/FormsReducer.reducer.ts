@@ -217,6 +217,22 @@ export const updateValues = <T>(
   return newControl;
 };
 
+export const handleAsyncValidation = <T>(
+  control: AbstractControl<T>,
+  controlRef: ControlRef,
+): AbstractControl<T> => {
+  const newState: AbstractControl<T> = cloneDeep(control);
+  const newControl = getFormControl(controlRef, newState);
+
+  for (let i = 0; i < newControl.config.asyncValidators.length; i++) {
+    newControl.asyncValidateInProgress[i] = true;
+  }
+
+  newControl.validating = true;
+
+  return newState;
+};
+
 export const handleAsyncValidationResponseSuccess = <T>(
   control: AbstractControl<T>,
   controlRef: ControlRef,
@@ -232,13 +248,6 @@ export const handleAsyncValidationResponseSuccess = <T>(
   };
 
   return newState;
-};
-
-export const handleAsyncValidation = <T>(
-  state: AbstractControl<T>,
-  controlRef: ControlRef,
-): AbstractControl<T> => {
-  return state;
 };
 
 export const formsReducer = <T>(

@@ -18,7 +18,7 @@ describe('buildControlState', () => {
   const BASE_FORM_CONTROL = {
     dirty: false,
     touched: false,
-    validationStatus: {},
+    asyncValidateInProgress: {},
     validating: false,
   };
 
