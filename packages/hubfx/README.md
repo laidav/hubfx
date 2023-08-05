@@ -40,12 +40,15 @@
 
   - async validation on value update should set validating to true in reducer - IN PROGRESS
 
-    - async validation state needs to be a dictionary, so the entire "validating" field can be derived by each async validator
+    - async validation state needs to be a dictionary, so the entire "validating" field can be derived by each async validator - DONE
 
-    - update abstract control interface to include dictionary for asyncvalidation state
-    - update build control state to include empty dictionary (or with the keys)
+    - update abstract control interface to include dictionary for asyncvalidation state - DONE
+
+    - update build control state to include empty dictionary (or with the keys) - DONE
 
   - update sync validate so that valid status should be false if there are any controls or child controls validating
+
+  - update forms reducer to check handleAsyncValidate and syncValidate together
 
   - on validation success
     - set validation key to false
@@ -64,8 +67,6 @@
 ### FORMS
 
 1. add test cases formsReducer for testing as a whole
-
-1. Refactor validators so that asyncValidators actions are observables of the abstract control not just the value
 
 1. Dynamically adding/removing controls to formGroup?
 
