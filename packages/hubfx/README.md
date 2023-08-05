@@ -42,7 +42,12 @@
 
     - async validation state needs to be a dictionary, so the entire "validating" field can be derived by each async validator
 
-  - also valid state on parents and control should be false if it is validating
+    - update abstract control interface to include dictionary for asyncvalidation state
+    - update build control state to include empty dictionary (or with the keys)
+
+  - on validation success
+    - set validation key to false
+    - sync validation to ensure validation field is correct
 
 # TODOS
 
@@ -84,6 +89,11 @@
   - one way in one way out rule
 
 1. and a idle timeout for scopedEffects
+
+1. For effects put key into scopedEffects = {
+  key?: string,
+  effects: Effect[]
+}
 
 1. Better api 
 
