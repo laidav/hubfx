@@ -12,7 +12,7 @@ export interface FormGroupConfig extends AbstractControlConfig {
 }
 
 export interface FormArrayConfig<T> extends AbstractControlConfig {
-  initialValue: T;
+  initialValue: T[];
   arrayControlsTemplate: AbstractControlConfig;
 }
 

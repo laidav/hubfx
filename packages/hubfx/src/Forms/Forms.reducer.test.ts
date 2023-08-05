@@ -6,9 +6,10 @@ import {
   syncValidate,
   handleAsyncValidationResponseSuccess,
 } from './FormsReducer.reducer';
+import cloneDeep from 'lodash.clonedeep';
 import { buildControlState } from './buildControlState';
 import { config } from './Tests/config';
-import { controlChange, FORMS_CONTROL_CHANGE } from './Forms.actions';
+import { FORMS_CONTROL_CHANGE } from './Forms.actions';
 import {
   FormGroup,
   FormControl,
@@ -604,6 +605,8 @@ describe('getFormControl', () => {
   });
 });
 
+describe('handleAsyncValidation', () => {});
+
 describe('handleAsyncValidationResponseSuccess', () => {
   it('should update errors for control', () => {
     const initialValue = [
@@ -614,20 +617,11 @@ describe('handleAsyncValidationResponseSuccess', () => {
         relation: '',
       },
     ];
-    const nonEmptyConfig = {
-      ...(config.formGroupControls
-        .emergencyContacts as FormArrayConfig<unknown>),
-      initialValue,
-    };
-
-    const stateConfig = {
-      ...config,
-      formGroupControls: {
-        ...config.formGroupControls,
-        emergencyContacts: nonEmptyConfig,
-      },
-    };
-    const initialState = buildControlState(stateConfig) as FormGroup<Contact>;
+    const clonedConfig: FormGroupConfig = cloneDeep(config);
+    (<FormArrayConfig<EmergencyContact>>(
+      clonedConfig.formGroupControls.emergencyContacts
+    )).initialValue = initialValue;
+    const initialState = buildControlState(clonedConfig) as FormGroup<Contact>;
 
     expect(
       handleAsyncValidationResponseSuccess(
