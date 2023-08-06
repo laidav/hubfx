@@ -32,20 +32,13 @@
 
 - this new model can be bound with any UI library for rendering
 
-- # 2023 08 06 (Sat)
-
-1. UPDATE reducer for async validation
-  - parent sources should also be validating if a child control is validating - DONE
-
-  - on validation success - DONE
-    - set validation key to false - DONE
-    - sync validation to ensure validation field is correct - DONE
+- # 2023 08 06 (Sun)
+1. handling adding and removing array and group items
 
 # TODOS
 
-1. handling adding and removing array and group items
-
 1. reset form , and set Pristine value
+
 
 
 ## CLEAN UP TODOS
@@ -53,12 +46,6 @@
 ### FORMS
 
 1. add test cases formsReducer for testing as a whole
-
-1. Dynamically adding/removing controls to formGroup?
-
-1. need a way of handling custom actions with the form
-
-- custom reducers/effects to merge with form?
 
 1. SHOULD INITIALIZE and async validate at beginning?
 
