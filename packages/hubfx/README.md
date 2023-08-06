@@ -37,13 +37,13 @@
 1. UPDATE reducer for async validation
   - parent sources should also be validating if a child control is validating - DONE
 
-  - on validation success
-    - set validation key to false
-    - sync validation to ensure validation field is correct
+  - on validation success - DONE
+    - set validation key to false - DONE
+    - sync validation to ensure validation field is correct - DONE
 
 # TODOS
 
-1. handling adding and removing array items
+1. handling adding and removing array and group items
 
 1. reset form , and set Pristine value
 
