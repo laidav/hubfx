@@ -63,6 +63,11 @@ export interface ControlChange<T> {
   controlRef: ControlRef;
 }
 
+export interface FormGroupAddControl {
+  config: AbstractControlConfig;
+  controlRef: ControlRef;
+}
+
 export interface ControlAsyncValidationResponse {
   controlRef: ControlRef;
   validatorIndex: number;

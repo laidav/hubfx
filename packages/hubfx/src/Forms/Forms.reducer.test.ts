@@ -6,6 +6,7 @@ import {
   syncValidate,
   handleAsyncValidationResponseSuccess,
   handleAsyncValidation,
+  addFormGroupControl,
 } from './FormsReducer.reducer';
 import cloneDeep from 'lodash.clonedeep';
 import { buildControlState } from './buildControlState';
@@ -14,6 +15,7 @@ import {
   FORMS_CONTROL_CHANGE,
   FORMS_VALUE_CHANGE_EFFECT,
   FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+  FORMS_ADD_GROUP_CONTROL,
 } from './Forms.actions';
 import {
   FormGroup,
@@ -21,6 +23,7 @@ import {
   FormArray,
   FormArrayConfig,
   FormGroupConfig,
+  FormControlConfig,
 } from './Models/Forms';
 import { Contact } from './Tests/Models/Contact';
 import { EmergencyContact } from './Tests/Models/EmergencyContact';
@@ -635,6 +638,45 @@ describe('getFormControl', () => {
         required: true,
       },
     } as FormArray<EmergencyContact[]>);
+  });
+});
+
+describe('addGroupFormControl', () => {
+  it('should add a form control to a group', () => {
+    const initialState = buildControlState(config) as FormGroup<Contact>;
+    const controlRef = ['doctorInfo', 'type'];
+    const newControlConfig: FormControlConfig<string> = {
+      initialValue: '',
+    };
+
+    const expectedState = cloneDeep(initialState) as FormGroup<Contact>;
+    const doctorInfo = expectedState.controls
+      .doctorInfo as FormGroup<DoctorInfo>;
+    doctorInfo.controls.type = buildControlState(newControlConfig);
+
+    const newState = addFormGroupControl(initialState, {
+      type: FORMS_ADD_GROUP_CONTROL,
+      payload: { controlRef, config: newControlConfig },
+    });
+
+    expect(newState).toEqual(expectedState);
+    const occupationControlConfig: FormControlConfig<string> = {
+      initialValue: '',
+    };
+
+    const expectedStateWithOccupationControl = cloneDeep(expectedState);
+
+    expectedStateWithOccupationControl.controls['occupation'] =
+      buildControlState(occupationControlConfig);
+
+    const newStateWithOccupationControl = addFormGroupControl(newState, {
+      type: FORMS_ADD_GROUP_CONTROL,
+      payload: { controlRef: ['occupation'], config: occupationControlConfig },
+    });
+
+    expect(newStateWithOccupationControl).toEqual(
+      expectedStateWithOccupationControl,
+    );
   });
 });
 

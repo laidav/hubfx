@@ -12,9 +12,12 @@ import {
   ControlChange,
   AbstractControl,
   FormErrors,
+  FormGroupAddControl,
+  FormControlType,
 } from './Models/Forms';
 import { ControlAsyncValidationResponse } from './Models/Forms';
 import { ControlRef } from './Models/Forms';
+import { buildControlState } from './buildControlState';
 
 export const syncValidate = <T>(
   control: AbstractControl<T>,
@@ -218,6 +221,25 @@ export const updateValues = <T>(
   }
 
   return newControl;
+};
+
+export const addFormGroupControl = <T>(
+  state: AbstractControl<T>,
+  { payload: { controlRef, config } }: Action<FormGroupAddControl>,
+) => {
+  const newState = cloneDeep(state);
+  const newControl = getFormControl(
+    controlRef.slice(0, -1),
+    newState,
+  ) as FormGroup<unknown>;
+
+  if (newControl.config.controlType !== FormControlType.Group) {
+    throw 'The control this is being added to is not a FormGroup control';
+  }
+
+  newControl.controls[controlRef.slice(-1)[0]] = buildControlState(config);
+
+  return newState;
 };
 
 export const handleAsyncValidation = <T>(

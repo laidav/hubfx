@@ -7,6 +7,7 @@ import {
   AbstractControl,
   AbstractControlConfig,
   ControlRef,
+  FormGroupAddControl,
 } from './Models/Forms';
 import { getControlBranch, getFormControl } from './FormsReducer.reducer';
 import { Effect } from '../Models/Effect';
@@ -110,11 +111,11 @@ export const addGroupControl = <T>(
       payload: {
         config,
         controlRef,
-      },
+      } as FormGroupAddControl,
     },
   ];
 
-  return [];
+  return actions;
 };
 
 export const FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS =
