@@ -664,6 +664,15 @@ describe('handleAsyncValidationResponseSuccess', () => {
     (<FormArrayConfig<EmergencyContact[]>>(
       clonedConfig.formGroupControls.emergencyContacts
     )).initialValue = initialValue;
+
+    clonedConfig.asyncValidators = [];
+    (<FormArrayConfig<EmergencyContact[]>>(
+      clonedConfig.formGroupControls.emergencyContacts
+    )).asyncValidators = [];
+    (<FormArrayConfig<EmergencyContact[]>>(
+      clonedConfig.formGroupControls.emergencyContacts
+    )).arrayControlsTemplate.asyncValidators = [];
+
     const initialState = buildControlState(clonedConfig) as FormGroup<Contact>;
 
     const validatingState = handleAsyncValidation(initialState, [
