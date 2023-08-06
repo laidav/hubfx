@@ -5,6 +5,8 @@ import {
   ControlChange,
   ControlAsyncValidationResponse,
   AbstractControl,
+  AbstractControlConfig,
+  ControlRef,
 } from './Models/Forms';
 import { getControlBranch, getFormControl } from './FormsReducer.reducer';
 import { Effect } from '../Models/Effect';
@@ -91,6 +93,28 @@ export const controlChange = <T, S>(
   );
 
   return actions;
+};
+
+export const FORMS_ADD_GROUP_CONTROL = 'FORMS_ADD_GROUP_CONTROL';
+export const addGroupControl = <T>(
+  config: AbstractControlConfig,
+  controlRef: ControlRef,
+  reducer: (
+    state: AbstractControl<T>,
+    action: Action<unknown>,
+  ) => AbstractControl<T>,
+) => {
+  const actions = [
+    {
+      type: FORMS_ADD_GROUP_CONTROL,
+      payload: {
+        config,
+        controlRef,
+      },
+    },
+  ];
+
+  return [];
 };
 
 export const FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS =

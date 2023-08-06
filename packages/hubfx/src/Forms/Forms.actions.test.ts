@@ -11,8 +11,7 @@ import { buildControlState } from './buildControlState';
 import { Action } from '../Models/Action';
 import { formsReducer } from './FormsReducer.reducer';
 import { config as fullConfig } from './Tests/config';
-
-describe('controlChange', () => {
+describe('Form.actions', () => {
   let messages = [];
   let dispatch;
   let messages$;
@@ -44,278 +43,282 @@ describe('controlChange', () => {
     subscription.unsubscribe();
   });
 
-  it('should run async validations for a form control', (done) => {
-    const config: FormControlConfig<string> = {
-      initialValue: '',
-      asyncValidators: [uniqueEmail],
-    };
+  describe('controlChange', () => {
+    it('should run async validations for a form control', (done) => {
+      const config: FormControlConfig<string> = {
+        initialValue: '',
+        asyncValidators: [uniqueEmail],
+      };
 
-    const state = buildControlState(config);
-    const actions = controlChange(
-      {
-        value: 'new@email.com',
-        controlRef: [],
-      },
-      state,
-      formsReducer,
-    );
-    dispatch(...actions);
-
-    assertMessages(
-      [
-        ...actions,
+      const state = buildControlState(config);
+      const actions = controlChange(
         {
-          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-          payload: {
-            controlRef: [],
-            validatorIndex: 0,
-            errors: {
-              uniqueEmail: true,
+          value: 'new@email.com',
+          controlRef: [],
+        },
+        state,
+        formsReducer,
+      );
+      dispatch(...actions);
+
+      assertMessages(
+        [
+          ...actions,
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: [],
+              validatorIndex: 0,
+              errors: {
+                uniqueEmail: true,
+              },
             },
           },
+        ],
+        done,
+      );
+    });
+
+    it('should run async validations for a form control and all anscestors', (done) => {
+      const config = cloneDeep(fullConfig);
+
+      config.formGroupControls.emergencyContacts.initialValue = [
+        {
+          firstName: 'Homer',
+          lastName: 'Simpson',
+          email: 'homer@homer.com',
+          relation: 'friend',
         },
-      ],
-      done,
-    );
+        {
+          firstName: 'moe',
+          lastName: 'syzlak',
+          email: 'moe@moe.com',
+          relation: 'friend',
+        },
+      ];
+
+      const state = buildControlState(config);
+      const actions = controlChange(
+        {
+          controlRef: ['emergencyContacts', 1, 'email'],
+          value: 'moechanged@email.com',
+        },
+        state,
+        formsReducer,
+      );
+
+      dispatch(...actions);
+      assertMessages(
+        [
+          ...actions,
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts', 1, 'email'],
+              validatorIndex: 0,
+              errors: {
+                uniqueEmail: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts', 1, 'email'],
+              validatorIndex: 1,
+              errors: {
+                blacklistedEmail: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts'],
+              validatorIndex: 0,
+              errors: {
+                arrayLengthError: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: [],
+              validatorIndex: 0,
+              errors: {
+                uniqueFirstAndLastName: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts', 1],
+              validatorIndex: 0,
+              errors: {
+                uniqueFirstAndLastName: true,
+              },
+            },
+          },
+        ],
+        done,
+      );
+    });
+
+    it('should run async validations for multiple form controls and all common anscestors', (done) => {
+      const config = cloneDeep(fullConfig);
+
+      config.formGroupControls.emergencyContacts.initialValue = [
+        {
+          firstName: 'Homer',
+          lastName: 'Simpson',
+          email: 'homer@homer.com',
+          relation: 'friend',
+        },
+        {
+          firstName: 'moe',
+          lastName: 'syzlak',
+          email: 'moe@moe.com',
+          relation: 'friend',
+        },
+      ];
+
+      const state = buildControlState(config);
+
+      const actionsOne = controlChange(
+        {
+          controlRef: ['emergencyContacts', 1, 'email'],
+          value: 'moechanged@email.com',
+        },
+        state,
+        formsReducer,
+      );
+
+      const actionsTwo = controlChange(
+        {
+          controlRef: ['emergencyContacts', 0, 'email'],
+          value: 'homerchanged@email.com',
+        },
+        state,
+        formsReducer,
+      );
+
+      dispatch(...actionsOne);
+
+      setTimeout(() => {
+        dispatch(...actionsTwo);
+      }, 0);
+
+      assertMessages(
+        [
+          ...actionsOne,
+          ...actionsTwo,
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts', 1, 'email'],
+              validatorIndex: 0,
+              errors: {
+                uniqueEmail: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts', 0, 'email'],
+              validatorIndex: 0,
+              errors: {
+                uniqueEmail: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts', 1, 'email'],
+              validatorIndex: 1,
+              errors: {
+                blacklistedEmail: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts', 0, 'email'],
+              validatorIndex: 1,
+              errors: {
+                blacklistedEmail: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts'],
+              validatorIndex: 0,
+              errors: {
+                arrayLengthError: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts'],
+              validatorIndex: 0,
+              errors: {
+                arrayLengthError: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: [],
+              validatorIndex: 0,
+              errors: {
+                uniqueFirstAndLastName: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts', 1],
+              validatorIndex: 0,
+              errors: {
+                uniqueFirstAndLastName: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: [],
+              validatorIndex: 0,
+              errors: {
+                uniqueFirstAndLastName: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts', 0],
+              validatorIndex: 0,
+              errors: {
+                uniqueFirstAndLastName: true,
+              },
+            },
+          },
+        ],
+        done,
+      );
+    });
   });
 
-  it('should run async validations for a form control and all anscestors', (done) => {
-    const config = cloneDeep(fullConfig);
-
-    config.formGroupControls.emergencyContacts.initialValue = [
-      {
-        firstName: 'Homer',
-        lastName: 'Simpson',
-        email: 'homer@homer.com',
-        relation: 'friend',
-      },
-      {
-        firstName: 'moe',
-        lastName: 'syzlak',
-        email: 'moe@moe.com',
-        relation: 'friend',
-      },
-    ];
-
-    const state = buildControlState(config);
-    const actions = controlChange(
-      {
-        controlRef: ['emergencyContacts', 1, 'email'],
-        value: 'moechanged@email.com',
-      },
-      state,
-      formsReducer,
-    );
-
-    dispatch(...actions);
-    assertMessages(
-      [
-        ...actions,
-        {
-          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-          payload: {
-            controlRef: ['emergencyContacts', 1, 'email'],
-            validatorIndex: 0,
-            errors: {
-              uniqueEmail: true,
-            },
-          },
-        },
-        {
-          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-          payload: {
-            controlRef: ['emergencyContacts', 1, 'email'],
-            validatorIndex: 1,
-            errors: {
-              blacklistedEmail: true,
-            },
-          },
-        },
-        {
-          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-          payload: {
-            controlRef: ['emergencyContacts'],
-            validatorIndex: 0,
-            errors: {
-              arrayLengthError: true,
-            },
-          },
-        },
-        {
-          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-          payload: {
-            controlRef: [],
-            validatorIndex: 0,
-            errors: {
-              uniqueFirstAndLastName: true,
-            },
-          },
-        },
-        {
-          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-          payload: {
-            controlRef: ['emergencyContacts', 1],
-            validatorIndex: 0,
-            errors: {
-              uniqueFirstAndLastName: true,
-            },
-          },
-        },
-      ],
-      done,
-    );
-  });
-
-  it('should run async validations for multiple form controls and all common anscestors', (done) => {
-    const config = cloneDeep(fullConfig);
-
-    config.formGroupControls.emergencyContacts.initialValue = [
-      {
-        firstName: 'Homer',
-        lastName: 'Simpson',
-        email: 'homer@homer.com',
-        relation: 'friend',
-      },
-      {
-        firstName: 'moe',
-        lastName: 'syzlak',
-        email: 'moe@moe.com',
-        relation: 'friend',
-      },
-    ];
-
-    const state = buildControlState(config);
-
-    const actionsOne = controlChange(
-      {
-        controlRef: ['emergencyContacts', 1, 'email'],
-        value: 'moechanged@email.com',
-      },
-      state,
-      formsReducer,
-    );
-
-    const actionsTwo = controlChange(
-      {
-        controlRef: ['emergencyContacts', 0, 'email'],
-        value: 'homerchanged@email.com',
-      },
-      state,
-      formsReducer,
-    );
-
-    dispatch(...actionsOne);
-
-    setTimeout(() => {
-      dispatch(...actionsTwo);
-    }, 0);
-
-    assertMessages(
-      [
-        ...actionsOne,
-        ...actionsTwo,
-        {
-          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-          payload: {
-            controlRef: ['emergencyContacts', 1, 'email'],
-            validatorIndex: 0,
-            errors: {
-              uniqueEmail: true,
-            },
-          },
-        },
-        {
-          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-          payload: {
-            controlRef: ['emergencyContacts', 0, 'email'],
-            validatorIndex: 0,
-            errors: {
-              uniqueEmail: true,
-            },
-          },
-        },
-        {
-          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-          payload: {
-            controlRef: ['emergencyContacts', 1, 'email'],
-            validatorIndex: 1,
-            errors: {
-              blacklistedEmail: true,
-            },
-          },
-        },
-        {
-          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-          payload: {
-            controlRef: ['emergencyContacts', 0, 'email'],
-            validatorIndex: 1,
-            errors: {
-              blacklistedEmail: true,
-            },
-          },
-        },
-        {
-          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-          payload: {
-            controlRef: ['emergencyContacts'],
-            validatorIndex: 0,
-            errors: {
-              arrayLengthError: true,
-            },
-          },
-        },
-        {
-          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-          payload: {
-            controlRef: ['emergencyContacts'],
-            validatorIndex: 0,
-            errors: {
-              arrayLengthError: true,
-            },
-          },
-        },
-        {
-          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-          payload: {
-            controlRef: [],
-            validatorIndex: 0,
-            errors: {
-              uniqueFirstAndLastName: true,
-            },
-          },
-        },
-        {
-          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-          payload: {
-            controlRef: ['emergencyContacts', 1],
-            validatorIndex: 0,
-            errors: {
-              uniqueFirstAndLastName: true,
-            },
-          },
-        },
-        {
-          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-          payload: {
-            controlRef: [],
-            validatorIndex: 0,
-            errors: {
-              uniqueFirstAndLastName: true,
-            },
-          },
-        },
-        {
-          type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-          payload: {
-            controlRef: ['emergencyContacts', 0],
-            validatorIndex: 0,
-            errors: {
-              uniqueFirstAndLastName: true,
-            },
-          },
-        },
-      ],
-      done,
-    );
-  });
+  describe('addGroupControl', () => {});
 });
