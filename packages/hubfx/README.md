@@ -35,6 +35,16 @@
 - # 2023 08 06 (Sun)
 1. handling adding and removing array and group items
 
+  - reducer method for adding formgroup control
+  - reducer method for removing form group control
+  - action creator for adding formgroup control
+  - action creator for removing formgroup control
+
+  - reducer method for adding formArray control
+  - reducer method for removing formArray control
+  - action creator for adding formArray control
+  - action creator for removing formArray control
+
 # TODOS
 
 1. reset form , and set Pristine value
