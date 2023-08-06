@@ -68,6 +68,7 @@ describe('controlChange', () => {
           type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
           payload: {
             controlRef: [],
+            validatorIndex: 0,
             errors: {
               uniqueEmail: true,
             },
@@ -114,6 +115,7 @@ describe('controlChange', () => {
           type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
           payload: {
             controlRef: ['emergencyContacts', 1, 'email'],
+            validatorIndex: 0,
             errors: {
               uniqueEmail: true,
             },
@@ -123,6 +125,7 @@ describe('controlChange', () => {
           type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
           payload: {
             controlRef: ['emergencyContacts', 1, 'email'],
+            validatorIndex: 1,
             errors: {
               blacklistedEmail: true,
             },
@@ -132,6 +135,7 @@ describe('controlChange', () => {
           type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
           payload: {
             controlRef: ['emergencyContacts'],
+            validatorIndex: 0,
             errors: {
               arrayLengthError: true,
             },
@@ -141,6 +145,7 @@ describe('controlChange', () => {
           type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
           payload: {
             controlRef: [],
+            validatorIndex: 0,
             errors: {
               uniqueFirstAndLastName: true,
             },
@@ -150,6 +155,7 @@ describe('controlChange', () => {
           type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
           payload: {
             controlRef: ['emergencyContacts', 1],
+            validatorIndex: 0,
             errors: {
               uniqueFirstAndLastName: true,
             },
@@ -212,6 +218,7 @@ describe('controlChange', () => {
           type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
           payload: {
             controlRef: ['emergencyContacts', 1, 'email'],
+            validatorIndex: 0,
             errors: {
               uniqueEmail: true,
             },
@@ -221,6 +228,7 @@ describe('controlChange', () => {
           type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
           payload: {
             controlRef: ['emergencyContacts', 0, 'email'],
+            validatorIndex: 0,
             errors: {
               uniqueEmail: true,
             },
@@ -230,6 +238,7 @@ describe('controlChange', () => {
           type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
           payload: {
             controlRef: ['emergencyContacts', 1, 'email'],
+            validatorIndex: 1,
             errors: {
               blacklistedEmail: true,
             },
@@ -239,6 +248,7 @@ describe('controlChange', () => {
           type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
           payload: {
             controlRef: ['emergencyContacts', 0, 'email'],
+            validatorIndex: 1,
             errors: {
               blacklistedEmail: true,
             },
@@ -248,6 +258,7 @@ describe('controlChange', () => {
           type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
           payload: {
             controlRef: ['emergencyContacts'],
+            validatorIndex: 0,
             errors: {
               arrayLengthError: true,
             },
@@ -257,6 +268,7 @@ describe('controlChange', () => {
           type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
           payload: {
             controlRef: ['emergencyContacts'],
+            validatorIndex: 0,
             errors: {
               arrayLengthError: true,
             },
@@ -266,6 +278,7 @@ describe('controlChange', () => {
           type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
           payload: {
             controlRef: [],
+            validatorIndex: 0,
             errors: {
               uniqueFirstAndLastName: true,
             },
@@ -275,6 +288,7 @@ describe('controlChange', () => {
           type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
           payload: {
             controlRef: ['emergencyContacts', 1],
+            validatorIndex: 0,
             errors: {
               uniqueFirstAndLastName: true,
             },
@@ -284,6 +298,7 @@ describe('controlChange', () => {
           type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
           payload: {
             controlRef: [],
+            validatorIndex: 0,
             errors: {
               uniqueFirstAndLastName: true,
             },
@@ -293,6 +308,7 @@ describe('controlChange', () => {
           type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
           payload: {
             controlRef: ['emergencyContacts', 0],
+            validatorIndex: 0,
             errors: {
               uniqueFirstAndLastName: true,
             },
