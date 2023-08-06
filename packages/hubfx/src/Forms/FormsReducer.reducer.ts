@@ -167,8 +167,7 @@ export const getControlBranch = (
 };
 export const updateValues = <T>(
   control: AbstractControl<T>,
-  controlRef: ControlRef,
-  value: unknown,
+  { payload: { controlRef, value } }: Action<ControlChange<unknown>>,
 ): AbstractControl<T> => {
   if (!controlRef.length) {
     return { ...control, value: value as T };
@@ -182,8 +181,10 @@ export const updateValues = <T>(
     const newControls = (<FormArray<T>>newControl).controls.slice();
     newControls[controlRef[0] as number] = updateValues(
       newControls[controlRef[0] as number],
-      newRef || [],
-      value,
+      {
+        type: FORMS_CONTROL_CHANGE,
+        payload: { controlRef: newRef || [], value },
+      },
     );
 
     newControl = {
@@ -197,8 +198,10 @@ export const updateValues = <T>(
     };
     newControls[controlRef[0] as string] = updateValues(
       newControls[controlRef[0] as string],
-      newRef || [],
-      value,
+      {
+        type: FORMS_CONTROL_CHANGE,
+        payload: { controlRef: newRef || [], value },
+      },
     );
 
     newControl = {
@@ -279,7 +282,9 @@ export const formsReducer = <T>(
     case FORMS_CONTROL_CHANGE:
       const { controlRef, value } = <ControlChange<unknown>>action.payload;
 
-      const result = syncValidate(updateValues(state, controlRef, value));
+      const result = syncValidate(
+        updateValues(state, action as Action<ControlChange<unknown>>),
+      );
 
       return result;
     case FORMS_VALUE_CHANGE_EFFECT:

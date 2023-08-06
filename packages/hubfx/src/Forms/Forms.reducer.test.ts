@@ -28,7 +28,15 @@ import { DoctorInfo } from './Tests/Models/DoctorInfo';
 describe('updateValues', () => {
   it('should update values only for a FormControl in a FormGroup', () => {
     const initialState = buildControlState(config) as FormGroup<Contact>;
-    expect(updateValues(initialState, ['firstName'], 'Homer')).toEqual({
+    expect(
+      updateValues(initialState, {
+        type: FORMS_CONTROL_CHANGE,
+        payload: {
+          controlRef: ['firstName'],
+          value: 'Homer',
+        },
+      }),
+    ).toEqual({
       ...initialState,
       value: {
         firstName: 'Homer',
@@ -65,7 +73,13 @@ describe('updateValues', () => {
   it('should update values only for a FormGroup in a FormGroup', () => {
     const initialState = buildControlState(config) as FormGroup<Contact>;
     expect(
-      updateValues(initialState, ['doctorInfo', 'firstName'], 'Dr First Name'),
+      updateValues(initialState, {
+        type: FORMS_CONTROL_CHANGE,
+        payload: {
+          controlRef: ['doctorInfo', 'firstName'],
+          value: 'Dr First Name',
+        },
+      }),
     ).toEqual({
       ...initialState,
       value: {
@@ -177,11 +191,13 @@ describe('updateValues', () => {
     ) as FormGroup<Contact>;
 
     expect(
-      updateValues(
-        initialState,
-        ['emergencyContacts', 1, 'firstName'],
-        'Moe Flaming',
-      ),
+      updateValues(initialState, {
+        type: FORMS_CONTROL_CHANGE,
+        payload: {
+          controlRef: ['emergencyContacts', 1, 'firstName'],
+          value: 'Moe Flaming',
+        },
+      }),
     ).toEqual({
       ...initialState,
       value: {
@@ -248,11 +264,13 @@ describe('updateDirty', () => {
 
   it('should update dirty only for a FormControl in a FormGroup', () => {
     const initialState = buildControlState(config) as FormGroup<Contact>;
-    const valuesUpdatedState = updateValues(
-      initialState,
-      ['firstName'],
-      'Homer',
-    ) as FormGroup<Contact>;
+    const valuesUpdatedState = updateValues(initialState, {
+      type: FORMS_CONTROL_CHANGE,
+      payload: {
+        controlRef: ['firstName'],
+        value: 'Homer',
+      },
+    }) as FormGroup<Contact>;
     expect(updateDirty(valuesUpdatedState)).toEqual({
       ...valuesUpdatedState,
       dirty: true,
@@ -278,11 +296,13 @@ describe('updateDirty', () => {
 
   it('should update dirty only for a FormGroup in a FormGroup', () => {
     const initialState = buildControlState(config) as FormGroup<Contact>;
-    const valuesUpdatedState = updateValues(
-      initialState,
-      ['doctorInfo', 'firstName'],
-      'Dr First Name',
-    ) as FormGroup<Contact>;
+    const valuesUpdatedState = updateValues(initialState, {
+      type: FORMS_CONTROL_CHANGE,
+      payload: {
+        controlRef: ['doctorInfo', 'firstName'],
+        value: 'Dr First Name',
+      },
+    }) as FormGroup<Contact>;
     expect(updateDirty(valuesUpdatedState)).toEqual({
       ...valuesUpdatedState,
       dirty: true,
@@ -350,11 +370,13 @@ describe('updateDirty', () => {
       nonEmptyConfig,
     ) as FormGroup<Contact>;
 
-    const valuesUpdatedState = updateValues(
-      initialState,
-      ['emergencyContacts', 1, 'firstName'],
-      'Moe Flaming',
-    ) as FormGroup<Contact>;
+    const valuesUpdatedState = updateValues(initialState, {
+      type: FORMS_CONTROL_CHANGE,
+      payload: {
+        controlRef: ['emergencyContacts', 1, 'firstName'],
+        value: 'Moe Flaming',
+      },
+    }) as FormGroup<Contact>;
 
     expect(updateDirty(valuesUpdatedState)).toEqual({
       ...valuesUpdatedState,
@@ -404,11 +426,13 @@ describe('syncValidate', () => {
 
   it('should validate only for a FormControl in a FormGroup', () => {
     const initialState = buildControlState(config) as FormGroup<Contact>;
-    const valuesUpdatedState = updateValues(
-      initialState,
-      ['firstName'],
-      'Homer',
-    ) as FormGroup<Contact>;
+    const valuesUpdatedState = updateValues(initialState, {
+      type: FORMS_CONTROL_CHANGE,
+      payload: {
+        controlRef: ['firstName'],
+        value: 'Homer',
+      },
+    }) as FormGroup<Contact>;
     expect(syncValidate(valuesUpdatedState)).toEqual({
       ...valuesUpdatedState,
       errors: {
@@ -436,11 +460,13 @@ describe('syncValidate', () => {
 
   it('should validate only for a FormGroup in a FormGroup', () => {
     const initialState = buildControlState(config) as FormGroup<Contact>;
-    const valuesUpdatedState = updateValues(
-      initialState,
-      ['doctorInfo', 'firstName'],
-      'Dr First Name',
-    ) as FormGroup<Contact>;
+    const valuesUpdatedState = updateValues(initialState, {
+      type: FORMS_CONTROL_CHANGE,
+      payload: {
+        controlRef: ['doctorInfo', 'firstName'],
+        value: 'Dr First Name',
+      },
+    }) as FormGroup<Contact>;
     expect(syncValidate(valuesUpdatedState)).toEqual({
       ...valuesUpdatedState,
       controls: {
@@ -508,11 +534,13 @@ describe('syncValidate', () => {
       nonEmptyConfig,
     ) as FormGroup<Contact>;
 
-    const valuesUpdatedState = updateValues(
-      initialState,
-      ['emergencyContacts', 1, 'firstName'],
-      'syzlak',
-    ) as FormGroup<Contact>;
+    const valuesUpdatedState = updateValues(initialState, {
+      type: FORMS_CONTROL_CHANGE,
+      payload: {
+        controlRef: ['emergencyContacts', 1, 'firstName'],
+        value: 'syzlak',
+      },
+    }) as FormGroup<Contact>;
 
     expect(syncValidate(valuesUpdatedState)).toEqual({
       ...valuesUpdatedState,
