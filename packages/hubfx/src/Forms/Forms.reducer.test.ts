@@ -687,7 +687,7 @@ describe('handleAsyncValidationResponseSuccess', () => {
       0: false,
       1: true,
     };
-    emergencyContactEmail.validating = false;
+    emergencyContactEmail.validating = true;
     emergencyContactEmail.errors = {
       email: false,
       required: true,
