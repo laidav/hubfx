@@ -207,7 +207,7 @@ describe('MessageHubFactory', () => {
             payload: 'test action no key switchMap succeeded',
           },
           action, // at 200
-          actionThree, // at 200
+          actionThree, // at 225
           {
             type: TEST_ACTION_SUCCESS,
             payload: 'test action no key debounceTime and mergeMap succeeded',
