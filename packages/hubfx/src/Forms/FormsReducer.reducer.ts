@@ -237,6 +237,14 @@ export const handleAsyncValidation = <T>(
   return newState;
 };
 
+const isControlValidating = (control: AbstractControl<unknown>): boolean => {
+  if (!control.asyncValidateInProgress) return false;
+
+  return Object.values(control.asyncValidateInProgress).every(
+    (validating) => !validating,
+  );
+};
+
 export const handleAsyncValidationResponseSuccess = <T>(
   control: AbstractControl<T>,
   controlRef: ControlRef,
@@ -244,14 +252,21 @@ export const handleAsyncValidationResponseSuccess = <T>(
   errors: FormErrors,
 ): AbstractControl<T> => {
   const newState = cloneDeep(control) as AbstractControl<T>;
+  const controlBranch = getControlBranch(controlRef, newState);
 
-  const newControl = getFormControl(controlRef, newState);
-  newControl.validating = false;
-  newControl.asyncValidateInProgress[validatorIndex] = false;
-  newControl.errors = {
-    ...newControl.errors,
-    ...errors,
-  };
+  controlBranch.reverse().forEach((control, index) => {
+    if (index === 0) {
+      control.asyncValidateInProgress[validatorIndex] = false;
+      control.errors = {
+        ...control.errors,
+        ...errors,
+      };
+    }
+    const validating =
+      isControlValidating(control) ||
+      Boolean(controlBranch[index - 1]?.validating);
+    control.validating = validating;
+  });
 
   return newState;
 };

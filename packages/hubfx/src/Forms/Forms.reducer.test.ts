@@ -687,7 +687,6 @@ describe('handleAsyncValidationResponseSuccess', () => {
       0: false,
       1: true,
     };
-    emergencyContactEmail.validating = true;
     emergencyContactEmail.errors = {
       email: false,
       required: true,
@@ -702,6 +701,11 @@ describe('handleAsyncValidationResponseSuccess', () => {
         uniqueEmail: true,
       },
     );
+
+    expectedState.validating = true;
+    emergencyContacts.validating = true;
+    emergencyContact.validating = true;
+    emergencyContactEmail.validating = true;
 
     expect(validatingSuccessState).toEqual(expectedState);
 
@@ -729,6 +733,7 @@ describe('handleAsyncValidationResponseSuccess', () => {
     expectedState.validating = false;
     emergencyContacts.validating = false;
     emergencyContact.validating = false;
+    emergencyContactEmail.validating = false;
     expect(validatingSuccessState).toEqual(expectedState);
   });
 });
