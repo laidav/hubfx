@@ -13,6 +13,7 @@ import { config } from './Tests/config';
 import {
   FORMS_CONTROL_CHANGE,
   FORMS_VALUE_CHANGE_EFFECT,
+  FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
 } from './Forms.actions';
 import {
   FormGroup,
@@ -736,10 +737,15 @@ describe('handleAsyncValidationResponseSuccess', () => {
 
     let validatingSuccessState = handleAsyncValidationResponseSuccess(
       validatingState,
-      ['emergencyContacts', 0, 'email'],
-      0,
       {
-        uniqueEmail: true,
+        type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+        payload: {
+          controlRef: ['emergencyContacts', 0, 'email'],
+          validatorIndex: 0,
+          errors: {
+            uniqueEmail: true,
+          },
+        },
       },
     );
 
@@ -752,10 +758,15 @@ describe('handleAsyncValidationResponseSuccess', () => {
 
     validatingSuccessState = handleAsyncValidationResponseSuccess(
       validatingSuccessState,
-      ['emergencyContacts', 0, 'email'],
-      1,
       {
-        blacklistedEmail: true,
+        type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+        payload: {
+          controlRef: ['emergencyContacts', 0, 'email'],
+          validatorIndex: 1,
+          errors: {
+            blacklistedEmail: true,
+          },
+        },
       },
     );
 
