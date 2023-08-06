@@ -705,30 +705,31 @@ describe('handleAsyncValidationResponseSuccess', () => {
 
     expect(validatingSuccessState).toEqual(expectedState);
 
-    // validatingSuccessState = handleAsyncValidationResponseSuccess(
-    //   validatingSuccessState,
-    //   ['emergencyContacts', 0, 'email'],
-    //   {
-    //     blacklistedEmail: true,
-    //   },
-    // );
+    validatingSuccessState = handleAsyncValidationResponseSuccess(
+      validatingSuccessState,
+      ['emergencyContacts', 0, 'email'],
+      1,
+      {
+        blacklistedEmail: true,
+      },
+    );
 
-    // emergencyContactEmail.asyncValidateInProgress = {
-    //   0: false,
-    //   1: false,
-    // };
+    emergencyContactEmail.asyncValidateInProgress = {
+      0: false,
+      1: false,
+    };
 
-    // emergencyContactEmail.errors = {
-    //   email: false,
-    //   required: true,
-    //   uniqueEmail: true,
-    //   blacklistedEmail: true,
-    // };
+    emergencyContactEmail.errors = {
+      email: false,
+      required: true,
+      uniqueEmail: true,
+      blacklistedEmail: true,
+    };
 
-    // expectedState.validating = false;
-    // emergencyContacts.validating = false;
-    // emergencyContact.validating = false;
-    // expect(validatingSuccessState).toEqual(expectedState);
+    expectedState.validating = false;
+    emergencyContacts.validating = false;
+    emergencyContact.validating = false;
+    expect(validatingSuccessState).toEqual(expectedState);
   });
 });
 
