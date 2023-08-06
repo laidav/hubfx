@@ -57,13 +57,13 @@ export const FORMS_CONTROL_CHANGE = 'FORMS_CONTROL_CHANGE';
 export const FORMS_VALUE_CHANGE_EFFECT = 'FORMS_ARRAY_VALUE_CHANGE_EFFECT';
 
 const getValueChangeEffects = (formControls: AbstractControl<unknown>[]) =>
-  formControls.reduce((acc: Action<AbstractControl<unknown>>[], control) => {
+  formControls.reduce((acc: Action<ControlRef>[], control) => {
     const { controlRef } = control;
 
     return acc.concat({
       type: FORMS_VALUE_CHANGE_EFFECT,
       key: controlRef.join(':'),
-      payload: control,
+      payload: control.controlRef,
       scopedEffects: getScopedEffectsForControl(control),
     });
   }, []);
@@ -75,20 +75,16 @@ export const controlChange = <T, S>(
     state: AbstractControl<S>,
     action: Action<unknown>,
   ) => AbstractControl<S>,
-): (Action<ControlChange<T>> | Action<AbstractControl<unknown>>)[] => {
+): (Action<ControlChange<T>> | Action<ControlRef>)[] => {
   const { controlRef } = controlChange;
   const newState = reducer(state, {
     type: FORMS_CONTROL_CHANGE,
     payload: controlChange,
   });
   const formControls = getControlBranch(controlRef, newState);
-
   const effects = getValueChangeEffects(formControls);
 
-  const actions: (
-    | Action<ControlChange<T>>
-    | Action<AbstractControl<unknown>>
-  )[] = [
+  const actions: (Action<ControlChange<T>> | Action<ControlRef>)[] = [
     {
       type: FORMS_CONTROL_CHANGE,
       payload: controlChange,

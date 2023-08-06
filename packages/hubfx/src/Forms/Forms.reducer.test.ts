@@ -10,7 +10,10 @@ import {
 import cloneDeep from 'lodash.clonedeep';
 import { buildControlState } from './buildControlState';
 import { config } from './Tests/config';
-import { FORMS_CONTROL_CHANGE } from './Forms.actions';
+import {
+  FORMS_CONTROL_CHANGE,
+  FORMS_VALUE_CHANGE_EFFECT,
+} from './Forms.actions';
 import {
   FormGroup,
   FormControl,
@@ -640,11 +643,10 @@ describe('handleAsyncValidation', () => {
     emergencyContactEmail.validating = true;
     emergencyContactEmail.asyncValidateInProgress = { 0: true, 1: true };
 
-    const newState = handleAsyncValidation(initialState, [
-      'emergencyContacts',
-      0,
-      'email',
-    ]);
+    const newState = handleAsyncValidation(initialState, {
+      type: FORMS_VALUE_CHANGE_EFFECT,
+      payload: ['emergencyContacts', 0, 'email'],
+    });
 
     expect(newState).toEqual(expectedState);
   });
@@ -675,11 +677,13 @@ describe('handleAsyncValidationResponseSuccess', () => {
 
     const initialState = buildControlState(clonedConfig) as FormGroup<Contact>;
 
-    const validatingState = handleAsyncValidation(initialState, [
-      'emergencyContacts',
-      0,
-      'email',
-    ]);
+    const controlRef = ['emergencyContacts', 0, 'email'];
+
+    const validatingState = handleAsyncValidation(initialState, {
+      type: FORMS_VALUE_CHANGE_EFFECT,
+      key: controlRef.join(':'),
+      payload: controlRef,
+    });
 
     const expectedState: FormGroup<Contact> = cloneDeep(validatingState);
 

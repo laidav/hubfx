@@ -218,11 +218,11 @@ export const updateValues = <T>(
 };
 
 export const handleAsyncValidation = <T>(
-  control: AbstractControl<T>,
-  controlRef: ControlRef,
+  state: AbstractControl<T>,
+  action: Action<ControlRef>,
 ): AbstractControl<T> => {
-  const newState: AbstractControl<T> = cloneDeep(control);
-  const newControlBranch = getControlBranch(controlRef, newState);
+  const newState: AbstractControl<T> = cloneDeep(state);
+  const newControlBranch = getControlBranch(action.payload, newState);
 
   newControlBranch.forEach((control, index) => {
     control.validating = true;
@@ -282,6 +282,8 @@ export const formsReducer = <T>(
       const result = syncValidate(updateValues(state, controlRef, value));
 
       return result;
+    case FORMS_VALUE_CHANGE_EFFECT:
+      return handleAsyncValidation(state, action as Action<ControlRef>);
     case FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS:
       const {
         controlRef: asyncValidationCtrlRef,
