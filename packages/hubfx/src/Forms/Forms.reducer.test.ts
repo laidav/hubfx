@@ -665,7 +665,14 @@ describe('handleAsyncValidationResponseSuccess', () => {
       clonedConfig.formGroupControls.emergencyContacts
     )).initialValue = initialValue;
     const initialState = buildControlState(clonedConfig) as FormGroup<Contact>;
-    const expectedState: FormGroup<Contact> = cloneDeep(initialState);
+
+    const validatingState = handleAsyncValidation(initialState, [
+      'emergencyContacts',
+      0,
+      'email',
+    ]);
+
+    const expectedState: FormGroup<Contact> = cloneDeep(validatingState);
 
     const emergencyContacts = <FormArray<EmergencyContact[]>>(
       expectedState.controls.emergencyContacts
@@ -676,6 +683,14 @@ describe('handleAsyncValidationResponseSuccess', () => {
     );
 
     const emergencyContactEmail = emergencyContact.controls.email;
+    expectedState.validating = false;
+    emergencyContacts.validating = false;
+    emergencyContact.validating = false;
+    emergencyContactEmail.asyncValidateInProgress = {
+      0: false,
+      1: false,
+    };
+    emergencyContactEmail.validating = false;
     emergencyContactEmail.errors = {
       email: false,
       required: true,
@@ -683,16 +698,22 @@ describe('handleAsyncValidationResponseSuccess', () => {
       blacklistedEmail: true,
     };
 
-    expect(
+    const validatingSuccessState = handleAsyncValidationResponseSuccess(
       handleAsyncValidationResponseSuccess(
-        initialState,
+        validatingState,
         ['emergencyContacts', 0, 'email'],
         {
           uniqueEmail: true,
-          blacklistedEmail: true,
         },
       ),
-    ).toEqual(expectedState);
+
+      ['emergencyContacts', 0, 'email'],
+      {
+        blacklistedEmail: true,
+      },
+    );
+
+    expect(validatingSuccessState).toEqual(expectedState);
   });
 });
 
