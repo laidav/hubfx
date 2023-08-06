@@ -240,8 +240,8 @@ export const handleAsyncValidation = <T>(
 const isControlValidating = (control: AbstractControl<unknown>): boolean => {
   if (!control.asyncValidateInProgress) return false;
 
-  return Object.values(control.asyncValidateInProgress).every(
-    (validating) => !validating,
+  return Object.values(control.asyncValidateInProgress).some(
+    (validating) => validating,
   );
 };
 
