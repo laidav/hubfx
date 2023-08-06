@@ -20,7 +20,11 @@ const getScopedEffectsForControl = <T>(
 
   if (asyncValidators && asyncValidators.length) {
     scopedEffects = asyncValidators.reduce(
-      (acc: Effect<AbstractControl<T>, FormErrors>[], validator) => {
+      (
+        acc: Effect<AbstractControl<T>, FormErrors>[],
+        validator,
+        validatorIndex,
+      ) => {
         const effect: Effect<AbstractControl<T>, FormErrors> = (
           actions$: Observable<Action<AbstractControl<T>>>,
         ) => {
@@ -29,7 +33,11 @@ const getScopedEffectsForControl = <T>(
             .pipe(
               validator,
               map((errors) =>
-                asyncValidationResponseSuccess({ controlRef, errors }),
+                asyncValidationResponseSuccess({
+                  controlRef,
+                  errors,
+                  validatorIndex,
+                }),
               ),
             );
         };

@@ -240,12 +240,14 @@ export const handleAsyncValidation = <T>(
 export const handleAsyncValidationResponseSuccess = <T>(
   control: AbstractControl<T>,
   controlRef: ControlRef,
+  validatorIndex: number,
   errors: FormErrors,
 ): AbstractControl<T> => {
   const newState = cloneDeep(control) as AbstractControl<T>;
 
   const newControl = getFormControl(controlRef, newState);
   newControl.validating = false;
+  newControl.asyncValidateInProgress[validatorIndex] = false;
   newControl.errors = {
     ...newControl.errors,
     ...errors,
@@ -266,14 +268,17 @@ export const formsReducer = <T>(
 
       return result;
     case FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS:
-      const { controlRef: asyncValidationCtrlRef, errors } = <
-        ControlAsyncValidationResponse
-      >action.payload;
+      const {
+        controlRef: asyncValidationCtrlRef,
+        errors,
+        validatorIndex,
+      } = <ControlAsyncValidationResponse>action.payload;
 
       return syncValidate(
         handleAsyncValidationResponseSuccess(
           state,
           asyncValidationCtrlRef,
+          validatorIndex,
           errors,
         ),
       );

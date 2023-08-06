@@ -65,6 +65,7 @@ export interface ControlChange<T> {
 
 export interface ControlAsyncValidationResponse {
   controlRef: ControlRef;
+  validatorIndex: number;
   errors: FormErrors;
 }
 
