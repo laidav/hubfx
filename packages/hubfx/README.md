@@ -32,19 +32,10 @@
 
 - this new model can be bound with any UI library for rendering
 
-- # 2023 08 04 (Fri)
+- # 2023 08 06 (Sat)
 
-  - test cases for messages from ACTIONS - DONE
 
 1. UPDATE reducer for async validation
-
-  - async validation on value update should set validating to true in reducer - IN PROGRESS
-
-    - async validation state needs to be a dictionary, so the entire "validating" field can be derived by each async validator - DONE
-
-    - update abstract control interface to include dictionary for asyncvalidation state - DONE
-
-    - update build control state to include empty dictionary (or with the keys) - DONE
 
   - update sync validate so that valid status should be false if there are any controls or child controls validating
 
