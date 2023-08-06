@@ -623,10 +623,20 @@ describe('handleAsyncValidation', () => {
     const initialState = buildControlState(clonedConfig) as FormGroup<Contact>;
 
     const expectedState: FormGroup<Contact> = cloneDeep(initialState);
-    const emergencyContactEmail = (<FormGroup<EmergencyContact>>(
-      (<FormArray<EmergencyContact[]>>expectedState.controls.emergencyContacts)
-        .controls[0]
-    )).controls.email;
+
+    const emergencyContacts = <FormArray<EmergencyContact[]>>(
+      expectedState.controls.emergencyContacts
+    );
+
+    const emergencyContact = <FormGroup<EmergencyContact>>(
+      emergencyContacts.controls[0]
+    );
+
+    const emergencyContactEmail = emergencyContact.controls.email;
+
+    expectedState.validating = true;
+    emergencyContacts.validating = true;
+    emergencyContact.validating = true;
     emergencyContactEmail.validating = true;
     emergencyContactEmail.asyncValidateInProgress = { 0: true, 1: true };
 

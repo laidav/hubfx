@@ -34,17 +34,12 @@
 
 - # 2023 08 06 (Sat)
 
-
 1. UPDATE reducer for async validation
-
-  - update sync validate so that valid status should be false if there are any controls or child controls validating
-
-  - update forms reducer to check handleAsyncValidate and syncValidate together
+  - parent sources should also be validating if a child control is validating
 
   - on validation success
     - set validation key to false
     - sync validation to ensure validation field is correct
-
 
 # TODOS
 

@@ -222,13 +222,17 @@ export const handleAsyncValidation = <T>(
   controlRef: ControlRef,
 ): AbstractControl<T> => {
   const newState: AbstractControl<T> = cloneDeep(control);
-  const newControl = getFormControl(controlRef, newState);
+  const newControlBranch = getControlBranch(controlRef, newState);
 
-  for (let i = 0; i < newControl.config.asyncValidators.length; i++) {
-    newControl.asyncValidateInProgress[i] = true;
-  }
+  newControlBranch.forEach((control, index) => {
+    control.validating = true;
 
-  newControl.validating = true;
+    if (index === newControlBranch.length - 1) {
+      control.config.asyncValidators.forEach((_, j) => {
+        control.asyncValidateInProgress[j] = true;
+      });
+    }
+  });
 
   return newState;
 };
