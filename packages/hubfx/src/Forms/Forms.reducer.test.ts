@@ -665,6 +665,23 @@ describe('handleAsyncValidationResponseSuccess', () => {
       clonedConfig.formGroupControls.emergencyContacts
     )).initialValue = initialValue;
     const initialState = buildControlState(clonedConfig) as FormGroup<Contact>;
+    const expectedState: FormGroup<Contact> = cloneDeep(initialState);
+
+    const emergencyContacts = <FormArray<EmergencyContact[]>>(
+      expectedState.controls.emergencyContacts
+    );
+
+    const emergencyContact = <FormGroup<EmergencyContact>>(
+      emergencyContacts.controls[0]
+    );
+
+    const emergencyContactEmail = emergencyContact.controls.email;
+    emergencyContactEmail.errors = {
+      email: false,
+      required: true,
+      uniqueEmail: true,
+      blacklistedEmail: true,
+    };
 
     expect(
       handleAsyncValidationResponseSuccess(
@@ -675,40 +692,7 @@ describe('handleAsyncValidationResponseSuccess', () => {
           blacklistedEmail: true,
         },
       ),
-    ).toEqual({
-      ...initialState,
-      controls: {
-        ...initialState.controls,
-        emergencyContacts: {
-          ...initialState.controls.emergencyContacts,
-          controls: [
-            {
-              ...(<FormArray<unknown>>initialState.controls.emergencyContacts)
-                .controls[0],
-              controls: {
-                ...(<FormGroup<unknown>>(
-                  (<FormArray<unknown>>initialState.controls.emergencyContacts)
-                    .controls[0]
-                )).controls,
-                email: {
-                  ...(<FormGroup<unknown>>(
-                    (<FormArray<unknown>>(
-                      initialState.controls.emergencyContacts
-                    )).controls[0]
-                  )).controls.email,
-                  errors: {
-                    email: false,
-                    required: true,
-                    uniqueEmail: true,
-                    blacklistedEmail: true,
-                  },
-                },
-              },
-            },
-          ],
-        },
-      },
-    });
+    ).toEqual(expectedState);
   });
 });
 

@@ -35,7 +35,7 @@
 - # 2023 08 06 (Sat)
 
 1. UPDATE reducer for async validation
-  - parent sources should also be validating if a child control is validating
+  - parent sources should also be validating if a child control is validating - DONE
 
   - on validation success
     - set validation key to false
