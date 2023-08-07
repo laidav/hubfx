@@ -722,6 +722,18 @@ describe('removeControl', () => {
 
     const expectedState = cloneDeep(initialState);
     delete expectedState.controls.doctorInfo.controls.type;
+    expectedState.controls.doctorInfo.value = {
+      ...expectedState.controls.doctorInfo.value,
+      type: undefined,
+    };
+
+    expectedState.value = {
+      ...expectedState.value,
+      doctorInfo: {
+        ...expectedState.controls.doctorInfo.value,
+        type: undefined,
+      },
+    };
 
     expect(newState).toEqual(expectedState);
   });
