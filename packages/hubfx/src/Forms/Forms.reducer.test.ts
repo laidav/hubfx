@@ -707,6 +707,36 @@ describe('removeControl', () => {
 
     expect(newState).toEqual(expectedState);
   });
+
+  it('should remove an array control item', () => {
+    const initialValue = [
+      {
+        firstName: 'Homer',
+        lastName: 'Simpson',
+        email: 'homer@gmail.com',
+        relation: 'dad',
+      },
+    ];
+    const clonedConfig: FormGroupConfig = cloneDeep(config);
+    (<FormArrayConfig<EmergencyContact[]>>(
+      clonedConfig.formGroupControls.emergencyContacts
+    )).initialValue = initialValue;
+    const initialState = buildControlState(clonedConfig) as FormGroup<Contact>;
+
+    const controlRef = ['emergencyContacts', 0];
+
+    const newState = removeControl(initialState, {
+      type: FORMS_REMOVE_CONTROL,
+      payload: { controlRef },
+    });
+
+    const expectedState: FormGroup<Contact> = cloneDeep(initialState);
+    (<FormArray<EmergencyContact[]>>(
+      expectedState.controls.emergencyContacts
+    )).controls = [];
+
+    expect(newState).toEqual(expectedState);
+  });
 });
 
 describe('handleAsyncValidation', () => {

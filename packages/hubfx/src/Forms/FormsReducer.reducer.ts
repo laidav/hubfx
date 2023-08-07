@@ -262,11 +262,10 @@ export const removeControl = <T>(
   if (parentControl.config.controlType === FormControlType.Group) {
     delete (<FormGroup<unknown>>parentControl).controls[key];
   } else if (parentControl.config.controlType === FormControlType.Array) {
-    (<FormArray<unknown>>parentControl).controls = (<FormArray<unknown>>(
-      parentControl
-    )).controls
-      .slice()
-      .splice(<number>key, 1);
+    const result = (<FormArray<unknown>>parentControl).controls.slice();
+    result.splice(<number>key, 1);
+
+    (<FormArray<unknown>>parentControl).controls = result;
   }
 
   return newState;
