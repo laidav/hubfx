@@ -57,6 +57,8 @@
 
 ### FORMS
 
+1. setting values of formgroup and formarrays
+
 1. add test cases formsReducer for testing as a whole
 
 1. SHOULD INITIALIZE and async validate at beginning?

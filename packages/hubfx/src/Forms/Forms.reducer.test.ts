@@ -652,6 +652,13 @@ describe('addGroupFormControl', () => {
     };
 
     const expectedState = cloneDeep(initialState) as FormGroup<Contact>;
+    expectedState.value = {
+      ...expectedState.value,
+      doctorInfo: {
+        ...expectedState.value.doctorInfo,
+        type: 'proctology',
+      },
+    };
     const doctorInfo = expectedState.controls
       .doctorInfo as FormGroup<DoctorInfo>;
 
