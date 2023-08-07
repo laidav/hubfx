@@ -7,6 +7,7 @@ import {
   handleAsyncValidationResponseSuccess,
   handleAsyncValidation,
   addFormGroupControl,
+  removeControl,
 } from './FormsReducer.reducer';
 import cloneDeep from 'lodash.clonedeep';
 import { buildControlState } from './buildControlState';
@@ -16,6 +17,7 @@ import {
   FORMS_VALUE_CHANGE_EFFECT,
   FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
   FORMS_ADD_GROUP_CONTROL,
+  FORMS_REMOVE_CONTROL,
 } from './Forms.actions';
 import {
   FormGroup,
@@ -677,6 +679,33 @@ describe('addGroupFormControl', () => {
     expect(newStateWithOccupationControl).toEqual(
       expectedStateWithOccupationControl,
     );
+  });
+});
+
+describe('removeControl', () => {
+  it('should remove a formGroup control', () => {
+    const configWithType: FormGroupConfig = cloneDeep(config);
+
+    (<FormGroupConfig>(
+      configWithType.formGroupControls.doctorInfo
+    )).formGroupControls.type = {
+      initialValue: 'test',
+    } as FormControlConfig<string>;
+
+    const initialState = buildControlState(
+      configWithType,
+    ) as FormGroup<Contact>;
+
+    const controlRef = ['doctorInfo', 'type'];
+    const newState = removeControl(initialState, {
+      type: FORMS_REMOVE_CONTROL,
+      payload: { controlRef },
+    });
+
+    const expectedState = cloneDeep(initialState);
+    delete expectedState.controls.doctorInfo.controls.type;
+
+    expect(newState).toEqual(expectedState);
   });
 });
 

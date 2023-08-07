@@ -36,14 +36,16 @@
 1. handling adding and removing array and group items
 
   - reducer method for adding formgroup control - DONE
-  - reducer method for removing form group control
-  - action creator for adding formgroup control
-  - action creator for removing formgroup control
+    - must update values as well
+  - reducer method for removing form control
+    - must update values as well
 
   - reducer method for adding formArray control
-  - reducer method for removing formArray control
+    - must update value as well
+
+  - action creator for adding formgroup control
   - action creator for adding formArray control
-  - action creator for removing formArray control
+  - action creator for removing control
 
 # TODOS
 

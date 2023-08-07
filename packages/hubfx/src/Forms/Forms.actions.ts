@@ -8,6 +8,7 @@ import {
   AbstractControlConfig,
   ControlRef,
   FormGroupAddControl,
+  RemoveControl,
 } from './Models/Forms';
 import { getControlBranch, getFormControl } from './FormsReducer.reducer';
 import { Effect } from '../Models/Effect';
@@ -113,6 +114,26 @@ export const addGroupControl = <T>(
         controlRef,
       } as FormGroupAddControl,
     },
+  ];
+
+  return actions;
+};
+
+export const FORMS_REMOVE_CONTROL = 'FORMS_REMOVE_CONTROL';
+export const removeControl = <T>(
+  controlRef: ControlRef,
+  reducer: (
+    state: AbstractControl<T>,
+    action: Action<unknown>,
+  ) => AbstractControl<T>,
+) => {
+  const actions = [
+    {
+      type: FORMS_REMOVE_CONTROL,
+      payload: {
+        controlRef,
+      },
+    } as Action<RemoveControl>,
   ];
 
   return actions;

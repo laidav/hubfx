@@ -4,6 +4,7 @@ import {
   FORMS_CONTROL_CHANGE,
   FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
   FORMS_VALUE_CHANGE_EFFECT,
+  FORMS_ADD_GROUP_CONTROL,
 } from './Forms.actions';
 import {
   FormControl,
@@ -13,6 +14,7 @@ import {
   AbstractControl,
   FormErrors,
   FormGroupAddControl,
+  RemoveControl,
   FormControlType,
 } from './Models/Forms';
 import { ControlAsyncValidationResponse } from './Models/Forms';
@@ -242,6 +244,34 @@ export const addFormGroupControl = <T>(
   return newState;
 };
 
+export const removeControl = <T>(
+  state: AbstractControl<T>,
+  { payload: { controlRef } }: Action<RemoveControl>,
+) => {
+  if (!getFormControl(controlRef, state)) {
+    throw 'Control not found';
+  }
+
+  if (!controlRef.length) return state;
+
+  const newState = cloneDeep(state);
+
+  const parentControl = getFormControl(controlRef.slice(0, -1), newState);
+  const key = controlRef.slice(-1)[0];
+
+  if (parentControl.config.controlType === FormControlType.Group) {
+    delete (<FormGroup<unknown>>parentControl).controls[key];
+  } else if (parentControl.config.controlType === FormControlType.Array) {
+    (<FormArray<unknown>>parentControl).controls = (<FormArray<unknown>>(
+      parentControl
+    )).controls
+      .slice()
+      .splice(<number>key, 1);
+  }
+
+  return newState;
+};
+
 export const handleAsyncValidation = <T>(
   state: AbstractControl<T>,
   action: Action<ControlRef>,
@@ -315,6 +345,10 @@ export const formsReducer = <T>(
           state,
           action as Action<ControlAsyncValidationResponse>,
         ),
+      );
+    case FORMS_ADD_GROUP_CONTROL:
+      return syncValidate(
+        addFormGroupControl(state, action as Action<FormGroupAddControl>),
       );
 
     default:
