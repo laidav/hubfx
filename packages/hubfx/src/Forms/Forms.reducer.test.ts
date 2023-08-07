@@ -668,6 +668,7 @@ describe('addGroupFormControl', () => {
     });
 
     expect(newState).toEqual(expectedState);
+
     const occupationControlConfig: FormControlConfig<string> = {
       initialValue: 'carpenter',
     };
