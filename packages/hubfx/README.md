@@ -35,7 +35,7 @@
 - # 2023 08 06 (Sun)
 1. handling adding and removing array and group items
 
-  - reducer method for adding formgroup control
+  - reducer method for adding formgroup control - DONE
   - reducer method for removing form group control
   - action creator for adding formgroup control
   - action creator for removing formgroup control
