@@ -648,12 +648,18 @@ describe('addGroupFormControl', () => {
     const initialState = buildControlState(config) as FormGroup<Contact>;
     const controlRef = ['doctorInfo', 'type'];
     const newControlConfig: FormControlConfig<string> = {
-      initialValue: '',
+      initialValue: 'proctology',
     };
 
     const expectedState = cloneDeep(initialState) as FormGroup<Contact>;
     const doctorInfo = expectedState.controls
       .doctorInfo as FormGroup<DoctorInfo>;
+
+    doctorInfo.value = {
+      ...doctorInfo.value,
+      type: 'proctology',
+    };
+
     doctorInfo.controls.type = buildControlState(newControlConfig);
 
     const newState = addFormGroupControl(initialState, {
@@ -663,10 +669,14 @@ describe('addGroupFormControl', () => {
 
     expect(newState).toEqual(expectedState);
     const occupationControlConfig: FormControlConfig<string> = {
-      initialValue: '',
+      initialValue: 'carpenter',
     };
 
     const expectedStateWithOccupationControl = cloneDeep(expectedState);
+    expectedStateWithOccupationControl.value = {
+      ...expectedState.value,
+      occupation: 'carpenter',
+    };
 
     expectedStateWithOccupationControl.controls['occupation'] =
       buildControlState(occupationControlConfig);
