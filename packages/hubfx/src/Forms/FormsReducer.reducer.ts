@@ -233,7 +233,8 @@ const updateAncestorValues = <T>(
   if (!controlRef.length) return state;
 
   const newState = cloneDeep(state);
-  const { value } = getFormControl(controlRef, state);
+  const control = getFormControl(controlRef, state);
+  const value = control?.value;
   const [key] = controlRef.slice(-1);
   const parentRef = controlRef.slice(0, -1);
   const parentControl = getFormControl(parentRef, newState);
@@ -307,7 +308,10 @@ export const removeControl = <T>(
     (<FormArray<unknown>>parentControl).controls = result;
   }
 
-  return newState;
+  return updateAncestorValues(newState, {
+    type: FORMS_UPDATE_ANCESTOR_VALUES,
+    payload: controlRef,
+  });
 };
 
 export const handleAsyncValidation = <T>(
