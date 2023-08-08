@@ -307,7 +307,6 @@ export const removeControl = <T>(
   if (parentControl.config.controlType === FormControlType.Group) {
     delete (<FormGroup<unknown>>parentControl).controls[key];
   } else if (parentControl.config.controlType === FormControlType.Array) {
-    console.log(parentControl.controlRef);
     const result = (<FormArray<unknown>>parentControl).controls
       .filter((_, index) => index !== key)
       .map((control, index) => ({
