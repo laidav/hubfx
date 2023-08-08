@@ -738,6 +738,7 @@ describe('removeControl', () => {
     expect(newState).toEqual(expectedState);
   });
 
+  //TODO: need test to test updated index of array items after a removal
   it('should remove an array control item', () => {
     const initialValue = [
       {
@@ -745,6 +746,12 @@ describe('removeControl', () => {
         lastName: 'Simpson',
         email: 'homer@gmail.com',
         relation: 'dad',
+      },
+      {
+        firstName: 'Moe',
+        lastName: 'Syzlak',
+        email: 'moe@moe.com',
+        relation: 'bar tender',
       },
     ];
     const clonedConfig: FormGroupConfig = cloneDeep(config);
@@ -766,10 +773,29 @@ describe('removeControl', () => {
     );
     expectedState.value = {
       ...expectedState.value,
-      emergencyContacts: [],
+      emergencyContacts: [
+        {
+          firstName: 'Moe',
+          lastName: 'Syzlak',
+          email: 'moe@moe.com',
+          relation: 'bar tender',
+        },
+      ],
     };
-    emergencyContacts.controls = [];
-    emergencyContacts.value = [];
+    emergencyContacts.controls = [
+      {
+        ...emergencyContacts.controls[1],
+        controlRef: ['emergencyContacts', 0],
+      },
+    ];
+    emergencyContacts.value = [
+      {
+        firstName: 'Moe',
+        lastName: 'Syzlak',
+        email: 'moe@moe.com',
+        relation: 'bar tender',
+      },
+    ];
 
     expect(newState).toEqual(expectedState);
   });

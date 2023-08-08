@@ -249,10 +249,15 @@ const updateAncestorValues = <T>(
       payload: parentRef,
     });
   } else if (parentControl.config.controlType === FormControlType.Array) {
-    (<FormArray<unknown>>parentControl).value = {
-      ...(<FormArray<unknown>>parentControl.value),
-      [key]: value,
-    };
+    const newArray = (<FormArray<unknown[]>>parentControl).value.slice();
+    if (control === undefined) {
+      //If control was removed
+      newArray.splice(key as number, 1);
+    } else {
+      newArray[key as number] = value;
+    }
+    (<FormArray<unknown[]>>parentControl).value = newArray;
+
     return updateAncestorValues(newState, {
       type: FORMS_UPDATE_ANCESTOR_VALUES,
       payload: parentRef,
@@ -302,8 +307,13 @@ export const removeControl = <T>(
   if (parentControl.config.controlType === FormControlType.Group) {
     delete (<FormGroup<unknown>>parentControl).controls[key];
   } else if (parentControl.config.controlType === FormControlType.Array) {
-    const result = (<FormArray<unknown>>parentControl).controls.slice();
-    result.splice(<number>key, 1);
+    console.log(parentControl.controlRef);
+    const result = (<FormArray<unknown>>parentControl).controls
+      .filter((_, index) => index !== key)
+      .map((control, index) => ({
+        ...control,
+        controlRef: parentControl.controlRef.concat(index),
+      }));
 
     (<FormArray<unknown>>parentControl).controls = result;
   }
