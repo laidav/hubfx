@@ -32,13 +32,13 @@
 
 - this new model can be bound with any UI library for rendering
 
-- # 2023 08 06 (Sun)
+- # 2023 08 07 (Mon)
 1. handling adding and removing array and group items
 
   - reducer method for adding formgroup control - DONE
-    - must update values as well
-  - reducer method for removing form control
-    - must update values as well
+    - must update values as well - DONE
+  - reducer method for removing form control - DONE
+    - must update values as well - DONE
 
   - reducer method for adding formArray control
     - must update value as well
@@ -50,7 +50,6 @@
 # TODOS
 
 1. reset form , and set Pristine value
-
 
 
 ## CLEAN UP TODOS
