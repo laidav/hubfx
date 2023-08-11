@@ -11,9 +11,8 @@ export interface FormGroupConfig extends AbstractControlConfig {
   formGroupControls: { [key: string]: AbstractControlConfig };
 }
 
-export interface FormArrayConfig<T> extends AbstractControlConfig {
-  initialValue: T;
-  arrayControlsTemplate: AbstractControlConfig;
+export interface FormArrayConfig extends AbstractControlConfig {
+  formArrayControls?: AbstractControlConfig[];
 }
 
 export interface FormControlConfig<T> extends AbstractControlConfig {

@@ -11,32 +11,6 @@ import { StreamConfig } from '../Models/Stream';
 import { MessageHubFactory } from '../Factories/MessageHubFactory';
 import { formsReducer } from './FormsReducer.reducer';
 import { buildControlState } from './buildControlState';
-import { getFormControl } from './FormsReducer.reducer';
-
-export const getControlConfig = (
-  config: AbstractControlConfig,
-  controlRef: ControlRef,
-): AbstractControlConfig => {
-  if (!controlRef.length) {
-    return config;
-  }
-
-  const result: AbstractControlConfig = controlRef.reduce(
-    (acc, key): AbstractControlConfig => {
-      if (
-        typeof key === 'string' &&
-        acc.controlType === FormControlType.Group
-      ) {
-        return (<FormGroupConfig>acc).formGroupControls[key];
-      }
-
-      return (<FormArrayConfig<unknown>>acc).arrayControlsTemplate;
-    },
-    config,
-  );
-
-  return result;
-};
 
 export const getValueFromControlConfig = <T>(
   controlConfig: AbstractControlConfig,
@@ -50,9 +24,15 @@ export const getValueFromControlConfig = <T>(
     }
 
     return result as T;
+  } else if (controlConfig.controlType === FormControlType.Array) {
+    const configs = (<FormArrayConfig>controlConfig).formArrayControls;
+    const result = configs
+      ? configs.map((controlConfig) => getValueFromControlConfig(controlConfig))
+      : [];
+
+    return result as T;
   } else {
-    return (<FormArrayConfig<T> | FormControlConfig<T>>controlConfig)
-      .initialValue;
+    return (<FormControlConfig<T>>controlConfig).initialValue;
   }
 };
 

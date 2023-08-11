@@ -24,6 +24,57 @@ export const firstNameNotSameAsLast = (value: FullName) => {
   };
 };
 
+export const emergencyContactConfigs: FormGroupConfig[] = [
+  {
+    controlType: FormControlType.Group,
+    validators: [firstNameNotSameAsLast],
+    asyncValidators: [uniqueFirstAndLastName],
+    formGroupControls: {
+      firstName: {
+        initialValue: 'Homer',
+        validators: [required],
+      } as FormControlConfig<string>,
+      lastName: {
+        initialValue: 'Simpson',
+        validators: [required],
+      } as FormControlConfig<string>,
+      email: {
+        initialValue: 'homer@homer.com',
+        validators: [required, email],
+        asyncValidators: [uniqueEmail, blacklistedEmail],
+      } as FormControlConfig<string>,
+      relation: {
+        initialValue: 'friend',
+        validators: [required],
+      } as FormControlConfig<string>,
+    },
+  },
+  {
+    controlType: FormControlType.Group,
+    validators: [firstNameNotSameAsLast],
+    asyncValidators: [uniqueFirstAndLastName],
+    formGroupControls: {
+      firstName: {
+        initialValue: 'moe',
+        validators: [required],
+      } as FormControlConfig<string>,
+      lastName: {
+        initialValue: 'syzlak',
+        validators: [required],
+      } as FormControlConfig<string>,
+      email: {
+        initialValue: 'moe@moe.com',
+        validators: [required, email],
+        asyncValidators: [uniqueEmail, blacklistedEmail],
+      } as FormControlConfig<string>,
+      relation: {
+        initialValue: 'friend',
+        validators: [required],
+      } as FormControlConfig<string>,
+    },
+  },
+];
+
 export const config: FormGroupConfig = {
   controlType: FormControlType.Group,
   validators: [firstNameNotSameAsLast],
@@ -47,32 +98,10 @@ export const config: FormGroupConfig = {
       validators: [required, phoneNumber],
     } as FormControlConfig<string>,
     emergencyContacts: {
-      initialValue: [],
       controlType: FormControlType.Array,
       validators: [required],
       asyncValidators: [arrayLengthError],
-      arrayControlsTemplate: {
-        controlType: FormControlType.Group,
-        validators: [firstNameNotSameAsLast],
-        asyncValidators: [uniqueFirstAndLastName],
-        formGroupControls: {
-          firstName: {
-            initialValue: '',
-            validators: [required],
-          },
-          lastName: {
-            initialValue: '',
-            validators: [required],
-          },
-          email: {
-            initialValue: '',
-            validators: [required, email],
-            asyncValidators: [uniqueEmail, blacklistedEmail],
-          },
-          relation: { initialValue: '', validators: [required] },
-        },
-      } as FormGroupConfig,
-    } as FormArrayConfig<EmergencyContact[]>,
+    } as FormArrayConfig,
     doctorInfo: {
       controlType: FormControlType.Group,
       validators: [firstNameNotSameAsLast],

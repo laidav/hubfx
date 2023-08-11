@@ -1,4 +1,8 @@
-import { config, firstNameNotSameAsLast } from './Tests/config';
+import {
+  config,
+  emergencyContactConfigs,
+  firstNameNotSameAsLast,
+} from './Tests/config';
 import { Contact } from './Tests/Models/Contact';
 import { DoctorInfo } from './Tests/Models/DoctorInfo';
 import {
@@ -197,25 +201,10 @@ describe('buildControlState', () => {
   });
 
   it('should build the control state for for type array with non-empty form group initial values', () => {
-    const initialValue = [
-      {
-        firstName: 'Homer',
-        lastName: 'Simpson',
-        email: 'homer@homer.com',
-        relation: 'friend',
-      },
-      {
-        firstName: 'moe',
-        lastName: 'syzlak',
-        email: 'moe@moe.com',
-        relation: 'friend',
-      },
-    ];
     const nonEmptyConfig = {
-      ...(config.formGroupControls
-        .emergencyContacts as FormArrayConfig<Contact>),
-      initialValue,
-    } as FormArrayConfig<unknown>;
+      ...(config.formGroupControls.emergencyContacts as FormArrayConfig),
+      formArrayControls: emergencyContactConfigs,
+    } as FormArrayConfig;
 
     expect(buildControlState(nonEmptyConfig, ['emergencyContacts'])).toEqual({
       config: nonEmptyConfig,
@@ -224,31 +213,23 @@ describe('buildControlState', () => {
           ...BASE_FORM_CONTROL,
           controlRef: ['emergencyContacts', 0],
           submitting: false,
-          value: initialValue[0],
-          pristineValue: initialValue[0],
+          value: {
+            firstName: 'Homer',
+            lastName: 'Simpson',
+            email: 'homer@homer.com',
+            relation: 'friend',
+          },
+          pristineValue: {
+            firstName: 'Homer',
+            lastName: 'Simpson',
+            email: 'homer@homer.com',
+            relation: 'friend',
+          },
           valid: true,
           errors: {
             firstNameNotSameAsLast: false,
           },
-          config: {
-            ...(<FormGroupConfig>nonEmptyConfig.arrayControlsTemplate),
-            formGroupControls: {
-              firstName: {
-                initialValue: 'Homer',
-                validators: [required],
-              },
-              lastName: {
-                initialValue: 'Simpson',
-                validators: [required],
-              },
-              email: {
-                initialValue: 'homer@homer.com',
-                validators: [required, email],
-                asyncValidators: [uniqueEmail, blacklistedEmail],
-              },
-              relation: { initialValue: 'friend', validators: [required] },
-            },
-          },
+          config: emergencyContactConfigs[0],
           controls: {
             firstName: {
               ...BASE_FORM_CONTROL,
@@ -260,8 +241,7 @@ describe('buildControlState', () => {
               pristineValue: 'Homer',
               value: 'Homer',
               config: {
-                ...(<FormGroupConfig>nonEmptyConfig.arrayControlsTemplate)
-                  .formGroupControls.firstName,
+                ...emergencyContactConfigs[0].formGroupControls.firstName,
                 initialValue: 'Homer',
               },
             },
@@ -275,8 +255,7 @@ describe('buildControlState', () => {
               pristineValue: 'Simpson',
               value: 'Simpson',
               config: {
-                ...(<FormGroupConfig>nonEmptyConfig.arrayControlsTemplate)
-                  .formGroupControls.lastName,
+                ...emergencyContactConfigs[0].formGroupControls.lastName,
                 initialValue: 'Simpson',
               },
             },
@@ -291,8 +270,7 @@ describe('buildControlState', () => {
               pristineValue: 'homer@homer.com',
               value: 'homer@homer.com',
               config: {
-                ...(<FormGroupConfig>nonEmptyConfig.arrayControlsTemplate)
-                  .formGroupControls.email,
+                ...emergencyContactConfigs[0].formGroupControls.email,
                 initialValue: 'homer@homer.com',
               },
             },
@@ -306,8 +284,7 @@ describe('buildControlState', () => {
               pristineValue: 'friend',
               value: 'friend',
               config: {
-                ...(<FormGroupConfig>nonEmptyConfig.arrayControlsTemplate)
-                  .formGroupControls.relation,
+                ...emergencyContactConfigs[0].formGroupControls.relation,
                 initialValue: 'friend',
               },
             },
@@ -317,14 +294,24 @@ describe('buildControlState', () => {
           ...BASE_FORM_CONTROL,
           controlRef: ['emergencyContacts', 1],
           submitting: false,
-          value: initialValue[1],
-          pristineValue: initialValue[1],
+          value: {
+            firstName: 'moe',
+            lastName: 'syzlak',
+            email: 'moe@moe.com',
+            relation: 'friend',
+          },
+          pristineValue: {
+            firstName: 'moe',
+            lastName: 'syzlak',
+            email: 'moe@moe.com',
+            relation: 'friend',
+          },
           valid: true,
           errors: {
             firstNameNotSameAsLast: false,
           },
           config: {
-            ...(<FormGroupConfig>nonEmptyConfig.arrayControlsTemplate),
+            ...emergencyContactConfigs[1],
             formGroupControls: {
               firstName: {
                 initialValue: 'moe',
@@ -353,8 +340,7 @@ describe('buildControlState', () => {
               pristineValue: 'moe',
               value: 'moe',
               config: {
-                ...(<FormGroupConfig>nonEmptyConfig.arrayControlsTemplate)
-                  .formGroupControls.firstName,
+                ...emergencyContactConfigs[1].formGroupControls.firstName,
                 initialValue: 'moe',
               },
             },
@@ -368,8 +354,7 @@ describe('buildControlState', () => {
               pristineValue: 'syzlak',
               value: 'syzlak',
               config: {
-                ...(<FormGroupConfig>nonEmptyConfig.arrayControlsTemplate)
-                  .formGroupControls.lastName,
+                ...emergencyContactConfigs[1].formGroupControls.lastName,
                 initialValue: 'syzlak',
               },
             },
@@ -384,8 +369,7 @@ describe('buildControlState', () => {
               pristineValue: 'moe@moe.com',
               value: 'moe@moe.com',
               config: {
-                ...(<FormGroupConfig>nonEmptyConfig.arrayControlsTemplate)
-                  .formGroupControls.email,
+                ...emergencyContactConfigs[1].formGroupControls.email,
                 initialValue: 'moe@moe.com',
               },
             },
@@ -399,8 +383,7 @@ describe('buildControlState', () => {
               pristineValue: 'friend',
               value: 'friend',
               config: {
-                ...(<FormGroupConfig>nonEmptyConfig.arrayControlsTemplate)
-                  .formGroupControls.relation,
+                ...emergencyContactConfigs[1].formGroupControls.relation,
                 initialValue: 'friend',
               },
             },
@@ -409,8 +392,34 @@ describe('buildControlState', () => {
       ] as FormGroup<unknown>[],
       ...BASE_FORM_CONTROL,
       controlRef: ['emergencyContacts'],
-      value: initialValue,
-      pristineValue: initialValue,
+      value: [
+        {
+          firstName: 'Homer',
+          lastName: 'Simpson',
+          email: 'homer@homer.com',
+          relation: 'friend',
+        },
+        {
+          firstName: 'moe',
+          lastName: 'syzlak',
+          email: 'moe@moe.com',
+          relation: 'friend',
+        },
+      ],
+      pristineValue: [
+        {
+          firstName: 'Homer',
+          lastName: 'Simpson',
+          email: 'homer@homer.com',
+          relation: 'friend',
+        },
+        {
+          firstName: 'moe',
+          lastName: 'syzlak',
+          email: 'moe@moe.com',
+          relation: 'friend',
+        },
+      ],
       valid: true,
       errors: {
         required: false,

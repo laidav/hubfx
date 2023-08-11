@@ -70,46 +70,16 @@ export const buildControlState = <T>(
     return result;
     // Form Array
   } else if (controlConfig.controlType === FormControlType.Array) {
-    const controls: AbstractControl<unknown>[] = [];
-    const initialValues = (<FormArrayConfig<T>>controlConfig)
-      .initialValue as unknown[];
-
-    initialValues.forEach((initialValue, index) => {
-      const template = (<FormArrayConfig<T>>controlConfig)
-        .arrayControlsTemplate;
-
-      if (template.controlType === FormControlType.Group) {
-        const formGroupControls = Object.entries(
-          (<FormGroupConfig>template).formGroupControls,
-        ).reduce((result, [key, value]) => {
-          result[key] = {
-            ...value,
-            initialValue: (<{ [key: string]: unknown }>initialValue)[key],
-          };
-          return result;
-        }, {} as { [key: string]: FormControlConfig<unknown> });
-
-        const config = {
-          ...template,
-          formGroupControls,
-        } as FormGroupConfig;
-
-        const controlState = buildControlState(
-          config,
-          controlRef.concat(index),
-        );
-        controls.push(controlState);
-      } else {
-        const controlState = buildControlState(
-          {
-            ...template,
-            initialValue,
-          } as FormControlConfig<unknown> | FormArrayConfig<unknown>,
-          controlRef.concat(index),
-        );
-        controls.push(controlState);
-      }
-    });
+    const configControls = (<FormArrayConfig>controlConfig).formArrayControls;
+    const controls: AbstractControl<unknown>[] = configControls
+      ? configControls.reduce(
+          (acc, config, index) =>
+            (acc = acc.concat(
+              buildControlState(config, controlRef.concat(index)),
+            )),
+          [],
+        )
+      : [];
 
     const errors = controlConfig.validators?.reduce((errors, validator) => {
       return {
@@ -130,12 +100,14 @@ export const buildControlState = <T>(
       return false;
     });
 
+    const value = controls.map(({ value }) => value) as T;
+
     const result: FormArray<T> = {
       controlRef,
       controls,
       dirty: false,
-      pristineValue: (<FormArrayConfig<T>>controlConfig).initialValue,
-      value: (<FormArrayConfig<T>>controlConfig).initialValue,
+      pristineValue: value,
+      value,
       touched: false,
       asyncValidateInProgress: {},
       validating: false,
@@ -143,6 +115,7 @@ export const buildControlState = <T>(
       errors,
       config: controlConfig,
     };
+
     return result;
     // Form Field
   } else {
