@@ -637,9 +637,7 @@ describe('getFormControl', () => {
 
     expect(getFormControl(['emergencyContacts'], contactFormGroup)).toEqual({
       ...BASE_FORM_CONTROL,
-      config: <FormArrayConfig<Contact>>(
-        config.formGroupControls.emergencyContacts
-      ),
+      config: <FormArrayConfig>config.formGroupControls.emergencyContacts,
       controlRef: ['emergencyContacts'],
       value: [] as EmergencyContact[],
       pristineValue: [] as EmergencyContact[],
