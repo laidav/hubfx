@@ -10,7 +10,7 @@ import { uniqueEmail } from './AsyncValidators';
 import { buildControlState } from './buildControlState';
 import { Action } from '../Models/Action';
 import { formsReducer } from './FormsReducer.reducer';
-import { config as fullConfig } from './Tests/config';
+import { emergencyContactConfigs, config as fullConfig } from './Tests/config';
 describe('Form.actions', () => {
   let messages = [];
   let dispatch;
@@ -82,20 +82,8 @@ describe('Form.actions', () => {
     it('should run async validations for a form control and all anscestors', (done) => {
       const config = cloneDeep(fullConfig);
 
-      config.formGroupControls.emergencyContacts.initialValue = [
-        {
-          firstName: 'Homer',
-          lastName: 'Simpson',
-          email: 'homer@homer.com',
-          relation: 'friend',
-        },
-        {
-          firstName: 'moe',
-          lastName: 'syzlak',
-          email: 'moe@moe.com',
-          relation: 'friend',
-        },
-      ];
+      config.formGroupControls.emergencyContacts.formArrayControls =
+        emergencyContactConfigs;
 
       const state = buildControlState(config);
       const actions = controlChange(
@@ -169,20 +157,8 @@ describe('Form.actions', () => {
     it('should run async validations for multiple form controls and all common anscestors', (done) => {
       const config = cloneDeep(fullConfig);
 
-      config.formGroupControls.emergencyContacts.initialValue = [
-        {
-          firstName: 'Homer',
-          lastName: 'Simpson',
-          email: 'homer@homer.com',
-          relation: 'friend',
-        },
-        {
-          firstName: 'moe',
-          lastName: 'syzlak',
-          email: 'moe@moe.com',
-          relation: 'friend',
-        },
-      ];
+      config.formGroupControls.emergencyContacts.formArrayControls =
+        emergencyContactConfigs;
 
       const state = buildControlState(config);
 
