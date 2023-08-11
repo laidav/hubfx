@@ -198,9 +198,9 @@ export const updateValues = <T>(
       controls: newControls,
       value: newControls.map((control) => control.value),
     } as FormArray<T>;
-  } else if ((<FormGroup<T>>state).controls) {
+  } else if ((<FormGroup<T>>newState).controls) {
     const newControls = {
-      ...(<FormGroup<T>>state).controls,
+      ...(<FormGroup<T>>newState).controls,
     };
     newControls[controlRef[0] as string] = updateValues(
       newControls[controlRef[0] as string],
