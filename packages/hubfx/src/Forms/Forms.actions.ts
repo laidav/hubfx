@@ -9,6 +9,7 @@ import {
   ControlRef,
   FormGroupAddControl,
   RemoveControl,
+  FormArrayAddControl,
 } from './Models/Forms';
 import { getControlBranch, getFormControl } from './FormsReducer.reducer';
 import { Effect } from '../Models/Effect';
@@ -113,6 +114,28 @@ export const addGroupControl = <T>(
         config,
         controlRef,
       } as FormGroupAddControl,
+    },
+  ];
+
+  return actions;
+};
+
+export const FORMS_ADD_FORM_ARRAY_CONTROL = 'FORMS_ADD_FORM_ARRAY_CONTROL';
+export const addFormArrayControl = <T>(
+  controlRef: ControlRef,
+  initialValue,
+  reducer: (
+    state: AbstractControl<T>,
+    action: Action<unknown>,
+  ) => AbstractControl<T>,
+) => {
+  const actions = [
+    {
+      type: FORMS_ADD_FORM_ARRAY_CONTROL,
+      payload: {
+        initialValue,
+        controlRef,
+      } as FormArrayAddControl<unknown>,
     },
   ];
 

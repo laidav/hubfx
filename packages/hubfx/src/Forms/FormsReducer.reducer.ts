@@ -16,6 +16,7 @@ import {
   FormGroupAddControl,
   RemoveControl,
   FormControlType,
+  FormArrayAddControl,
 } from './Models/Forms';
 import { ControlAsyncValidationResponse } from './Models/Forms';
 import { ControlRef } from './Models/Forms';
@@ -277,6 +278,20 @@ export const addFormGroupControl = <T>(
   }
 
   newControl.controls[controlRef.slice(-1)[0]] = buildControlState(config);
+
+  return updateAncestorValues(newState, {
+    type: FORMS_UPDATE_ANCESTOR_VALUES,
+    payload: controlRef,
+  });
+};
+
+export const addFormArrayControl = <T>(
+  state: AbstractControl<T>,
+  {
+    payload: { initialValue, controlRef },
+  }: Action<FormArrayAddControl<unknown>>,
+) => {
+  const newState = cloneDeep(state);
 
   return updateAncestorValues(newState, {
     type: FORMS_UPDATE_ANCESTOR_VALUES,

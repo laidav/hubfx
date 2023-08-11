@@ -68,6 +68,11 @@ export interface FormGroupAddControl {
   controlRef: ControlRef;
 }
 
+export interface FormArrayAddControl<T> {
+  initialValue: T;
+  controlRef: ControlRef;
+}
+
 export interface RemoveControl {
   controlRef: ControlRef;
 }

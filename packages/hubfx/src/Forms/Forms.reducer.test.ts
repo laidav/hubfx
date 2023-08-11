@@ -7,16 +7,18 @@ import {
   handleAsyncValidationResponseSuccess,
   handleAsyncValidation,
   addFormGroupControl,
+  addFormArrayControl,
   removeControl,
 } from './FormsReducer.reducer';
 import cloneDeep from 'lodash.clonedeep';
 import { buildControlState } from './buildControlState';
-import { config } from './Tests/config';
+import { config, firstNameNotSameAsLast } from './Tests/config';
 import {
   FORMS_CONTROL_CHANGE,
   FORMS_VALUE_CHANGE_EFFECT,
   FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
   FORMS_ADD_GROUP_CONTROL,
+  FORMS_ADD_FORM_ARRAY_CONTROL,
   FORMS_REMOVE_CONTROL,
 } from './Forms.actions';
 import {
@@ -26,10 +28,17 @@ import {
   FormArrayConfig,
   FormGroupConfig,
   FormControlConfig,
+  FormControlType,
 } from './Models/Forms';
 import { Contact } from './Tests/Models/Contact';
 import { EmergencyContact } from './Tests/Models/EmergencyContact';
 import { DoctorInfo } from './Tests/Models/DoctorInfo';
+import { required, email } from './Validators';
+import {
+  uniqueEmail,
+  uniqueFirstAndLastName,
+  blacklistedEmail,
+} from './AsyncValidators';
 
 describe('updateValues', () => {
   it('should update values only for a FormControl in a FormGroup', () => {
@@ -697,6 +706,96 @@ describe('addGroupFormControl', () => {
     expect(newStateWithOccupationControl).toEqual(
       expectedStateWithOccupationControl,
     );
+  });
+});
+
+describe('addFormArrayControl', () => {
+  it('should add a form control to formArray', () => {
+    const initialValue = [
+      {
+        firstName: 'Homer',
+        lastName: 'Simpson',
+        email: 'homer@gmail.com',
+        relation: 'dad',
+      },
+      {
+        firstName: 'Moe',
+        lastName: 'Syzlak',
+        email: 'moe@moe.com',
+        relation: 'bar tender',
+      },
+    ];
+    const clonedConfig: FormGroupConfig = cloneDeep(config);
+    (<FormArrayConfig<EmergencyContact[]>>(
+      clonedConfig.formGroupControls.emergencyContacts
+    )).initialValue = initialValue;
+    const arrayTemplate = (<FormArrayConfig<EmergencyContact[]>>(
+      clonedConfig.formGroupControls.emergencyContacts
+    )).arrayControlsTemplate as FormGroupConfig;
+    const initialState = buildControlState(clonedConfig) as FormGroup<Contact>;
+
+    const newState = addFormArrayControl(initialState, {
+      type: FORMS_ADD_FORM_ARRAY_CONTROL,
+      payload: {
+        initialValue: {
+          firstName: 'Barney',
+          lastName: 'Gumble',
+          email: 'barney@gumble.com',
+          relation: 'astronaut friend',
+        },
+        controlRef: ['emergencyContacts'],
+      },
+    });
+
+    const newControl = buildControlState({
+      controlType: FormControlType.Group,
+      validators: [firstNameNotSameAsLast],
+      asyncValidators: [uniqueFirstAndLastName],
+      formGroupControls: {
+        firstName: {
+          initialValue: 'Barney',
+          validators: [required],
+        },
+        lastName: {
+          initialValue: 'Gumble',
+          validators: [required],
+        },
+        email: {
+          initialValue: 'barney@gumble.com',
+          validators: [required, email],
+          asyncValidators: [uniqueEmail, blacklistedEmail],
+        },
+        relation: { initialValue: 'astronaut friend', validators: [required] },
+      },
+    } as FormGroupConfig);
+
+    const expectedState = cloneDeep(initialState);
+    expectedState.value.emergencyContacts = [
+      ...initialValue,
+      {
+        firstName: 'Barney',
+        lastName: 'Gumble',
+        email: 'barney@gumble.com',
+        relation: 'astronaut friend',
+      },
+    ];
+
+    expectedState.controls.emergencyContacts.value = [
+      ...initialValue,
+      {
+        firstName: 'Barney',
+        lastName: 'Gumble',
+        email: 'barney@gumble.com',
+        relation: 'astronaut friend',
+      },
+    ];
+
+    expectedState.controls.emergencyContacts.controls = [
+      ...expectedState.controls.emergencyContacts.controls,
+      newControl,
+    ];
+
+    expect(newState).toEqual(expectedState);
   });
 });
 
