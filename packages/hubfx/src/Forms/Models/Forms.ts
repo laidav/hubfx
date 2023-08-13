@@ -62,12 +62,12 @@ export interface ControlChange<T> {
   controlRef: ControlRef;
 }
 
-export interface FormGroupAddControl {
+export interface AddControl {
   config: AbstractControlConfig;
   controlRef: ControlRef;
 }
 
-export interface FormArrayAddControl {
+export interface AddControl {
   config: AbstractControlConfig;
   controlRef: ControlRef;
 }

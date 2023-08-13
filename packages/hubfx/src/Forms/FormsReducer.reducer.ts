@@ -13,10 +13,9 @@ import {
   ControlChange,
   AbstractControl,
   FormErrors,
-  FormGroupAddControl,
   RemoveControl,
   FormControlType,
-  FormArrayAddControl,
+  AddControl,
 } from './Models/Forms';
 import { ControlAsyncValidationResponse } from './Models/Forms';
 import { ControlRef } from './Models/Forms';
@@ -259,7 +258,7 @@ const updateAncestorValues = <T>(
 
 export const addFormGroupControl = <T>(
   state: AbstractControl<T>,
-  { payload: { controlRef, config } }: Action<FormGroupAddControl>,
+  { payload: { controlRef, config } }: Action<AddControl>,
 ) => {
   const newState = cloneDeep(state);
   const newControl = getFormControl(
@@ -281,7 +280,7 @@ export const addFormGroupControl = <T>(
 
 export const addFormArrayControl = <T>(
   state: AbstractControl<T>,
-  { payload: { config, controlRef } }: Action<FormArrayAddControl>,
+  { payload: { config, controlRef } }: Action<AddControl>,
 ) => {
   const newState = cloneDeep(state);
 
@@ -416,7 +415,7 @@ export const formsReducer = <T>(
       );
     case FORMS_ADD_GROUP_CONTROL:
       return syncValidate(
-        addFormGroupControl(state, action as Action<FormGroupAddControl>),
+        addFormGroupControl(state, action as Action<AddControl>),
       );
 
     default:

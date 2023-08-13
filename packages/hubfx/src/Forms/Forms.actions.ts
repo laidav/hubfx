@@ -7,11 +7,10 @@ import {
   AbstractControl,
   AbstractControlConfig,
   ControlRef,
-  FormGroupAddControl,
+  AddControl,
   RemoveControl,
-  FormArrayAddControl,
 } from './Models/Forms';
-import { getControlBranch, getFormControl } from './FormsReducer.reducer';
+import { getControlBranch } from './FormsReducer.reducer';
 import { Effect } from '../Models/Effect';
 import { FormErrors } from './Models/Forms';
 
@@ -100,20 +99,19 @@ export const controlChange = <T, S>(
 
 export const FORMS_ADD_GROUP_CONTROL = 'FORMS_ADD_GROUP_CONTROL';
 export const addGroupControl = <T>(
-  config: AbstractControlConfig,
-  controlRef: ControlRef,
+  { controlRef, config }: AddControl,
   reducer: (
     state: AbstractControl<T>,
     action: Action<unknown>,
   ) => AbstractControl<T>,
-) => {
+): (Action<AddControl> | Action<ControlRef>)[] => {
   const actions = [
     {
       type: FORMS_ADD_GROUP_CONTROL,
       payload: {
         config,
         controlRef,
-      } as FormGroupAddControl,
+      } as AddControl,
     },
   ];
 
@@ -122,8 +120,7 @@ export const addGroupControl = <T>(
 
 export const FORMS_ADD_FORM_ARRAY_CONTROL = 'FORMS_ADD_FORM_ARRAY_CONTROL';
 export const addFormArrayControl = <T>(
-  controlRef: ControlRef,
-  initialValue,
+  { controlRef, config }: AddControl,
   reducer: (
     state: AbstractControl<T>,
     action: Action<unknown>,
@@ -133,9 +130,9 @@ export const addFormArrayControl = <T>(
     {
       type: FORMS_ADD_FORM_ARRAY_CONTROL,
       payload: {
-        initialValue,
+        config,
         controlRef,
-      } as FormArrayAddControl<unknown>,
+      } as AddControl,
     },
   ];
 
