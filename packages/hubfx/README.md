@@ -47,7 +47,9 @@
     - must update value as well - DONE
 
   - action creator for adding formgroup control
+    - need cases to trigger async validation for child controls
   - action creator for adding formArray control
+    - need cases to trigger async validation for child controls
   - action creator for removing control
 
 # TODOS

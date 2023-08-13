@@ -5,6 +5,7 @@ import {
   FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
   FORMS_VALUE_CHANGE_EFFECT,
   FORMS_ADD_GROUP_CONTROL,
+  FORMS_ADD_FORM_ARRAY_CONTROL,
 } from './Forms.actions';
 import {
   FormControl,
@@ -419,6 +420,10 @@ export const formsReducer = <T>(
     case FORMS_ADD_GROUP_CONTROL:
       return syncValidate(
         addFormGroupControl(state, action as Action<AddControl>),
+      );
+    case FORMS_ADD_FORM_ARRAY_CONTROL:
+      return syncValidate(
+        addFormArrayControl(state, action as Action<AddControl>),
       );
 
     default:

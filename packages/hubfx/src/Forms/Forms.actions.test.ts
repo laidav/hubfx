@@ -4,15 +4,30 @@ import { MessageHubFactory } from '../Factories/MessageHubFactory';
 import {
   controlChange,
   addGroupControl,
+  addFormArrayControl,
   FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
 } from './Forms.actions';
-import { FormControlConfig } from './Models/Forms';
-import { blacklistedDoctorType, uniqueEmail } from './AsyncValidators';
+import {
+  FormControlConfig,
+  FormGroupConfig,
+  FormControlType,
+} from './Models/Forms';
+import {
+  blacklistedDoctorType,
+  uniqueEmail,
+  blacklistedEmail,
+  uniqueFirstAndLastName,
+} from './AsyncValidators';
 import { buildControlState } from './buildControlState';
 import { Action } from '../Models/Action';
 import { formsReducer } from './FormsReducer.reducer';
-import { emergencyContactConfigs, config as fullConfig } from './Tests/config';
-import { required } from './Validators';
+import {
+  emergencyContactConfigs,
+  config as fullConfig,
+  firstNameNotSameAsLast,
+} from './Tests/config';
+import { required, email } from './Validators';
+
 describe('Form.actions', () => {
   let messages = [];
   let dispatch;
@@ -346,6 +361,104 @@ describe('Form.actions', () => {
               validatorIndex: 0,
               errors: {
                 blacklistedDoctorType: true,
+              },
+            },
+          },
+        ],
+        done,
+      );
+    });
+  });
+
+  describe('addFormArrayControl', () => {
+    it('should run async validations for an added control and all anscenstors', (done) => {
+      const config = cloneDeep(fullConfig);
+
+      const state = buildControlState(config);
+
+      const newControlConfig: FormGroupConfig = {
+        controlType: FormControlType.Group,
+        validators: [firstNameNotSameAsLast],
+        asyncValidators: [uniqueFirstAndLastName],
+        formGroupControls: {
+          firstName: {
+            initialValue: 'Barney',
+            validators: [required],
+          } as FormControlConfig<string>,
+          lastName: {
+            initialValue: 'Gumble',
+            validators: [required],
+          } as FormControlConfig<string>,
+          email: {
+            initialValue: 'barney@gumble.com',
+            validators: [required, email],
+            asyncValidators: [uniqueEmail, blacklistedEmail],
+          } as FormControlConfig<string>,
+          relation: {
+            initialValue: 'astronaut friend',
+            validators: [required],
+          } as FormControlConfig<string>,
+        },
+      };
+      const actions = addFormArrayControl(
+        {
+          controlRef: ['emergencyContacts'],
+          config: newControlConfig,
+        },
+        state,
+        formsReducer,
+      );
+      dispatch(...actions);
+      assertMessages(
+        [
+          ...actions,
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: [],
+              validatorIndex: 0,
+              errors: {
+                uniqueFirstAndLastName: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts'],
+              validatorIndex: 0,
+              errors: {
+                arrayLengthError: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts', 0],
+              validatorIndex: 0,
+              errors: {
+                uniqueFirstAndLastName: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts', 0, 'email'],
+              validatorIndex: 0,
+              errors: {
+                uniqueEmail: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts', 0, 'email'],
+              validatorIndex: 1,
+              errors: {
+                blacklistedEmail: true,
               },
             },
           },
