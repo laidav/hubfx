@@ -26,7 +26,6 @@ describe('Form.actions', () => {
     timeout = 1000,
   ) => {
     setTimeout(() => {
-      console.log(messages);
       expect(messages).toEqual(expectedMessages);
       done();
     }, timeout);
@@ -299,7 +298,7 @@ describe('Form.actions', () => {
     });
   });
 
-  fdescribe('addGroupControl', () => {
+  describe('addGroupControl', () => {
     it('should run async validations for an added control and all anscenstors', (done) => {
       const config = cloneDeep(fullConfig);
 
@@ -317,7 +316,42 @@ describe('Form.actions', () => {
         formsReducer,
       );
       dispatch(...actions);
-      assertMessages([], done);
+      assertMessages(
+        [
+          ...actions,
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: [],
+              validatorIndex: 0,
+              errors: {
+                uniqueFirstAndLastName: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['doctorInfo'],
+              validatorIndex: 0,
+              errors: {
+                uniqueFirstAndLastName: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['doctorInfo', 'type'],
+              validatorIndex: 0,
+              errors: {
+                blacklistedDoctorType: true,
+              },
+            },
+          },
+        ],
+        done,
+      );
     });
   });
 });
