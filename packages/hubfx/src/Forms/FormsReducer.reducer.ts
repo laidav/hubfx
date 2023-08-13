@@ -245,22 +245,16 @@ const updateAncestorValues = <T>(
       ...(<FormGroup<unknown>>parentControl.value),
       [key]: value,
     };
-    return updateAncestorValues(newState, {
-      type: FORMS_UPDATE_ANCESTOR_VALUES,
-      payload: parentRef,
-    });
   } else if (parentControl.config.controlType === FormControlType.Array) {
     (<FormArray<unknown[]>>parentControl).value = (<FormArray<unknown[]>>(
       parentControl
     )).controls.map((control) => control.value);
-
-    return updateAncestorValues(newState, {
-      type: FORMS_UPDATE_ANCESTOR_VALUES,
-      payload: parentRef,
-    });
   }
 
-  return state;
+  return updateAncestorValues(newState, {
+    type: FORMS_UPDATE_ANCESTOR_VALUES,
+    payload: parentRef,
+  });
 };
 
 export const addFormGroupControl = <T>(
@@ -290,6 +284,21 @@ export const addFormArrayControl = <T>(
   { payload: { config, controlRef } }: Action<FormArrayAddControl>,
 ) => {
   const newState = cloneDeep(state);
+
+  const arrayControl = getFormControl(
+    controlRef,
+    newState,
+  ) as FormArray<unknown>;
+
+  const newIndex = arrayControl.controls.length
+    ? arrayControl.controls.length
+    : 0;
+
+  arrayControl.controls = arrayControl.controls.concat(
+    buildControlState(config, controlRef.concat(newIndex)),
+  );
+
+  arrayControl.value = arrayControl.controls.map(({ value }) => value);
 
   return updateAncestorValues(newState, {
     type: FORMS_UPDATE_ANCESTOR_VALUES,

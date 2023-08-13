@@ -714,8 +714,8 @@ describe('addFormArrayControl', () => {
       {
         firstName: 'Homer',
         lastName: 'Simpson',
-        email: 'homer@gmail.com',
-        relation: 'dad',
+        email: 'homer@homer.com',
+        relation: 'friend',
       },
       {
         firstName: 'moe',

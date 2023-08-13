@@ -12,6 +12,7 @@ import {
   ControlRef,
 } from './Models/Forms';
 import { getValueFromControlConfig } from './FormHelpers';
+import cloneDeep from 'lodash.clonedeep';
 
 export const buildControlState = <T>(
   controlConfig: AbstractControlConfig,
@@ -56,7 +57,7 @@ export const buildControlState = <T>(
       controlRef,
       dirty: false,
       touched: false,
-      pristineValue: groupInitialValue as T,
+      pristineValue: cloneDeep(groupInitialValue as T),
       value: groupInitialValue as T,
       valid: !groupControlHasError && !controlsHasErrors,
       submitting: false,
@@ -106,7 +107,7 @@ export const buildControlState = <T>(
       controlRef,
       controls,
       dirty: false,
-      pristineValue: value,
+      pristineValue: cloneDeep(value),
       value,
       touched: false,
       asyncValidateInProgress: {},
@@ -129,7 +130,9 @@ export const buildControlState = <T>(
     const result: FormControl<T> = {
       controlRef,
       dirty: false,
-      pristineValue: (<FormControlConfig<T>>controlConfig).initialValue,
+      pristineValue: cloneDeep(
+        (<FormControlConfig<T>>controlConfig).initialValue,
+      ),
       value: (<FormControlConfig<T>>controlConfig).initialValue,
       touched: false,
       valid: errors ? Object.values(errors).every((error) => !error) : true,
