@@ -67,8 +67,8 @@ export interface FormGroupAddControl {
   controlRef: ControlRef;
 }
 
-export interface FormArrayAddControl<T> {
-  initialValue: T;
+export interface FormArrayAddControl {
+  config: AbstractControlConfig;
   controlRef: ControlRef;
 }
 

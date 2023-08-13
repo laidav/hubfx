@@ -32,7 +32,7 @@
 
 - this new model can be bound with any UI library for rendering
 
-- # 2023 08 07 (Mon)
+- # 2023 08 13 (Sun)
 1. handling adding and removing array and group items
 
   - reducer method for adding formgroup control - DONE
@@ -53,6 +53,10 @@
 
 1. reset form , and set Pristine value
 
+1. update touched action in reducer. handle
+
+- create update touched reducer (state, controlRef)
+  - it will be called when user updates value and when user has action TOUCH CONTROL
 
 ## CLEAN UP TODOS
 
@@ -65,11 +69,6 @@
 1. SHOULD INITIALIZE and async validate at beginning?
 
 1. better way to copy compare objects than JSON STRINGIFY?
-
-1. update touched action in reducer. handle
-
-- create update touched reducer (state, controlRef)
-  - it will be called when user updates value and when user has action TOUCH CONTROL
 
 1. Consider submitting property on Form Group?
 
@@ -97,17 +96,15 @@
 
   - hub.messages$
 
+  - key moved to scoped dispatch
+
 1. add a tap option for neccessary side effects
 
 - timeout solved it
 
 1. Clean up initil state builder method
 
-1. More test for the initial state builder method
-
 1. reduce boilerplate some how?
-
-1. refactor scoped effects for action into dictionary?
 
 ### React project 
 

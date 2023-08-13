@@ -33,6 +33,7 @@ import {
   FormGroupConfig,
   FormControlConfig,
   FormControlType,
+  AbstractControlConfig,
 } from './Models/Forms';
 import { Contact } from './Tests/Models/Contact';
 import { EmergencyContact } from './Tests/Models/EmergencyContact';
@@ -707,92 +708,95 @@ describe('addGroupFormControl', () => {
   });
 });
 
-// describe('addFormArrayControl', () => {
-//   it('should add a form control to formArray', () => {
-//     const initialValue = [
-//       {
-//         firstName: 'Homer',
-//         lastName: 'Simpson',
-//         email: 'homer@gmail.com',
-//         relation: 'dad',
-//       },
-//       {
-//         firstName: 'Moe',
-//         lastName: 'Syzlak',
-//         email: 'moe@moe.com',
-//         relation: 'friend',
-//       },
-//     ];
-//     const clonedConfig: FormGroupConfig = cloneDeep(config);
-//     (<FormArrayConfig>(
-//       clonedConfig.formGroupControls.emergencyContacts
-//     )).formArrayControls = emergencyContactConfigs;
-//     const initialState = buildControlState(clonedConfig) as FormGroup<Contact>;
+describe('addFormArrayControl', () => {
+  it('should add a form control to formArray', () => {
+    const initialValue = [
+      {
+        firstName: 'Homer',
+        lastName: 'Simpson',
+        email: 'homer@gmail.com',
+        relation: 'dad',
+      },
+      {
+        firstName: 'moe',
+        lastName: 'syzlak',
+        email: 'moe@moe.com',
+        relation: 'friend',
+      },
+    ];
+    const clonedConfig: FormGroupConfig = cloneDeep(config);
+    (<FormArrayConfig>(
+      clonedConfig.formGroupControls.emergencyContacts
+    )).formArrayControls = emergencyContactConfigs;
+    const initialState = buildControlState(clonedConfig) as FormGroup<Contact>;
 
-//     const newState = addFormArrayControl(initialState, {
-//       type: FORMS_ADD_FORM_ARRAY_CONTROL,
-//       payload: {
-//         initialValue: {
-//           firstName: 'Barney',
-//           lastName: 'Gumble',
-//           email: 'barney@gumble.com',
-//           relation: 'astronaut friend',
-//         },
-//         controlRef: ['emergencyContacts'],
-//       },
-//     });
+    const newControlConfig: FormGroupConfig = {
+      controlType: FormControlType.Group,
+      validators: [firstNameNotSameAsLast],
+      asyncValidators: [uniqueFirstAndLastName],
+      formGroupControls: {
+        firstName: {
+          initialValue: 'Barney',
+          validators: [required],
+        } as FormControlConfig<string>,
+        lastName: {
+          initialValue: 'Gumble',
+          validators: [required],
+        } as FormControlConfig<string>,
+        email: {
+          initialValue: 'barney@gumble.com',
+          validators: [required, email],
+          asyncValidators: [uniqueEmail, blacklistedEmail],
+        } as FormControlConfig<string>,
+        relation: {
+          initialValue: 'astronaut friend',
+          validators: [required],
+        } as FormControlConfig<string>,
+      },
+    };
 
-//     const newControl = buildControlState({
-//       controlType: FormControlType.Group,
-//       validators: [firstNameNotSameAsLast],
-//       asyncValidators: [uniqueFirstAndLastName],
-//       formGroupControls: {
-//         firstName: {
-//           initialValue: 'Barney',
-//           validators: [required],
-//         },
-//         lastName: {
-//           initialValue: 'Gumble',
-//           validators: [required],
-//         },
-//         email: {
-//           initialValue: 'barney@gumble.com',
-//           validators: [required, email],
-//           asyncValidators: [uniqueEmail, blacklistedEmail],
-//         },
-//         relation: { initialValue: 'astronaut friend', validators: [required] },
-//       },
-//     } as FormGroupConfig);
+    const newState = addFormArrayControl(initialState, {
+      type: FORMS_ADD_FORM_ARRAY_CONTROL,
+      payload: {
+        config: newControlConfig,
+        controlRef: ['emergencyContacts'],
+      },
+    });
 
-//     const expectedState = cloneDeep(initialState);
-//     expectedState.value.emergencyContacts = [
-//       ...initialValue,
-//       {
-//         firstName: 'Barney',
-//         lastName: 'Gumble',
-//         email: 'barney@gumble.com',
-//         relation: 'astronaut friend',
-//       },
-//     ];
+    const newControl = buildControlState(newControlConfig, [
+      'emergencyContacts',
+      2,
+    ]);
 
-//     expectedState.controls.emergencyContacts.value = [
-//       ...initialValue,
-//       {
-//         firstName: 'Barney',
-//         lastName: 'Gumble',
-//         email: 'barney@gumble.com',
-//         relation: 'astronaut friend',
-//       },
-//     ];
+    const expectedState = cloneDeep(initialState);
+    expectedState.value.emergencyContacts = [
+      ...initialValue,
+      {
+        firstName: 'Barney',
+        lastName: 'Gumble',
+        email: 'barney@gumble.com',
+        relation: 'astronaut friend',
+      },
+    ];
 
-//     expectedState.controls.emergencyContacts.controls = [
-//       ...expectedState.controls.emergencyContacts.controls,
-//       newControl,
-//     ];
+    expectedState.controls.emergencyContacts.value = [
+      ...initialValue,
+      {
+        firstName: 'Barney',
+        lastName: 'Gumble',
+        email: 'barney@gumble.com',
+        relation: 'astronaut friend',
+      },
+    ];
 
-//     expect(newState).toEqual(expectedState);
-//   });
-// });
+    expectedState.controls.emergencyContacts.controls = [
+      ...expectedState.controls.emergencyContacts.controls,
+      newControl,
+    ];
+
+    expect(newState).toEqual(expectedState);
+  });
+});
 
 describe('removeControl', () => {
   it('should remove a formGroup control', () => {

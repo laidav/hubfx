@@ -287,9 +287,7 @@ export const addFormGroupControl = <T>(
 
 export const addFormArrayControl = <T>(
   state: AbstractControl<T>,
-  {
-    payload: { initialValue, controlRef },
-  }: Action<FormArrayAddControl<unknown>>,
+  { payload: { config, controlRef } }: Action<FormArrayAddControl>,
 ) => {
   const newState = cloneDeep(state);
 
