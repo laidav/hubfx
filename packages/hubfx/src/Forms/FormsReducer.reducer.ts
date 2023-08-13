@@ -270,7 +270,10 @@ export const addFormGroupControl = <T>(
     throw 'The control this is being added to is not a FormGroup control';
   }
 
-  newControl.controls[controlRef.slice(-1)[0]] = buildControlState(config);
+  newControl.controls[controlRef.slice(-1)[0]] = buildControlState(
+    config,
+    controlRef,
+  );
 
   return updateAncestorValues(newState, {
     type: FORMS_UPDATE_ANCESTOR_VALUES,

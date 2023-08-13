@@ -3,14 +3,16 @@ import cloneDeep from 'lodash.clonedeep';
 import { MessageHubFactory } from '../Factories/MessageHubFactory';
 import {
   controlChange,
+  addGroupControl,
   FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
 } from './Forms.actions';
 import { FormControlConfig } from './Models/Forms';
-import { uniqueEmail } from './AsyncValidators';
+import { blacklistedDoctorType, uniqueEmail } from './AsyncValidators';
 import { buildControlState } from './buildControlState';
 import { Action } from '../Models/Action';
 import { formsReducer } from './FormsReducer.reducer';
 import { emergencyContactConfigs, config as fullConfig } from './Tests/config';
+import { required } from './Validators';
 describe('Form.actions', () => {
   let messages = [];
   let dispatch;
@@ -296,5 +298,25 @@ describe('Form.actions', () => {
     });
   });
 
-  describe('addGroupControl', () => {});
+  fdescribe('addGroupControl', () => {
+    it('should run async validations for an added control and all anscenstors', (done) => {
+      const config = cloneDeep(fullConfig);
+
+      const state = buildControlState(config);
+      const actions = addGroupControl(
+        {
+          controlRef: ['doctorInfo', 'type'],
+          config: {
+            initialValue: 'proctologist',
+            validators: [required],
+            asyncValidators: [blacklistedDoctorType],
+          } as FormControlConfig<string>,
+        },
+        state,
+        formsReducer,
+      );
+      dispatch(...actions);
+      assertMessages([], done);
+    });
+  });
 });

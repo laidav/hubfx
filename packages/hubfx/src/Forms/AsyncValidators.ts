@@ -30,6 +30,13 @@ export const uniqueFirstAndLastName: ValidatorAsyncFn = (control$) => {
   );
 };
 
+export const blacklistedDoctorType: ValidatorAsyncFn = (control$) => {
+  return control$.pipe(
+    // tap((control) => console.log(control, 'in validator')),
+    mergeMap((control) => of({ blacklistedDoctorType: true }).pipe(delay(500))),
+  );
+};
+
 //Change payload with the state
 //map control to validator
 // then send action with controlrRef

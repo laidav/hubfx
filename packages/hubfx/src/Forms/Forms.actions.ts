@@ -100,11 +100,18 @@ export const controlChange = <T, S>(
 export const FORMS_ADD_GROUP_CONTROL = 'FORMS_ADD_GROUP_CONTROL';
 export const addGroupControl = <T>(
   { controlRef, config }: AddControl,
+  state,
   reducer: (
     state: AbstractControl<T>,
     action: Action<unknown>,
   ) => AbstractControl<T>,
 ): (Action<AddControl> | Action<ControlRef>)[] => {
+  const newState = reducer(state, {
+    type: FORMS_ADD_GROUP_CONTROL,
+    payload: { controlRef, config },
+  });
+  const formControls = getControlBranch(controlRef, newState);
+  const effects = getValueChangeEffects(formControls);
   const actions = [
     {
       type: FORMS_ADD_GROUP_CONTROL,
@@ -113,6 +120,7 @@ export const addGroupControl = <T>(
         controlRef,
       } as AddControl,
     },
+    ...effects,
   ];
 
   return actions;

@@ -675,7 +675,7 @@ describe('addGroupFormControl', () => {
       type: 'proctology',
     };
 
-    doctorInfo.controls.type = buildControlState(newControlConfig);
+    doctorInfo.controls.type = buildControlState(newControlConfig, controlRef);
 
     const newState = addFormGroupControl(initialState, {
       type: FORMS_ADD_GROUP_CONTROL,
@@ -695,7 +695,7 @@ describe('addGroupFormControl', () => {
     };
 
     expectedStateWithOccupationControl.controls['occupation'] =
-      buildControlState(occupationControlConfig);
+      buildControlState(occupationControlConfig, ['occupation']);
 
     const newStateWithOccupationControl = addFormGroupControl(newState, {
       type: FORMS_ADD_GROUP_CONTROL,
