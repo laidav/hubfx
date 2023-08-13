@@ -26,6 +26,7 @@ describe('Form.actions', () => {
     timeout = 1000,
   ) => {
     setTimeout(() => {
+      console.log(messages);
       expect(messages).toEqual(expectedMessages);
       done();
     }, timeout);
