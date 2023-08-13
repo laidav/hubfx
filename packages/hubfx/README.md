@@ -43,7 +43,8 @@
   - reducer method for adding formArray control
     - refactor arraycontrols template? - DONE
       - should it just be an array of configs like FormGroupConfig? - DONE
-    - must update value as well
+
+    - must update value as well - DONE
 
   - action creator for adding formgroup control
   - action creator for adding formArray control
