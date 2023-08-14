@@ -9,6 +9,7 @@ import {
   addFormGroupControl,
   addFormArrayControl,
   removeControl,
+  getChildControls,
 } from './FormsReducer.reducer';
 import cloneDeep from 'lodash.clonedeep';
 import { buildControlState } from './buildControlState';
@@ -1091,5 +1092,36 @@ describe('buildFormsReducer', () => {
         },
       },
     });
+  });
+});
+
+describe('getChildControls', () => {
+  it('should get child controls', () => {
+    const clonedConfig: FormGroupConfig = cloneDeep(config);
+    (<FormArrayConfig>(
+      clonedConfig.formGroupControls.emergencyContacts
+    )).formArrayControls = emergencyContactConfigs;
+
+    const arrayControl = buildControlState(
+      clonedConfig.formGroupControls.emergencyContacts,
+    );
+
+    const controlRefs = getChildControls(arrayControl).map(
+      ({ controlRef }) => controlRef,
+    );
+
+    expect(controlRefs).toEqual([
+      [],
+      [0],
+      [0, 'firstName'],
+      [0, 'lastName'],
+      [0, 'email'],
+      [0, 'relation'],
+      [1],
+      [1, 'firstName'],
+      [1, 'lastName'],
+      [1, 'email'],
+      [1, 'relation'],
+    ]);
   });
 });

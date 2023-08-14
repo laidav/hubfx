@@ -172,6 +172,27 @@ export const getAncestorControls = (
   return [form].concat(formControls);
 };
 
+export const getChildControls = (
+  control: AbstractControl<unknown>,
+): AbstractControl<unknown>[] => {
+  if (control.config.controlType === FormControlType.Group) {
+    return [control].concat(
+      Object.values((<FormGroup<unknown>>control).controls).reduce(
+        (acc, control) => acc.concat(getChildControls(control)),
+        [],
+      ),
+    );
+  } else if (control.config.controlType === FormControlType.Array) {
+    return [control].concat(
+      (<FormArray<unknown>>control).controls.reduce(
+        (acc, control) => acc.concat(getChildControls(control)),
+        [],
+      ),
+    );
+  }
+  return [control];
+};
+
 export const updateValues = <T>(
   state: AbstractControl<T>,
   { payload: { controlRef, value } }: Action<ControlChange<unknown>>,
