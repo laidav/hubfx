@@ -5,13 +5,16 @@ import {
   ControlChange,
   ControlAsyncValidationResponse,
   AbstractControl,
-  AbstractControlConfig,
   ControlRef,
   AddControl,
   RemoveControl,
   FormArray,
 } from './Models/Forms';
-import { getAncestorControls, getFormControl } from './FormsReducer.reducer';
+import {
+  getAncestorControls,
+  getFormControl,
+  getControlBranch,
+} from './FormsReducer.reducer';
 import { Effect } from '../Models/Effect';
 import { FormErrors } from './Models/Forms';
 
@@ -111,7 +114,7 @@ export const addGroupControl = <T>(
     type: FORMS_ADD_GROUP_CONTROL,
     payload: { controlRef, config },
   });
-  const formControls = getAncestorControls(controlRef, newState);
+  const formControls = getControlBranch(controlRef, newState);
   const effects = getValueChangeEffects(formControls);
   const actions = [
     {
@@ -143,7 +146,7 @@ export const addFormArrayControl = <T>(
   const index =
     (<FormArray<unknown>>getFormControl(controlRef, newState)).controls.length -
     1;
-  const formControls = getAncestorControls(controlRef.concat(index), newState);
+  const formControls = getControlBranch(controlRef.concat(index), newState);
   const effects = getValueChangeEffects(formControls);
   const actions = [
     {

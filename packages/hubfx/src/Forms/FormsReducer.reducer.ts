@@ -193,6 +193,18 @@ export const getChildControls = (
   return [control];
 };
 
+export const getControlBranch = (
+  controlRef: ControlRef,
+  form: AbstractControl<unknown>,
+): AbstractControl<unknown>[] => {
+  const ancestors = getAncestorControls(controlRef, form);
+  const childControls = getChildControls(
+    getFormControl(controlRef, form),
+  ).slice(1);
+
+  return ancestors.concat(childControls);
+};
+
 export const updateValues = <T>(
   state: AbstractControl<T>,
   { payload: { controlRef, value } }: Action<ControlChange<unknown>>,
