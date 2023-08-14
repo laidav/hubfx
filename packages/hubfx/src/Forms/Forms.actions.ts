@@ -11,7 +11,7 @@ import {
   RemoveControl,
   FormArray,
 } from './Models/Forms';
-import { getControlBranch, getFormControl } from './FormsReducer.reducer';
+import { getAncestorBranch, getFormControl } from './FormsReducer.reducer';
 import { Effect } from '../Models/Effect';
 import { FormErrors } from './Models/Forms';
 
@@ -84,7 +84,7 @@ export const controlChange = <T, S>(
     type: FORMS_CONTROL_CHANGE,
     payload: controlChange,
   });
-  const formControls = getControlBranch(controlRef, newState);
+  const formControls = getAncestorBranch(controlRef, newState);
   const effects = getValueChangeEffects(formControls);
 
   const actions: (Action<ControlChange<T>> | Action<ControlRef>)[] = [
@@ -111,7 +111,7 @@ export const addGroupControl = <T>(
     type: FORMS_ADD_GROUP_CONTROL,
     payload: { controlRef, config },
   });
-  const formControls = getControlBranch(controlRef, newState);
+  const formControls = getAncestorBranch(controlRef, newState);
   const effects = getValueChangeEffects(formControls);
   const actions = [
     {
@@ -143,7 +143,7 @@ export const addFormArrayControl = <T>(
   const index =
     (<FormArray<unknown>>getFormControl(controlRef, newState)).controls.length -
     1;
-  const formControls = getControlBranch(controlRef.concat(index), newState);
+  const formControls = getAncestorBranch(controlRef.concat(index), newState);
   const effects = getValueChangeEffects(formControls);
   const actions = [
     {

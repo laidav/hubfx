@@ -148,7 +148,7 @@ export const getFormControl = (
   return result;
 };
 
-export const getControlBranch = (
+export const getAncestorBranch = (
   controlRef: ControlRef,
   form: AbstractControl<unknown>,
 ): AbstractControl<unknown>[] => {
@@ -348,7 +348,7 @@ export const handleAsyncValidation = <T>(
   action: Action<ControlRef>,
 ): AbstractControl<T> => {
   const newState: AbstractControl<T> = cloneDeep(state);
-  const newControlBranch = getControlBranch(action.payload, newState);
+  const newControlBranch = getAncestorBranch(action.payload, newState);
 
   newControlBranch.forEach((control, index) => {
     control.validating = true;
@@ -378,7 +378,7 @@ export const handleAsyncValidationResponseSuccess = <T>(
   }: Action<ControlAsyncValidationResponse>,
 ): AbstractControl<T> => {
   const newState = cloneDeep(state) as AbstractControl<T>;
-  const controlBranch = getControlBranch(controlRef, newState);
+  const controlBranch = getAncestorBranch(controlRef, newState);
 
   controlBranch.reverse().forEach((control, index) => {
     if (index === 0) {
