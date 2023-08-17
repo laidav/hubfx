@@ -6,6 +6,7 @@ import {
   FORMS_VALUE_CHANGE_EFFECT,
   FORMS_ADD_GROUP_CONTROL,
   FORMS_ADD_FORM_ARRAY_CONTROL,
+  FORMS_REMOVE_CONTROL,
 } from './Forms.actions';
 import {
   FormControl,
@@ -458,6 +459,10 @@ export const formsReducer = <T>(
     case FORMS_ADD_FORM_ARRAY_CONTROL:
       return syncValidate(
         addFormArrayControl(state, action as Action<AddControl>),
+      );
+    case FORMS_REMOVE_CONTROL:
+      return syncValidate(
+        removeControl(state, action as Action<RemoveControl>),
       );
 
     default:

@@ -5,12 +5,15 @@ import {
   controlChange,
   addGroupControl,
   addFormArrayControl,
+  removeControl,
   FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
 } from './Forms.actions';
 import {
   FormControlConfig,
   FormGroupConfig,
   FormControlType,
+  FormArrayConfig,
+  FormGroup,
 } from './Models/Forms';
 import {
   blacklistedDoctorType,
@@ -27,6 +30,8 @@ import {
   firstNameNotSameAsLast,
 } from './Tests/config';
 import { required, email } from './Validators';
+import { Contact } from './Tests/Models/Contact';
+import { TEST_ACTION_SUCCESS } from './Tests/Actions';
 
 describe('Form.actions', () => {
   let messages = [];
@@ -408,6 +413,76 @@ describe('Form.actions', () => {
         state,
         formsReducer,
       );
+      dispatch(...actions);
+      assertMessages(
+        [
+          ...actions,
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts', 0, 'email'],
+              validatorIndex: 0,
+              errors: {
+                uniqueEmail: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts', 0, 'email'],
+              validatorIndex: 1,
+              errors: {
+                blacklistedEmail: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts'],
+              validatorIndex: 0,
+              errors: {
+                arrayLengthError: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: [],
+              validatorIndex: 0,
+              errors: {
+                uniqueFirstAndLastName: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts', 0],
+              validatorIndex: 0,
+              errors: {
+                uniqueFirstAndLastName: true,
+              },
+            },
+          },
+        ],
+        done,
+      );
+    });
+  });
+
+  fdescribe('removeControl', () => {
+    it('should run asyncvalidation on all anscestors', (done) => {
+      const clonedConfig: FormGroupConfig = cloneDeep(fullConfig);
+      (<FormArrayConfig>(
+        clonedConfig.formGroupControls.emergencyContacts
+      )).formArrayControls = emergencyContactConfigs;
+      const state = buildControlState(clonedConfig) as FormGroup<Contact>;
+
+      const controlRef = ['emergencyContacts', 0];
+      const actions = removeControl(controlRef, state, formsReducer);
       dispatch(...actions);
       assertMessages(
         [

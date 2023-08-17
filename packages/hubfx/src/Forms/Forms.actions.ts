@@ -133,7 +133,7 @@ export const addGroupControl = <T>(
 export const FORMS_ADD_FORM_ARRAY_CONTROL = 'FORMS_ADD_FORM_ARRAY_CONTROL';
 export const addFormArrayControl = <T>(
   { controlRef, config }: AddControl,
-  state,
+  state: AbstractControl<T>,
   reducer: (
     state: AbstractControl<T>,
     action: Action<unknown>,
@@ -165,11 +165,18 @@ export const addFormArrayControl = <T>(
 export const FORMS_REMOVE_CONTROL = 'FORMS_REMOVE_CONTROL';
 export const removeControl = <T>(
   controlRef: ControlRef,
+  state: AbstractControl<T>,
   reducer: (
     state: AbstractControl<T>,
     action: Action<unknown>,
   ) => AbstractControl<T>,
 ) => {
+  const newState = reducer(state, {
+    type: FORMS_REMOVE_CONTROL,
+    payload: { controlRef },
+  });
+  const formControls = getControlBranch(controlRef, newState);
+  const effects = getValueChangeEffects(formControls);
   const actions = [
     {
       type: FORMS_REMOVE_CONTROL,
@@ -177,6 +184,7 @@ export const removeControl = <T>(
         controlRef,
       },
     } as Action<RemoveControl>,
+    ...effects,
   ];
 
   return actions;

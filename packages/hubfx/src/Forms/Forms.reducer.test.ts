@@ -839,20 +839,6 @@ describe('removeControl', () => {
 
   //TODO: need test to test updated index of array items after a removal
   it('should remove an array control item', () => {
-    const initialValue = [
-      {
-        firstName: 'Homer',
-        lastName: 'Simpson',
-        email: 'homer@gmail.com',
-        relation: 'dad',
-      },
-      {
-        firstName: 'moe',
-        lastName: 'syzlak',
-        email: 'moe@moe.com',
-        relation: 'friend',
-      },
-    ];
     const clonedConfig: FormGroupConfig = cloneDeep(config);
     (<FormArrayConfig>(
       clonedConfig.formGroupControls.emergencyContacts
