@@ -837,7 +837,6 @@ describe('removeControl', () => {
     expect(newState).toEqual(expectedState);
   });
 
-  //TODO: need test to test updated index of array items after a removal
   it('should remove an array control item', () => {
     const clonedConfig: FormGroupConfig = cloneDeep(config);
     (<FormArrayConfig>(
@@ -871,6 +870,28 @@ describe('removeControl', () => {
       {
         ...emergencyContacts.controls[1],
         controlRef: ['emergencyContacts', 0],
+        controls: {
+          firstName: {
+            ...(<FormGroup<EmergencyContact>>emergencyContacts.controls[1])
+              .controls.firstName,
+            controlRef: ['emergencyContacts', 0, 'firstName'],
+          },
+          lastName: {
+            ...(<FormGroup<EmergencyContact>>emergencyContacts.controls[1])
+              .controls.lastName,
+            controlRef: ['emergencyContacts', 0, 'lastName'],
+          },
+          email: {
+            ...(<FormGroup<EmergencyContact>>emergencyContacts.controls[1])
+              .controls.email,
+            controlRef: ['emergencyContacts', 0, 'email'],
+          },
+          relation: {
+            ...(<FormGroup<EmergencyContact>>emergencyContacts.controls[1])
+              .controls.relation,
+            controlRef: ['emergencyContacts', 0, 'relation'],
+          },
+        },
       },
     ];
     emergencyContacts.value = [
