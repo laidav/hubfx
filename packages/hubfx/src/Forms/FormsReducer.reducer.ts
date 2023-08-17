@@ -344,6 +344,35 @@ export const addFormArrayControl = <T>(
   });
 };
 
+const reindexControl = (
+  control: AbstractControl<unknown>,
+  arrayRef: ControlRef,
+  newIndex: number,
+) => {
+  const newControl = cloneDeep(control);
+  if (newControl.config.controlType === FormControlType.Group) {
+    Object.entries((<FormGroup<unknown>>newControl).controls).forEach(
+      ([key, control]) => {
+        newControl.controls[key] = reindexControl(control, arrayRef, newIndex);
+      },
+    );
+  } else if (newControl.config.controlType === FormControlType.Array) {
+    (<FormArray<unknown>>newControl).controls.forEach((control, index) => {
+      (<FormArray<unknown>>newControl).controls[index] = reindexControl(
+        control,
+        arrayRef,
+        newIndex,
+      );
+    });
+  }
+  return {
+    ...newControl,
+    controlRef: arrayRef
+      .concat(newIndex)
+      .concat(control.controlRef.slice(arrayRef.length + 1)),
+  };
+};
+
 export const removeControl = <T>(
   state: AbstractControl<T>,
   { payload: { controlRef } }: Action<RemoveControl>,
@@ -364,10 +393,9 @@ export const removeControl = <T>(
   } else if (parentControl.config.controlType === FormControlType.Array) {
     const result = (<FormArray<unknown>>parentControl).controls
       .filter((_, index) => index !== key)
-      .map((control, index) => ({
-        ...control,
-        controlRef: parentControl.controlRef.concat(index),
-      }));
+      .map((control, index) =>
+        reindexControl(control, parentControl.controlRef, index),
+      );
 
     (<FormArray<unknown>>parentControl).controls = result;
   }

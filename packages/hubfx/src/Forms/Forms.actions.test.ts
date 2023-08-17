@@ -473,7 +473,7 @@ describe('Form.actions', () => {
     });
   });
 
-  fdescribe('removeControl', () => {
+  describe('removeControl', () => {
     it('should run asyncvalidation on all anscestors', (done) => {
       const clonedConfig: FormGroupConfig = cloneDeep(fullConfig);
       (<FormArrayConfig>(
