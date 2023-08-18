@@ -273,7 +273,41 @@ describe('updateValues', () => {
     });
   });
 
-  it('should update values only for a FG -> FG', () => {});
+  it('should update values only for a FG -> FG', () => {
+    const newDoctorValue = {
+      firstName: 'Dr',
+      lastName: 'Ho',
+      email: 'dr@hoe.com',
+    };
+    const state = buildControlState(config);
+    const expectedState = cloneDeep(state);
+    expectedState.value = {
+      ...expectedState.value,
+      doctorInfo: newDoctorValue,
+    };
+    expectedState.controls.doctorInfo.value = newDoctorValue;
+    expectedState.controls.doctorInfo.controls.firstName.value =
+      newDoctorValue.firstName;
+    expectedState.controls.doctorInfo.controls.lastName.value =
+      newDoctorValue.lastName;
+    expectedState.controls.doctorInfo.controls.email.value =
+      newDoctorValue.email;
+
+    const newState = updateValues(state, {
+      type: FORMS_CONTROL_CHANGE,
+      payload: {
+        controlRef: ['doctorInfo'],
+        value: {
+          firstName: 'Dr',
+          lastName: 'Ho',
+          email: 'dr@hoe.com',
+        },
+      },
+    });
+
+    expect(newState).toEqual(expectedState);
+  });
+
   it('should update values only for a FA -> FG', () => {});
 });
 
