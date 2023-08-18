@@ -32,31 +32,14 @@
 
 - this new model can be bound with any UI library for rendering
 
-- # 2023 08 13 (Sun)
-1. handling adding and removing array and group items
+- # 2023 08 18 (Fri)
 
-  - reducer method for adding formgroup control - DONE
-    - must update values as well - DONE
-  - reducer method for removing form control - DONE
-    - must update values as well - DONE
+1. reset form
 
-  - reducer method for adding formArray control
-    - refactor arraycontrols template? - DONE
-      - should it just be an array of configs like FormGroupConfig? - DONE
-
-    - must update value as well - DONE
-
-  - action creator for adding formgroup control - DONE
-    - need cases to trigger async validation for child controls - DONE
-  - action creator for adding formArray control - DONE
-    - need cases to trigger async validation for child controls - DONE
-
-  - action creator for removing control - DONE
-    - need cases to trigger async validation for child controls - DONE
+1. Pristine value
 
 # TODOS
 
-1. reset form , and set Pristine value
 
 1. update touched action in reducer. handle
 
