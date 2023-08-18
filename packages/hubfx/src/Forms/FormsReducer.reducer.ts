@@ -259,6 +259,11 @@ const updateChildValues = <T>(state: AbstractControl<T>) => {
   const value = newState.value;
   if (newState.config.controlType === FormControlType.Group) {
     Object.entries(value).forEach(([key, value]) => {
+      if (!(<FormGroup<T>>newState).controls[key]) {
+        throw `Cannot find control with key${key} in form group: ${newState.controlRef.join(
+          ',',
+        )}`;
+      }
       (<FormGroup<T>>newState).controls[key].value = value;
       (<FormGroup<T>>newState).controls[key] = updateChildValues(
         (<FormGroup<T>>newState).controls[key],
@@ -266,6 +271,11 @@ const updateChildValues = <T>(state: AbstractControl<T>) => {
     });
   } else if (newState.config.controlType === FormControlType.Array) {
     (<FormArray<T>>newState).controls.forEach((control, index) => {
+      if (!value[index] === undefined) {
+        throw `Must supply a value for form control at index: ${index}, in form array: ${newState.controlRef.join(
+          ',',
+        )}`;
+      }
       control.value = value[index];
       (<FormArray<T>>newState).controls[index] = updateChildValues(control);
     });
