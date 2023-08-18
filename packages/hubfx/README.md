@@ -35,6 +35,11 @@
 - # 2023 08 18 (Fri)
 
 1. reset form
+  - going to have to update controlChange/updateValues to handle reseting of formcontrols, i.e formgroup and formarray
+
+    - refactor updatevalues method in reducer to handle updating values of formgroups and form arrays
+
+      - throws error if setting value does not match structure of controls
 
 1. Pristine value
 

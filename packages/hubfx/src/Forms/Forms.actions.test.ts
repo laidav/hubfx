@@ -31,7 +31,6 @@ import {
 } from './Tests/config';
 import { required, email } from './Validators';
 import { Contact } from './Tests/Models/Contact';
-import { TEST_ACTION_SUCCESS } from './Tests/Actions';
 
 describe('Form.actions', () => {
   let messages = [];
