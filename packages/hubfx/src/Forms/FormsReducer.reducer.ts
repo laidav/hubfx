@@ -251,6 +251,11 @@ const updateAncestorValues = <T>(
   });
 };
 
+const FORMS_UPDATE_CHILD_VALUES = 'FORMS_UPDATE_CHILD_VALUES';
+const updateChildValues = <T>(state: T, action: Action<ControlRef>) => {
+  return state;
+};
+
 export const addFormGroupControl = <T>(
   state: AbstractControl<T>,
   { payload: { controlRef, config } }: Action<AddControl>,

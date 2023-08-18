@@ -46,7 +46,7 @@ import {
 } from './AsyncValidators';
 
 describe('updateValues', () => {
-  it('should update values only for a FormControl in a FormGroup', () => {
+  it('should update values only for a FC -> FG', () => {
     const initialState = buildControlState(config) as FormGroup<Contact>;
     expect(
       updateValues(initialState, {
@@ -90,7 +90,7 @@ describe('updateValues', () => {
     });
   });
 
-  it('should update values only for a FormGroup in a FormGroup', () => {
+  it('should update values only for a FC -> FG -> FG', () => {
     const initialState = buildControlState(config) as FormGroup<Contact>;
     expect(
       updateValues(initialState, {
@@ -176,7 +176,7 @@ describe('updateValues', () => {
     });
   });
 
-  it('should update values only for a FormArray in a FormGroup', () => {
+  it('should update values only for a FC -> FG -> FA -> FG ', () => {
     const emergencyContactsConfig = {
       ...(config.formGroupControls.emergencyContacts as FormArrayConfig),
       formArrayControls: emergencyContactConfigs,
@@ -272,6 +272,9 @@ describe('updateValues', () => {
       },
     });
   });
+
+  it('should update values only for a FG -> FG', () => {});
+  it('should update values only for a FA -> FG', () => {});
 });
 
 describe('updateDirty', () => {
