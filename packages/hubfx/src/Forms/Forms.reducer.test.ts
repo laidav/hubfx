@@ -44,6 +44,7 @@ import {
   uniqueFirstAndLastName,
   blacklistedEmail,
 } from './AsyncValidators';
+import exp from 'constants';
 
 describe('updateValues', () => {
   it('should update values only for a FC -> FG', () => {
@@ -308,7 +309,61 @@ describe('updateValues', () => {
     expect(newState).toEqual(expectedState);
   });
 
-  it('should update values only for a FA -> FG', () => {});
+  it('should update values only for a FA -> FG', () => {
+    const clonedConfig: FormGroupConfig = cloneDeep(config);
+    (<FormArrayConfig>(
+      clonedConfig.formGroupControls.emergencyContacts
+    )).formArrayControls = emergencyContactConfigs;
+
+    const initialState = buildControlState(clonedConfig);
+    const newValue: EmergencyContact[] = [
+      {
+        firstName: 'Milhouse',
+        lastName: 'Vanhoutten',
+        email: 'thrill@house.com',
+        relation: 'friend',
+      },
+      {
+        firstName: 'James',
+        lastName: 'Woods',
+        email: 'james@woods.com',
+        relation: 'cashier',
+      },
+    ];
+
+    const expectedState = cloneDeep(initialState);
+
+    expectedState.value.emergencyContacts = newValue;
+    expectedState.controls.emergencyContacts.value = newValue;
+    expectedState.controls.emergencyContacts.controls[0].value = newValue[0];
+    expectedState.controls.emergencyContacts.controls[0].controls.firstName.value =
+      newValue[0].firstName;
+    expectedState.controls.emergencyContacts.controls[0].controls.lastName.value =
+      newValue[0].lastName;
+    expectedState.controls.emergencyContacts.controls[0].controls.email.value =
+      newValue[0].email;
+    expectedState.controls.emergencyContacts.controls[0].controls.relation.value =
+      newValue[0].relation;
+    expectedState.controls.emergencyContacts.controls[1].value = newValue[1];
+    expectedState.controls.emergencyContacts.controls[1].controls.firstName.value =
+      newValue[1].firstName;
+    expectedState.controls.emergencyContacts.controls[1].controls.lastName.value =
+      newValue[1].lastName;
+    expectedState.controls.emergencyContacts.controls[1].controls.email.value =
+      newValue[1].email;
+    expectedState.controls.emergencyContacts.controls[1].controls.relation.value =
+      newValue[1].relation;
+
+    const newState = updateValues(initialState, {
+      type: FORMS_CONTROL_CHANGE,
+      payload: {
+        controlRef: ['emergencyContacts'],
+        value: newValue,
+      },
+    });
+
+    expect(newState).toEqual(expectedState);
+  });
 });
 
 describe('updateDirty', () => {
