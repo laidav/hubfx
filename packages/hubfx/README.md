@@ -51,8 +51,8 @@
   - action creator for adding formArray control - DONE
     - need cases to trigger async validation for child controls - DONE
 
-  - action creator for removing control
-    - need cases to trigger async validation for child controls 
+  - action creator for removing control - DONE
+    - need cases to trigger async validation for child controls - DONE
 
 # TODOS
 
@@ -86,13 +86,6 @@
 
   - one way in one way out rule
 
-1. and a idle timeout for scopedEffects
-
-1. For effects put key into scopedEffects = {
-  key?: string,
-  effects: Effect[]
-}
-
 1. Better api 
 
   - hub.state({ reducer, ...otherOptions }) ?
@@ -102,6 +95,14 @@
   - hub.messages$
 
   - key moved to scoped dispatch
+
+1. and a idle timeout for scopedEffects
+
+1. For effects put key into scopedEffects = {
+  key?: string,
+  effects: Effect[]
+}
+
 
 1. add a tap option for neccessary side effects
 
