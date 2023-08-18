@@ -253,14 +253,21 @@ const updateAncestorValues = <T>(
   });
 };
 
-const FORMS_UPDATE_CHILD_VALUES = 'FORMS_UPDATE_CHILD_VALUES';
 const updateChildValues = <T>(state: AbstractControl<T>) => {
   const newState: AbstractControl<T> = cloneDeep(state);
   const value = newState.value;
   if (newState.config.controlType === FormControlType.Group) {
+    if (
+      Object.keys(value).length !==
+      Object.keys((<FormGroup<T>>newState).controls).length
+    ) {
+      throw `The number of keys do not match form group: ${newState.controlRef.join(
+        ',',
+      )}`;
+    }
     Object.entries(value).forEach(([key, value]) => {
       if (!(<FormGroup<T>>newState).controls[key]) {
-        throw `Cannot find control with key${key} in form group: ${newState.controlRef.join(
+        throw `Cannot find control with key ${key} in form group: ${newState.controlRef.join(
           ',',
         )}`;
       }
@@ -271,8 +278,17 @@ const updateChildValues = <T>(state: AbstractControl<T>) => {
     });
   } else if (newState.config.controlType === FormControlType.Array) {
     (<FormArray<T>>newState).controls.forEach((control, index) => {
-      if (!value[index] === undefined) {
-        throw `Must supply a value for form control at index: ${index}, in form array: ${newState.controlRef.join(
+      if (!Array.isArray(value)) {
+        throw `value must be an array for form array: ${newState.controlRef.join(
+          ',',
+        )}`;
+      }
+
+      if (
+        (<Array<unknown>>value).length !==
+        (<FormArray<T>>newState).controls.length
+      ) {
+        throw `The number of value items does not match the number of controls in array: ${newState.controlRef.join(
           ',',
         )}`;
       }

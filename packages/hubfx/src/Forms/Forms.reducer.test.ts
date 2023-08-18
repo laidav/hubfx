@@ -364,6 +364,59 @@ describe('updateValues', () => {
 
     expect(newState).toEqual(expectedState);
   });
+
+  it('should throw an error if trying to update a FG key that does not exist', () => {
+    const newDoctorValue = {
+      firstName: 'Dr',
+      lastName: 'Ho',
+      email: 'dr@hoe.com',
+      xyz: 'not here',
+    };
+    const state = buildControlState(config);
+
+    const newStateFunc = () =>
+      updateValues(state, {
+        type: FORMS_CONTROL_CHANGE,
+        payload: {
+          controlRef: ['doctorInfo'],
+          value: newDoctorValue,
+        },
+      });
+
+    expect(newStateFunc).toThrow(
+      TypeError(`The number of keys do not match form group: doctorInfo`),
+    );
+  });
+
+  it('should throw an error if trying to update a FA index that does not exist', () => {
+    const clonedConfig: FormGroupConfig = cloneDeep(config);
+    (<FormArrayConfig>(
+      clonedConfig.formGroupControls.emergencyContacts
+    )).formArrayControls = emergencyContactConfigs;
+    const state = buildControlState(clonedConfig);
+
+    const newStateFunc = () =>
+      updateValues(state, {
+        type: FORMS_CONTROL_CHANGE,
+        payload: {
+          controlRef: ['emergencyContacts'],
+          value: [
+            {
+              firstName: '',
+              lastName: '',
+              email: '',
+              relation: '',
+            },
+          ],
+        },
+      });
+
+    expect(newStateFunc).toThrow(
+      TypeError(
+        `The number of value items does not match the number of controls in array: emergencyContacts`,
+      ),
+    );
+  });
 });
 
 describe('updateDirty', () => {
