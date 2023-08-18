@@ -35,15 +35,17 @@
 - # 2023 08 18 (Fri)
 
 1. reset form
-  - going to have to update controlChange/updateValues to handle reseting of formcontrols, i.e formgroup and formarray
+  - going to have to update controlChange/updateValues to handle reseting of formcontrols, i.e formgroup and formarray - DONE
 
-    - refactor updatevalues method in reducer to handle updating values of formgroups and form arrays
+    - refactor updatevalues method in reducer to handle updating values of formgroups and form arrays - DONE
 
       - update tests
-        - test case for updating formGroup
-        - test case for updating formArray
+        - test case for updating formGroup - DONE
+        - test case for updating formArray - DONE
 
-      - throws error if setting value does not match structure of controls
+      - throws error if setting value does not match structure of controls - DONE
+
+  - how best to reset form if controls differ?
 
 1. Pristine value
 
