@@ -214,10 +214,12 @@ export const updateValues = <T>(
   const newControl = getFormControl(controlRef, newState);
   newControl.value = value;
 
-  return updateAncestorValues(newState, {
+  const updatedAncestorsState = updateAncestorValues(newState, {
     type: FORMS_UPDATE_ANCESTOR_VALUES,
     payload: controlRef,
   });
+
+  return updateChildValues(updatedAncestorsState);
 };
 
 const FORMS_UPDATE_ANCESTOR_VALUES = 'FORMS_UPDATE_ANCESTOR_VALUES';
@@ -252,8 +254,24 @@ const updateAncestorValues = <T>(
 };
 
 const FORMS_UPDATE_CHILD_VALUES = 'FORMS_UPDATE_CHILD_VALUES';
-const updateChildValues = <T>(state: T, action: Action<ControlRef>) => {
-  return state;
+const updateChildValues = <T>(state: AbstractControl<T>) => {
+  const newState: AbstractControl<T> = cloneDeep(state);
+  const value = newState.value;
+  if (newState.config.controlType === FormControlType.Group) {
+    Object.entries(value).forEach(([key, value]) => {
+      (<FormGroup<T>>newState).controls[key].value = value;
+      (<FormGroup<T>>newState).controls[key] = updateChildValues(
+        (<FormGroup<T>>newState).controls[key],
+      );
+    });
+  } else if (newState.config.controlType === FormControlType.Array) {
+    (<FormArray<T>>newState).controls.forEach((control, index) => {
+      control.value = value[index];
+      (<FormArray<T>>newState).controls[index] = updateChildValues(control);
+    });
+  }
+
+  return newState;
 };
 
 export const addFormGroupControl = <T>(
