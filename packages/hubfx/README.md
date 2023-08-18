@@ -39,6 +39,10 @@
 
     - refactor updatevalues method in reducer to handle updating values of formgroups and form arrays
 
+      - update tests
+        - test case for updating formGroup
+        - test case for updating formArray
+
       - throws error if setting value does not match structure of controls
 
 1. Pristine value
