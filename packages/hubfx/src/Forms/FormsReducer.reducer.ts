@@ -427,7 +427,22 @@ export const resetControl = <T>(
     };
   }
 
-  return state;
+  const parentRef = controlRef.slice(0, -1);
+  const newState = cloneDeep(state);
+
+  const control = getFormControl(controlRef, newState);
+  const parentControl = getFormControl(parentRef, newState) as
+    | FormGroup<unknown>
+    | FormArray<unknown>;
+  parentControl.controls[controlRef.slice(-1)[0]] = {
+    pristineControl: control.pristineControl,
+    ...control.pristineControl,
+  };
+
+  return updateAncestorValues(newState, {
+    type: FORMS_UPDATE_ANCESTOR_VALUES,
+    payload: controlRef,
+  });
 };
 
 export const handleAsyncValidation = <T>(

@@ -1282,11 +1282,12 @@ describe('resetControl', () => {
       type: FORMS_RESET_CONTROL,
       payload: ['emergencyContacts', 1],
     });
-
     const expectedState = cloneDeep(changedState) as FormGroup<Contact>;
+    expectedState.dirty = false;
     expectedState.value = initialState.value;
     expectedState.controls.emergencyContacts.value =
       initialState.controls.emergencyContacts.value;
+    expectedState.controls.emergencyContacts.dirty = false;
 
     (<FormArray<unknown>>expectedState.controls.emergencyContacts).controls[1] =
       (<FormArray<unknown>>initialState.controls.emergencyContacts).controls[1];
