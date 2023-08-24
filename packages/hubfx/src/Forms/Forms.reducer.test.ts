@@ -10,6 +10,7 @@ import {
   addFormArrayControl,
   removeControl,
   getChildControls,
+  resetControl,
 } from './FormsReducer.reducer';
 import cloneDeep from 'lodash.clonedeep';
 import { buildControlState } from './buildControlState';
@@ -25,6 +26,7 @@ import {
   FORMS_ADD_GROUP_CONTROL,
   FORMS_ADD_FORM_ARRAY_CONTROL,
   FORMS_REMOVE_CONTROL,
+  FORMS_RESET_CONTROL,
 } from './Forms.actions';
 import {
   FormGroup,
@@ -44,7 +46,6 @@ import {
   uniqueFirstAndLastName,
   blacklistedEmail,
 } from './AsyncValidators';
-import exp from 'constants';
 
 describe('updateValues', () => {
   it('should update values only for a FC -> FG', () => {
@@ -1116,6 +1117,7 @@ describe('buildFormsReducer', () => {
       errors: {
         firstNameNotSameAsLast: false,
       },
+      dirty: true,
       value: {
         firstName: 'Homer',
         lastName: '',
@@ -1134,7 +1136,7 @@ describe('buildFormsReducer', () => {
           ...initialState.controls.firstName,
           controlRef: ['firstName'],
           value: 'Homer',
-          dirty: false,
+          dirty: true,
           touched: false,
           valid: true,
           errors: {
@@ -1177,4 +1179,8 @@ describe('getChildControls', () => {
       [1, 'relation'],
     ]);
   });
+});
+
+describe('resetControl', () => {
+  it('should reset a control and update ancestor values', () => {});
 });

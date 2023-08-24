@@ -45,7 +45,6 @@
   - action creator, value change effects
     - test 
 
-
 1. Pristine value
 
 # TODOS

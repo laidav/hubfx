@@ -190,6 +190,25 @@ export const removeControl = <T>(
   return actions;
 };
 
+export const FORMS_RESET_CONTROL = 'FORMS_RESET_CONTROL';
+export const resetControl = <T>(
+  controlRef: ControlRef,
+  state: AbstractControl<T>,
+  reducer: (
+    state: AbstractControl<T>,
+    action: Action<unknown>,
+  ) => AbstractControl<T>,
+) => {
+  const actions = [
+    {
+      type: FORMS_RESET_CONTROL,
+      payload: controlRef,
+    },
+  ];
+
+  return actions;
+};
+
 export const FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS =
   'FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS';
 export const asyncValidationResponseSuccess = (

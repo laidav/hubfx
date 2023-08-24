@@ -415,6 +415,15 @@ export const removeControl = <T>(
   });
 };
 
+export const resetControl = <T>(
+  state: T,
+  { payload: controlRef }: Action<ControlRef>,
+) => {
+  const newState = cloneDeep(state);
+
+  return newState;
+};
+
 export const handleAsyncValidation = <T>(
   state: AbstractControl<T>,
   action: Action<ControlRef>,
@@ -475,11 +484,11 @@ export const formsReducer = <T>(
 ): AbstractControl<T> => {
   switch (action.type) {
     case FORMS_CONTROL_CHANGE:
-      const result = syncValidate(
-        updateValues(state, action as Action<ControlChange<unknown>>),
+      return updateDirty(
+        syncValidate(
+          updateValues(state, action as Action<ControlChange<unknown>>),
+        ),
       );
-
-      return result;
     case FORMS_VALUE_CHANGE_EFFECT:
       return handleAsyncValidation(state, action as Action<ControlRef>);
     case FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS:
@@ -490,16 +499,16 @@ export const formsReducer = <T>(
         ),
       );
     case FORMS_ADD_GROUP_CONTROL:
-      return syncValidate(
-        addFormGroupControl(state, action as Action<AddControl>),
+      return updateDirty(
+        syncValidate(addFormGroupControl(state, action as Action<AddControl>)),
       );
     case FORMS_ADD_FORM_ARRAY_CONTROL:
-      return syncValidate(
-        addFormArrayControl(state, action as Action<AddControl>),
+      return updateDirty(
+        syncValidate(addFormArrayControl(state, action as Action<AddControl>)),
       );
     case FORMS_REMOVE_CONTROL:
-      return syncValidate(
-        removeControl(state, action as Action<RemoveControl>),
+      return updateDirty(
+        syncValidate(removeControl(state, action as Action<RemoveControl>)),
       );
 
     default:
