@@ -426,6 +426,8 @@ export const resetControl = <T>(
       ...state.pristineControl,
     };
   }
+
+  return state;
 };
 
 export const handleAsyncValidation = <T>(
