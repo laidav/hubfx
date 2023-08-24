@@ -46,7 +46,7 @@ import {
 } from './AsyncValidators';
 import exp from 'constants';
 
-fdescribe('updateValues', () => {
+describe('updateValues', () => {
   it('should update values only for a FC -> FG', () => {
     const initialState = buildControlState(config) as FormGroup<Contact>;
     const expectedState = {
@@ -393,18 +393,9 @@ describe('updateDirty', () => {
       controls: {
         ...valuesUpdatedState.controls,
         firstName: {
-          config: initialState.controls.firstName.config,
-          controlRef: ['firstName'],
-          pristineValue: '',
+          ...initialState.controls.firstName,
           value: 'Homer',
           dirty: true,
-          touched: false,
-          valid: false,
-          errors: {
-            required: true,
-          },
-          asyncValidateInProgress: {},
-          validating: false,
         },
       },
     });
@@ -431,20 +422,10 @@ describe('updateDirty', () => {
             ...(<FormGroup<DoctorInfo>>valuesUpdatedState.controls.doctorInfo)
               .controls,
             firstName: {
-              config: (<FormGroup<DoctorInfo>>(
-                valuesUpdatedState.controls.doctorInfo
-              )).controls.firstName.config,
-              controlRef: ['doctorInfo', 'firstName'],
-              pristineValue: '',
+              ...(<FormGroup<DoctorInfo>>valuesUpdatedState.controls.doctorInfo)
+                .controls.firstName,
               value: 'Dr First Name',
               dirty: true,
-              touched: false,
-              valid: false,
-              errors: {
-                required: true,
-              },
-              asyncValidateInProgress: {},
-              validating: false,
             },
           },
         },
@@ -453,21 +434,6 @@ describe('updateDirty', () => {
   });
 
   it('should update dirty only for a FormArray in a FormGroup', () => {
-    const initialValue = [
-      {
-        firstName: 'Homer',
-        lastName: 'Simpson',
-        email: 'homer@homer.com',
-        relation: 'friend',
-      },
-      {
-        firstName: 'moe',
-        lastName: 'syzlak',
-        email: 'moe@moe.com',
-        relation: 'friend',
-      },
-    ];
-
     const emergencyContactsConfig = {
       ...(config.formGroupControls.emergencyContacts as FormArrayConfig),
       formArrayControls: emergencyContactConfigs,
