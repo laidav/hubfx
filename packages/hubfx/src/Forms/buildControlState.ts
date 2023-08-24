@@ -57,7 +57,6 @@ export const buildControlState = <T>(
       controlRef,
       dirty: false,
       touched: false,
-      pristineValue: cloneDeep(groupInitialValue as T),
       value: groupInitialValue as T,
       valid: !groupControlHasError && !controlsHasErrors,
       submitting: false,
@@ -68,7 +67,7 @@ export const buildControlState = <T>(
       config: controlConfig,
     };
 
-    return result;
+    return { pristineControl: result, ...result };
     // Form Array
   } else if (controlConfig.controlType === FormControlType.Array) {
     const configControls = (<FormArrayConfig>controlConfig).formArrayControls;
@@ -107,7 +106,6 @@ export const buildControlState = <T>(
       controlRef,
       controls,
       dirty: false,
-      pristineValue: cloneDeep(value),
       value,
       touched: false,
       asyncValidateInProgress: {},
@@ -117,7 +115,7 @@ export const buildControlState = <T>(
       config: controlConfig,
     };
 
-    return result;
+    return { pristineControl: result, ...result };
     // Form Field
   } else {
     const errors = controlConfig.validators?.reduce((errors, validator) => {
@@ -130,9 +128,6 @@ export const buildControlState = <T>(
     const result: FormControl<T> = {
       controlRef,
       dirty: false,
-      pristineValue: cloneDeep(
-        (<FormControlConfig<T>>controlConfig).initialValue,
-      ),
       value: (<FormControlConfig<T>>controlConfig).initialValue,
       touched: false,
       valid: errors ? Object.values(errors).every((error) => !error) : true,
@@ -142,6 +137,6 @@ export const buildControlState = <T>(
       config: controlConfig,
     };
 
-    return result;
+    return { pristineControl: result, ...result };
   }
 };

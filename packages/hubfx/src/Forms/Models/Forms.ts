@@ -26,8 +26,8 @@ export interface AbstractControlConfig {
 }
 
 export interface FormControl<T> {
+  pristineControl?: AbstractControl<T>;
   controlRef: ControlRef;
-  pristineValue: T;
   value: T;
   dirty: boolean;
   touched: boolean;
