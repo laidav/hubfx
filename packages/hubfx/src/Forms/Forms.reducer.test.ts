@@ -1236,5 +1236,40 @@ describe('getChildControls', () => {
 });
 
 describe('resetControl', () => {
+  let clonedConfig: FormGroupConfig;
+  let initialState: FormGroup<Contact>;
+  let newValue;
+  beforeEach(() => {
+    clonedConfig = cloneDeep(config);
+    (<FormArrayConfig>(
+      clonedConfig.formGroupControls.emergencyContacts
+    )).formArrayControls = emergencyContactConfigs;
+
+    initialState = buildControlState(clonedConfig) as FormGroup<Contact>;
+
+    newValue = {
+      firstName: 'Moe changed',
+      lastName: 'Syzlak changed',
+      email: 'moe@changed.com',
+      relation: 'friend changed',
+    };
+  });
+
+  it('should reset entire form', () => {
+    const changedState = formsReducer(initialState, {
+      type: FORMS_CONTROL_CHANGE,
+      payload: {
+        value: newValue,
+        controlRef: ['emergencyContacts', 1],
+      },
+    });
+    const stateReset = formsReducer(changedState, {
+      type: FORMS_RESET_CONTROL,
+      payload: [],
+    });
+
+    expect(stateReset).toEqual(initialState);
+  });
+
   it('should reset a control and update ancestor values', () => {});
 });

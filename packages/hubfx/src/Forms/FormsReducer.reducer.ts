@@ -7,6 +7,7 @@ import {
   FORMS_ADD_GROUP_CONTROL,
   FORMS_ADD_FORM_ARRAY_CONTROL,
   FORMS_REMOVE_CONTROL,
+  FORMS_RESET_CONTROL,
 } from './Forms.actions';
 import {
   FormControl,
@@ -416,12 +417,15 @@ export const removeControl = <T>(
 };
 
 export const resetControl = <T>(
-  state: T,
+  state: AbstractControl<T>,
   { payload: controlRef }: Action<ControlRef>,
 ) => {
-  const newState = cloneDeep(state);
-
-  return newState;
+  if (!controlRef.length) {
+    return {
+      pristineControl: state.pristineControl,
+      ...state.pristineControl,
+    };
+  }
 };
 
 export const handleAsyncValidation = <T>(
@@ -509,6 +513,10 @@ export const formsReducer = <T>(
     case FORMS_REMOVE_CONTROL:
       return updateDirty(
         syncValidate(removeControl(state, action as Action<RemoveControl>)),
+      );
+    case FORMS_RESET_CONTROL:
+      return updateDirty(
+        syncValidate(resetControl(state, action as Action<ControlRef>)),
       );
 
     default:
