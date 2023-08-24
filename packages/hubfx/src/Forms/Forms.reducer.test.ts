@@ -46,8 +46,8 @@ import {
 } from './AsyncValidators';
 import exp from 'constants';
 
-describe('updateValues', () => {
-  fit('should update values only for a FC -> FG', () => {
+fdescribe('updateValues', () => {
+  it('should update values only for a FC -> FG', () => {
     const initialState = buildControlState(config) as FormGroup<Contact>;
     const expectedState = {
       ...initialState,
@@ -117,51 +117,12 @@ describe('updateValues', () => {
             email: '',
           },
           controls: {
+            ...(<FormGroup<DoctorInfo>>initialState.controls.doctorInfo)
+              .controls,
             firstName: {
-              config: (<FormGroup<DoctorInfo>>initialState.controls.doctorInfo)
-                .controls.firstName.config,
-              controlRef: ['doctorInfo', 'firstName'],
-              pristineValue: '',
+              ...(<FormGroup<DoctorInfo>>initialState.controls.doctorInfo)
+                .controls.firstName,
               value: 'Dr First Name',
-              dirty: false,
-              touched: false,
-              valid: false,
-              errors: {
-                required: true,
-              },
-              asyncValidateInProgress: {},
-              validating: false,
-            },
-            lastName: {
-              config: (<FormGroup<DoctorInfo>>initialState.controls.doctorInfo)
-                .controls.lastName.config,
-              controlRef: ['doctorInfo', 'lastName'],
-              pristineValue: '',
-              value: '',
-              dirty: false,
-              touched: false,
-              valid: false,
-              errors: {
-                required: true,
-              },
-              asyncValidateInProgress: {},
-              validating: false,
-            },
-            email: {
-              config: (<FormGroup<DoctorInfo>>initialState.controls.doctorInfo)
-                .controls.email.config,
-              controlRef: ['doctorInfo', 'email'],
-              pristineValue: '',
-              value: '',
-              dirty: false,
-              touched: false,
-              valid: false,
-              errors: {
-                email: false,
-                required: true,
-              },
-              asyncValidateInProgress: {},
-              validating: false,
             },
           },
         },
