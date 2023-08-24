@@ -38,12 +38,12 @@
 
   - each AbstractControl should have a pristine control? - DONE
 
-  - action creator to reset control
-  - handle reset control in reducer
-  - test
+  - action creator to reset control - DONE
+  - handle reset control in reducer - DONE
+  - test - DONE
 
-  - action creator, value change effects
-    - test 
+  - action creator, value change effects -
+    - test  -
 
 1. Pristine value
 
