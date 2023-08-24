@@ -522,18 +522,12 @@ describe('syncValidate', () => {
       controls: {
         ...valuesUpdatedState.controls,
         firstName: {
-          config: initialState.controls.firstName.config,
-          controlRef: ['firstName'],
-          pristineValue: '',
+          ...initialState.controls.firstName,
           value: 'Homer',
-          dirty: false,
-          touched: false,
           valid: true,
           errors: {
             required: false,
           },
-          asyncValidateInProgress: {},
-          validating: false,
         },
       },
     });
@@ -561,19 +555,13 @@ describe('syncValidate', () => {
             ...(<FormGroup<DoctorInfo>>valuesUpdatedState.controls.doctorInfo)
               .controls,
             firstName: {
-              config: (<FormGroup<DoctorInfo>>initialState.controls.doctorInfo)
-                .controls.firstName.config,
-              controlRef: ['doctorInfo', 'firstName'],
-              pristineValue: '',
+              ...(<FormGroup<DoctorInfo>>initialState.controls.doctorInfo)
+                .controls.firstName,
               value: 'Dr First Name',
-              dirty: false,
-              touched: false,
               valid: true,
               errors: {
                 required: false,
               },
-              asyncValidateInProgress: {},
-              validating: false,
             },
           },
         },
@@ -582,21 +570,6 @@ describe('syncValidate', () => {
   });
 
   it('should validate only for a FormArray in a FormGroup', () => {
-    const initialValue = [
-      {
-        firstName: 'Homer',
-        lastName: 'Simpson',
-        email: 'homer@homer.com',
-        relation: 'friend',
-      },
-      {
-        firstName: 'moe',
-        lastName: 'syzlak',
-        email: 'moe@moe.com',
-        relation: 'friend',
-      },
-    ];
-
     const emergencyContactsConfig = {
       ...(config.formGroupControls.emergencyContacts as FormArrayConfig),
       formArrayControls: emergencyContactConfigs,
@@ -673,45 +646,56 @@ describe('getFormControl', () => {
   };
 
   it('should get form control', () => {
-    expect(getFormControl(['firstName'], contactFormGroup)).toEqual({
+    const expectedControl = {
       ...BASE_FORM_CONTROL,
       config: config.formGroupControls.firstName,
       controlRef: ['firstName'],
       value: '',
-      pristineValue: '',
       valid: false,
       errors: {
         required: true,
       },
-    } as FormControl<string>);
+    } as FormControl<string>;
+    expect(getFormControl(['firstName'], contactFormGroup)).toEqual({
+      pristineControl: expectedControl,
+      ...expectedControl,
+    });
 
-    expect(
-      getFormControl(['doctorInfo', 'firstName'], contactFormGroup),
-    ).toEqual({
+    const expectedControlDoctorInfoFirstName = {
       ...BASE_FORM_CONTROL,
       config: (<FormGroupConfig>config.formGroupControls.doctorInfo)
         .formGroupControls.firstName,
       controlRef: ['doctorInfo', 'firstName'],
       value: '',
-      pristineValue: '',
       valid: false,
       errors: {
         required: true,
       },
-    } as FormControl<string>);
+    } as FormControl<string>;
 
-    expect(getFormControl(['emergencyContacts'], contactFormGroup)).toEqual({
+    expect(
+      getFormControl(['doctorInfo', 'firstName'], contactFormGroup),
+    ).toEqual({
+      pristineControl: expectedControlDoctorInfoFirstName,
+      ...expectedControlDoctorInfoFirstName,
+    });
+
+    const expectedEmergencyContactsControl = {
       ...BASE_FORM_CONTROL,
       config: <FormArrayConfig>config.formGroupControls.emergencyContacts,
       controlRef: ['emergencyContacts'],
       value: [] as EmergencyContact[],
-      pristineValue: [] as EmergencyContact[],
       controls: [] as FormControl<EmergencyContact>[],
       valid: false,
       errors: {
         required: true,
       },
-    } as FormArray<EmergencyContact[]>);
+    } as FormArray<EmergencyContact[]>;
+
+    expect(getFormControl(['emergencyContacts'], contactFormGroup)).toEqual({
+      pristineControl: expectedEmergencyContactsControl,
+      ...expectedEmergencyContactsControl,
+    });
   });
 });
 
@@ -1149,7 +1133,6 @@ describe('buildFormsReducer', () => {
         firstName: {
           ...initialState.controls.firstName,
           controlRef: ['firstName'],
-          pristineValue: '',
           value: 'Homer',
           dirty: false,
           touched: false,
