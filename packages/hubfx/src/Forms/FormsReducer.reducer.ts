@@ -98,7 +98,8 @@ export const updateDirty = <T>(
   let newControl: AbstractControl<T> = {
     ...control,
     dirty:
-      JSON.stringify(control.value) !== JSON.stringify(control.pristineValue),
+      JSON.stringify(control.value) !==
+      JSON.stringify(control.pristineControl.value),
   };
 
   if (Array.isArray((<FormArray<T>>control).controls)) {
@@ -230,7 +231,7 @@ const updateAncestorValues = <T>(
   if (!controlRef.length) return state;
 
   const newState = cloneDeep(state);
-  const control = getFormControl(controlRef, state);
+  const control = getFormControl(controlRef, newState);
   const value = control?.value;
   const [key] = controlRef.slice(-1);
   const parentRef = controlRef.slice(0, -1);

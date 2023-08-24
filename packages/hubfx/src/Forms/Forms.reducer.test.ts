@@ -47,17 +47,9 @@ import {
 import exp from 'constants';
 
 describe('updateValues', () => {
-  it('should update values only for a FC -> FG', () => {
+  fit('should update values only for a FC -> FG', () => {
     const initialState = buildControlState(config) as FormGroup<Contact>;
-    expect(
-      updateValues(initialState, {
-        type: FORMS_CONTROL_CHANGE,
-        payload: {
-          controlRef: ['firstName'],
-          value: 'Homer',
-        },
-      }),
-    ).toEqual({
+    const expectedState = {
       ...initialState,
       value: {
         firstName: 'Homer',
@@ -74,21 +66,21 @@ describe('updateValues', () => {
       controls: {
         ...initialState.controls,
         firstName: {
-          config: initialState.controls.firstName.config,
-          controlRef: ['firstName'],
-          pristineValue: '',
+          ...initialState.controls.firstName,
           value: 'Homer',
-          dirty: false,
-          touched: false,
-          valid: false,
-          errors: {
-            required: true,
-          },
-          asyncValidateInProgress: {},
-          validating: false,
         },
       },
+    };
+
+    const result = updateValues(initialState, {
+      type: FORMS_CONTROL_CHANGE,
+      payload: {
+        controlRef: ['firstName'],
+        value: 'Homer',
+      },
     });
+
+    expect(result).toEqual(expectedState);
   });
 
   it('should update values only for a FC -> FG -> FG', () => {

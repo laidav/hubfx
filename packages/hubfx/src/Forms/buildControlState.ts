@@ -67,7 +67,7 @@ export const buildControlState = <T>(
       config: controlConfig,
     };
 
-    return { pristineControl: result, ...result };
+    return { pristineControl: cloneDeep(result), ...result };
     // Form Array
   } else if (controlConfig.controlType === FormControlType.Array) {
     const configControls = (<FormArrayConfig>controlConfig).formArrayControls;
@@ -115,7 +115,7 @@ export const buildControlState = <T>(
       config: controlConfig,
     };
 
-    return { pristineControl: result, ...result };
+    return { pristineControl: cloneDeep(result), ...result };
     // Form Field
   } else {
     const errors = controlConfig.validators?.reduce((errors, validator) => {
@@ -137,6 +137,6 @@ export const buildControlState = <T>(
       config: controlConfig,
     };
 
-    return { pristineControl: result, ...result };
+    return { pristineControl: cloneDeep(result), ...result };
   }
 };
