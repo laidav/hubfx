@@ -1103,7 +1103,7 @@ describe('handleAsyncValidationResponseSuccess', () => {
 describe('buildFormsReducer', () => {
   const initialState = buildControlState(config) as FormGroup<Contact>;
 
-  it('should build proper reducer and react to update value', () => {
+  it('should react to FORMS_CONTROL_CHANGE for a FC -> FG', () => {
     expect(
       formsReducer(initialState, {
         type: FORMS_CONTROL_CHANGE,
@@ -1147,6 +1147,60 @@ describe('buildFormsReducer', () => {
         },
       },
     });
+  });
+
+  it('should react to a FORMS_CONTROL_CHANGE FG -> FA -> FG', () => {
+    const clonedConfig: FormGroupConfig = cloneDeep(config);
+    (<FormArrayConfig>(
+      clonedConfig.formGroupControls.emergencyContacts
+    )).formArrayControls = emergencyContactConfigs;
+
+    const initialState = buildControlState(clonedConfig) as FormGroup<Contact>;
+
+    const newValue = {
+      firstName: 'Moe changed',
+      lastName: 'Syzlak changed',
+      email: 'moe@changed.com',
+      relation: 'friend changed',
+    };
+    const expectedNewState = cloneDeep(initialState);
+
+    expectedNewState.value.emergencyContacts[1] = newValue;
+    expectedNewState.dirty = true;
+    expectedNewState.controls.emergencyContacts.value = [
+      initialState.controls.emergencyContacts.value[0],
+      newValue,
+    ];
+    expectedNewState.controls.emergencyContacts.dirty = true;
+    expectedNewState.controls.emergencyContacts.controls[1].value = newValue;
+    expectedNewState.controls.emergencyContacts.controls[1].dirty = true;
+
+    expectedNewState.controls.emergencyContacts.controls[1].controls.firstName.value =
+      newValue.firstName;
+    expectedNewState.controls.emergencyContacts.controls[1].controls.firstName.dirty =
+      true;
+    expectedNewState.controls.emergencyContacts.controls[1].controls.lastName.value =
+      newValue.lastName;
+    expectedNewState.controls.emergencyContacts.controls[1].controls.lastName.dirty =
+      true;
+    expectedNewState.controls.emergencyContacts.controls[1].controls.email.value =
+      newValue.email;
+    expectedNewState.controls.emergencyContacts.controls[1].controls.email.dirty =
+      true;
+    expectedNewState.controls.emergencyContacts.controls[1].controls.relation.value =
+      newValue.relation;
+    expectedNewState.controls.emergencyContacts.controls[1].controls.relation.dirty =
+      true;
+
+    const newState = formsReducer(initialState, {
+      type: FORMS_CONTROL_CHANGE,
+      payload: {
+        value: newValue,
+        controlRef: ['emergencyContacts', 1],
+      },
+    });
+
+    expect(newState).toEqual(expectedNewState);
   });
 });
 
