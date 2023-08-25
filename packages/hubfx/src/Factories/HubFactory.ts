@@ -53,7 +53,7 @@ export const HubFactory = (effects$: Effect<unknown, unknown>[] = []): Hub => {
                 (initialAction) =>
                   getScopedEffectSignature(
                     initialAction.type,
-                    initialAction.scopedEffects.key,
+                    initialAction.scopedEffects?.key,
                   ) === signature,
               ),
               effect,

@@ -23,7 +23,7 @@ const getScopedEffectsForControl = <T>(
   const { config, controlRef } = formControl;
   const { asyncValidators } = config;
 
-  let scopedEffects: Effect<AbstractControl<T>, FormErrors>[];
+  let scopedEffects: Effect<AbstractControl<T>, FormErrors>[] = [];
 
   if (asyncValidators && asyncValidators.length) {
     scopedEffects = asyncValidators.reduce(
@@ -53,9 +53,8 @@ const getScopedEffectsForControl = <T>(
       },
       [],
     );
-
-    return scopedEffects;
   }
+  return scopedEffects;
 };
 
 export const FORMS_CONTROL_CHANGE = 'FORMS_CONTROL_CHANGE';
@@ -67,9 +66,12 @@ const getValueChangeEffects = (formControls: AbstractControl<unknown>[]) =>
 
     return acc.concat({
       type: FORMS_VALUE_CHANGE_EFFECT,
-      key: controlRef.join(':'),
       payload: control.controlRef,
-      scopedEffects: getScopedEffectsForControl(control),
+      scopedEffects: {
+        key: controlRef.join(':'),
+
+        effects: getScopedEffectsForControl(control),
+      },
     });
   }, []);
 
