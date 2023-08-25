@@ -35,17 +35,17 @@
 - # 2023 08 25 (Fri)
 
 1. Better api 
-  - rename Hub to Hub
+  - rename Hub to Hub - DONE
 
-  - hub.state({ reducer, ...otherOptions }) ?
+  - hub.state({ reducer, ...otherOptions }) ? - DONE
 
-  - hub.dispatch();
+  - hub.dispatch(); - DONE
 
-  - hub.messages$
+  - hub.messages$ - DONE
 
-  - key moved to scoped dispatch
+  - key moved to scoped dispatch - DONE
 
-  For effects put key into scopedEffects = {
+  For effects put key into scopedEffects = { - DONE
     key?: string,
     effects: Effect[]
 }
