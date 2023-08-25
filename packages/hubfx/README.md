@@ -50,6 +50,10 @@
     effects: Effect[]
 }
 
+1. some tests for hub state
+
+1. clean up type linting errors
+
 1. Reorganize packages
   - hubfx/core
   - hubfx/forms
@@ -57,6 +61,8 @@
   - hubfx-react-forms
 
 # TODOS
+
+
 
 ## CLEAN UP TODOS
 
