@@ -45,18 +45,14 @@
   - action creator, value change effects - DONE
     - test  - - DONE
 
-1. Pristine value
-  - action
-  - reducer test
-
-
-  - action effects
-  - test
+1. Pristine value - DONE
+  - action - DONE
+  - reducer test - DONE
 
 # TODOS
 
-
 1. update touched action in reducer. handle
+1. update untouched action in reducer. handle
 
 - create update touched reducer (state, controlRef)
   - it will be called when user updates value and when user has action TOUCH CONTROL

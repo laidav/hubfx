@@ -8,6 +8,7 @@ import {
   FORMS_ADD_FORM_ARRAY_CONTROL,
   FORMS_REMOVE_CONTROL,
   FORMS_RESET_CONTROL,
+  FORMS_MARK_CONTROL_AS_PRISTINE,
 } from './Forms.actions';
 import {
   FormControl,
@@ -550,6 +551,10 @@ export const formsReducer = <T>(
     case FORMS_RESET_CONTROL:
       return updateDirty(
         syncValidate(resetControl(state, action as Action<ControlRef>)),
+      );
+    case FORMS_MARK_CONTROL_AS_PRISTINE:
+      return updateDirty(
+        markControlAsPristine(state, action as Action<ControlRef>),
       );
 
     default:
