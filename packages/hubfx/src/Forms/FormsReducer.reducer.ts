@@ -518,9 +518,16 @@ export const markControlAsPristine = <T>(
 
 export const markControlAsTouched = <T>(
   state: AbstractControl<T>,
-  action: Action<ControlRef>,
+  { payload: controlRef }: Action<ControlRef>,
 ) => {
-  return state;
+  const newState = cloneDeep(state);
+  const ancestorControls = getAncestorControls(controlRef, newState);
+
+  ancestorControls.forEach((control) => {
+    control.touched = true;
+  });
+
+  return newState;
 };
 
 export const formsReducer = <T>(
