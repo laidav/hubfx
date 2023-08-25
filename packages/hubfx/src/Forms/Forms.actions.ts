@@ -83,20 +83,16 @@ export const controlChange = <T, S>(
   ) => AbstractControl<S>,
 ): (Action<ControlChange<T>> | Action<ControlRef>)[] => {
   const { controlRef } = controlChange;
-  const newState = reducer(state, {
+  const mainAction: Action<ControlChange<T>> = {
     type: FORMS_CONTROL_CHANGE,
     payload: controlChange,
-  });
+  };
+
+  const newState = reducer(state, mainAction);
   const formControls = getAncestorControls(controlRef, newState);
   const effects = getValueChangeEffects(formControls);
 
-  const actions: (Action<ControlChange<T>> | Action<ControlRef>)[] = [
-    {
-      type: FORMS_CONTROL_CHANGE,
-      payload: controlChange,
-    },
-    ...effects,
-  ];
+  const actions = [mainAction, ...effects];
 
   return actions;
 };
@@ -110,22 +106,14 @@ export const addGroupControl = <T>(
     action: Action<unknown>,
   ) => AbstractControl<T>,
 ): (Action<AddControl> | Action<ControlRef>)[] => {
-  const newState = reducer(state, {
+  const mainAction: Action<AddControl> = {
     type: FORMS_ADD_GROUP_CONTROL,
     payload: { controlRef, config },
-  });
+  };
+  const newState = reducer(state, mainAction);
   const formControls = getControlBranch(controlRef, newState);
   const effects = getValueChangeEffects(formControls);
-  const actions = [
-    {
-      type: FORMS_ADD_GROUP_CONTROL,
-      payload: {
-        config,
-        controlRef,
-      } as AddControl,
-    },
-    ...effects,
-  ];
+  const actions = [mainAction, ...effects];
 
   return actions;
 };
@@ -139,25 +127,18 @@ export const addFormArrayControl = <T>(
     action: Action<unknown>,
   ) => AbstractControl<T>,
 ) => {
-  const newState = reducer(state, {
+  const mainAction: Action<AddControl> = {
     type: FORMS_ADD_FORM_ARRAY_CONTROL,
     payload: { controlRef, config },
-  });
+  };
+
+  const newState = reducer(state, mainAction);
   const index =
     (<FormArray<unknown>>getFormControl(controlRef, newState)).controls.length -
     1;
   const formControls = getControlBranch(controlRef.concat(index), newState);
   const effects = getValueChangeEffects(formControls);
-  const actions = [
-    {
-      type: FORMS_ADD_FORM_ARRAY_CONTROL,
-      payload: {
-        config,
-        controlRef,
-      } as AddControl,
-    },
-    ...effects,
-  ];
+  const actions = [mainAction, ...effects];
 
   return actions;
 };
@@ -171,21 +152,14 @@ export const removeControl = <T>(
     action: Action<unknown>,
   ) => AbstractControl<T>,
 ) => {
-  const newState = reducer(state, {
+  const mainAction: Action<RemoveControl> = {
     type: FORMS_REMOVE_CONTROL,
     payload: { controlRef },
-  });
+  };
+  const newState = reducer(state, mainAction);
   const formControls = getControlBranch(controlRef, newState);
   const effects = getValueChangeEffects(formControls);
-  const actions = [
-    {
-      type: FORMS_REMOVE_CONTROL,
-      payload: {
-        controlRef,
-      },
-    } as Action<RemoveControl>,
-    ...effects,
-  ];
+  const actions = [mainAction, ...effects];
 
   return actions;
 };
@@ -199,12 +173,16 @@ export const resetControl = <T>(
     action: Action<unknown>,
   ) => AbstractControl<T>,
 ) => {
-  const actions = [
-    {
-      type: FORMS_RESET_CONTROL,
-      payload: controlRef,
-    },
-  ];
+  const mainAction: Action<ControlRef> = {
+    type: FORMS_RESET_CONTROL,
+    payload: controlRef,
+  };
+
+  const newState = reducer(state, mainAction);
+  const formControls = getControlBranch(controlRef, newState);
+  const effects = getValueChangeEffects(formControls);
+
+  const actions = [mainAction, ...effects];
 
   return actions;
 };
