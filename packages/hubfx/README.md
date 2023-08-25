@@ -46,8 +46,8 @@
   - key moved to scoped dispatch - DONE
 
   For effects put key into scopedEffects = { - DONE
-    key?: string,
-    effects: Effect[]
+    key?: string, - DONE
+    effects: Effect[] - DONE
 }
 
 1. some tests for hub state
