@@ -1,4 +1,4 @@
-import { Hub, StateConfig } from '../Models/Hub';
+import { Hub } from '../Models/Hub';
 import { Observable, ReplaySubject, merge } from 'rxjs';
 import {
   filter,
@@ -39,13 +39,13 @@ export const HubFactory = (effects$: Effect<unknown, unknown>[] = []): Hub => {
           undefined
       );
     }),
-    tap(({ type, scopedEffects: { key, effects: scopedEffects } }) => {
-      scopedEffectsDict[getScopedEffectSignature(type, key)] = scopedEffects;
+    tap(({ type, scopedEffects: { key, effects } }) => {
+      scopedEffectsDict[getScopedEffectSignature(type, key)] = effects;
     }),
-    map(({ type, scopedEffects: { key, effects: scopedEffects } }) => {
+    map(({ type, scopedEffects: { key, effects } }) => {
       const signature = getScopedEffectSignature(type, key);
 
-      const pipedEffects = scopedEffects.reduce(
+      const pipedEffects = effects.reduce(
         (acc: Observable<ActionType<unknown>>[], effect) =>
           acc.concat(
             dispatcher$.pipe(
@@ -53,7 +53,7 @@ export const HubFactory = (effects$: Effect<unknown, unknown>[] = []): Hub => {
                 (initialAction) =>
                   getScopedEffectSignature(
                     initialAction.type,
-                    initialAction.scopedEffects?.key,
+                    initialAction.scopedEffects.key,
                   ) === signature,
               ),
               effect,
