@@ -1,6 +1,14 @@
-import { Hub } from '../Models/Hub';
+import { Hub, StateConfig } from '../Models/Hub';
 import { Observable, ReplaySubject, merge } from 'rxjs';
-import { filter, tap, map, mergeAll } from 'rxjs/operators';
+import {
+  filter,
+  tap,
+  map,
+  mergeAll,
+  scan,
+  pairwise,
+  startWith,
+} from 'rxjs/operators';
 import { ActionType } from '../Models/Action';
 import { share } from 'rxjs/operators';
 import { Effect } from '../Models/Effect';
@@ -64,8 +72,47 @@ export const HubFactory = (effects$: Effect<unknown, unknown>[] = []): Hub => {
     ...genericEffects,
   ).pipe(share());
 
+  const state = <T>(config: {
+    reducer: (state: T, action: ActionType) => T;
+    name?: string;
+    initialState?: T;
+    debug?: boolean;
+  }) => {
+    const { reducer, name, debug, initialState } = config;
+    const debugName = `[Stream Name] ${name || 'undefined'}`;
+
+    const state$ = messages$.pipe(
+      tap((action) => {
+        debug && console.log(debugName, '[Message Received]', action);
+      }),
+      scan(reducer, initialState),
+      startWith(initialState),
+      pairwise(),
+      tap(([prevState, newState]) => {
+        if (debug) {
+          const hasDiff = prevState !== newState;
+          if (hasDiff) {
+            console.log(
+              debugName,
+              '[State changed] Prev State:',
+              prevState,
+              'New State:',
+              newState,
+            );
+          } else {
+            console.log(debugName, '[State unchanged] State:', newState);
+          }
+        }
+      }),
+      map((pair) => pair[1]),
+    );
+
+    return state$;
+  };
+
   return {
     messages$,
+    state,
     dispatch: (...actions) => {
       actions.forEach((action) => {
         dispatcher$.next(action);
