@@ -204,3 +204,13 @@ export const markControlAsPristine = (
     payload: controlRef,
   };
 };
+
+export const FORMS_MARK_CONTROL_AS_TOUCHED = 'FORMS_MARK_CONTROL_AS_TOUCHED';
+export const markFormAsTouched = (
+  controlRef: ControlRef,
+): Action<ControlRef> => {
+  return {
+    type: FORMS_MARK_CONTROL_AS_TOUCHED,
+    payload: controlRef,
+  };
+};

@@ -11,6 +11,7 @@ import {
   removeControl,
   getChildControls,
   markControlAsPristine,
+  markControlAsTouched,
 } from './FormsReducer.reducer';
 import cloneDeep from 'lodash.clonedeep';
 import { buildControlState } from './buildControlState';
@@ -28,6 +29,7 @@ import {
   FORMS_REMOVE_CONTROL,
   FORMS_RESET_CONTROL,
   FORMS_MARK_CONTROL_AS_PRISTINE,
+  FORMS_MARK_CONTROL_AS_TOUCHED,
 } from './Forms.actions';
 import {
   FormGroup,
@@ -1201,6 +1203,26 @@ describe('markControlAsPristine', () => {
     expect(
       newPristineState.controls.doctorInfo.controls.email.pristineControl,
     ).toEqual(doctorInfoEmailControl);
+  });
+});
+
+describe('markControlAsTouched', () => {
+  it('should mark control and all anscestors as touched', () => {
+    const initialState = buildControlState(config);
+    const newState = markControlAsTouched(initialState, {
+      type: FORMS_MARK_CONTROL_AS_TOUCHED,
+      payload: ['doctorInfo', 'firstName'],
+    });
+
+    const expectedState = cloneDeep(initialState) as FormGroup<Contact>;
+
+    expectedState.touched = true;
+    (<FormGroup<DoctorInfo>>expectedState.controls.doctorInfo).touched = true;
+    (<FormGroup<DoctorInfo>>(
+      expectedState.controls.doctorInfo
+    )).controls.firstName.touched = true;
+
+    expect(newState).toEqual(expectedState);
   });
 });
 

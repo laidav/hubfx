@@ -500,7 +500,7 @@ export const handleAsyncValidationResponseSuccess = <T>(
 };
 
 export const markControlAsPristine = <T>(
-  state: T,
+  state: AbstractControl<T>,
   { payload: controlRef }: Action<ControlRef>,
 ) => {
   const newState = cloneDeep(state);
@@ -514,6 +514,13 @@ export const markControlAsPristine = <T>(
   });
 
   return newState;
+};
+
+export const markControlAsTouched = <T>(
+  state: AbstractControl<T>,
+  action: Action<ControlRef>,
+) => {
+  return state;
 };
 
 export const formsReducer = <T>(
