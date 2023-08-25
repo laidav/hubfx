@@ -6,6 +6,7 @@ import {
   addGroupControl,
   addFormArrayControl,
   removeControl,
+  resetControl,
   FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
 } from './Forms.actions';
 import {
@@ -482,6 +483,76 @@ describe('Form.actions', () => {
 
       const controlRef = ['emergencyContacts', 0];
       const actions = removeControl(controlRef, state, formsReducer);
+      dispatch(...actions);
+      assertMessages(
+        [
+          ...actions,
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts', 0, 'email'],
+              validatorIndex: 0,
+              errors: {
+                uniqueEmail: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts', 0, 'email'],
+              validatorIndex: 1,
+              errors: {
+                blacklistedEmail: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts'],
+              validatorIndex: 0,
+              errors: {
+                arrayLengthError: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: [],
+              validatorIndex: 0,
+              errors: {
+                uniqueFirstAndLastName: true,
+              },
+            },
+          },
+          {
+            type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+            payload: {
+              controlRef: ['emergencyContacts', 0],
+              validatorIndex: 0,
+              errors: {
+                uniqueFirstAndLastName: true,
+              },
+            },
+          },
+        ],
+        done,
+      );
+    });
+  });
+
+  describe('resetControl', () => {
+    it('should run async validation on reset control and all anscestors', (done) => {
+      const clonedConfig: FormGroupConfig = cloneDeep(fullConfig);
+      (<FormArrayConfig>(
+        clonedConfig.formGroupControls.emergencyContacts
+      )).formArrayControls = emergencyContactConfigs;
+      const state = buildControlState(clonedConfig) as FormGroup<Contact>;
+
+      const controlRef = ['emergencyContacts', 0];
+      const actions = resetControl(controlRef, state, formsReducer);
       dispatch(...actions);
       assertMessages(
         [
