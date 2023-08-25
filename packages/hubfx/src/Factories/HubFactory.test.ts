@@ -2,11 +2,11 @@ import { createEffect } from '../Helpers/createEffect';
 import { Observable, Subscription, of } from 'rxjs';
 import { delay, switchMap } from 'rxjs/operators';
 import { Action } from '../Models/Action';
-import { MessageHubFactory } from './MessageHubFactory';
+import { HubFactory } from './HubFactory';
 import { switchMapEffect, debounceEffect } from '../Forms/Tests/Effects';
 import { TEST_ACTION, TEST_ACTION_SUCCESS } from '../Forms/Tests/Actions';
 
-describe('MessageHubFactory', () => {
+describe('HubFactory', () => {
   let messages = [];
   let dispatch;
   let messages$;
@@ -14,7 +14,7 @@ describe('MessageHubFactory', () => {
 
   const assertMessages = (
     expectedMessages: Action<unknown>[],
-    done,
+    done: jest.DoneCallback,
     timeout = 1000,
   ) => {
     setTimeout(() => {
@@ -32,7 +32,7 @@ describe('MessageHubFactory', () => {
   };
 
   beforeEach(() => {
-    const hub = MessageHubFactory();
+    const hub = HubFactory();
     dispatch = hub.dispatch;
     messages$ = hub.messages$;
     messages = [];
@@ -67,7 +67,7 @@ describe('MessageHubFactory', () => {
         ),
     );
 
-    const { messages$, dispatch } = MessageHubFactory([effect$]);
+    const { messages$, dispatch } = HubFactory([effect$]);
 
     const subscription = messages$.subscribe((message) => {
       if (message.type === TEST_ACTION_SUCCESS) {

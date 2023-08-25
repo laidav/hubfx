@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 import cloneDeep from 'lodash.clonedeep';
-import { MessageHubFactory } from '../Factories/MessageHubFactory';
+import { HubFactory } from '../Factories/HubFactory';
 import {
   controlChange,
   addGroupControl,
@@ -52,7 +52,7 @@ describe('Form.actions', () => {
   };
 
   beforeEach(() => {
-    const hub = MessageHubFactory();
+    const hub = HubFactory();
     dispatch = hub.dispatch;
     messages$ = hub.messages$;
     messages = [];

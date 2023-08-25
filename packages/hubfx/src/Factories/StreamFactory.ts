@@ -1,15 +1,15 @@
 import { scan, startWith, tap, pairwise, map } from 'rxjs/operators';
 import { StreamConfig, Stream } from '../Models/Stream';
-import { MessageHubFactory } from './MessageHubFactory';
+import { HubFactory } from './HubFactory';
 
 export const StreamFactory = <T>({
   reducer,
   initialState,
-  messageHub = MessageHubFactory(),
+  hub = HubFactory(),
   debug,
   name,
 }: StreamConfig<T>): Stream<T> => {
-  const { dispatcher$, messages$ } = messageHub;
+  const { dispatcher$, messages$ } = hub;
   const debugName = `[Stream Name] ${name || 'undefined'}`;
 
   const state$ = messages$.pipe(
@@ -41,6 +41,6 @@ export const StreamFactory = <T>({
   return {
     dispatcher$,
     state$,
-    messageHub,
+    hub,
   };
 };

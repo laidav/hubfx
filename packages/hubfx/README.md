@@ -35,7 +35,7 @@
 - # 2023 08 25 (Fri)
 
 1. Better api 
-  - rename MessageHub to Hub
+  - rename Hub to Hub
 
   - hub.state({ reducer, ...otherOptions }) ?
 

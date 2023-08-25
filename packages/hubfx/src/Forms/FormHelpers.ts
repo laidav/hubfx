@@ -8,7 +8,7 @@ import {
   ControlRef,
 } from './Models/Forms';
 import { StreamConfig } from '../Models/Stream';
-import { MessageHubFactory } from '../Factories/MessageHubFactory';
+import { HubFactory } from '../Factories/HubFactory';
 import { formsReducer } from './FormsReducer.reducer';
 import { buildControlState } from './buildControlState';
 
@@ -44,7 +44,7 @@ export const formBuilder = <T>(
   return {
     initialState,
     reducer: formsReducer,
-    messageHub: MessageHubFactory(),
+    hub: HubFactory(),
   };
 };
 

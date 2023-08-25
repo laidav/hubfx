@@ -1,4 +1,4 @@
-import { MessageHub } from '../Models/MessageHub';
+import { Hub } from '../Models/Hub';
 import { Observable, ReplaySubject, merge } from 'rxjs';
 import { filter, tap, map, mergeAll } from 'rxjs/operators';
 import { ActionType } from '../Models/Action';
@@ -8,9 +8,7 @@ import { Effect } from '../Models/Effect';
 const getScopedEffectSignature = (actionType: string, key: string) =>
   `type: ${actionType}, scoped: true${key ? `,key:${key}` : ''}`;
 
-export const MessageHubFactory = (
-  effects$: Effect<unknown, unknown>[] = [],
-): MessageHub => {
+export const HubFactory = (effects$: Effect<unknown, unknown>[] = []): Hub => {
   const dispatcher$ = new ReplaySubject<ActionType>(1);
 
   const genericEffects = effects$.reduce(
