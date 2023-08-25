@@ -7,7 +7,6 @@ import {
   AbstractControl,
   ControlRef,
   AddControl,
-  RemoveControl,
   FormArray,
 } from './Models/Forms';
 import {
@@ -152,9 +151,9 @@ export const removeControl = <T>(
     action: Action<unknown>,
   ) => AbstractControl<T>,
 ) => {
-  const mainAction: Action<RemoveControl> = {
+  const mainAction: Action<ControlRef> = {
     type: FORMS_REMOVE_CONTROL,
-    payload: { controlRef },
+    payload: controlRef,
   };
   const newState = reducer(state, mainAction);
   const formControls = getAncestorControls(controlRef.slice(0, -1), newState);
@@ -195,3 +194,13 @@ export const asyncValidationResponseSuccess = (
   type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
   payload,
 });
+
+export const FORMS_MARK_CONTROL_AS_PRISTINE = 'FORMS_MARK_CONTROL_AS_PRISTINE';
+export const markControlAsPristine = (
+  controlRef: ControlRef,
+): Action<ControlRef> => {
+  return {
+    type: FORMS_MARK_CONTROL_AS_PRISTINE,
+    payload: controlRef,
+  };
+};

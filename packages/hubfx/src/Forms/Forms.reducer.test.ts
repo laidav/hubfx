@@ -10,7 +10,6 @@ import {
   addFormArrayControl,
   removeControl,
   getChildControls,
-  resetControl,
 } from './FormsReducer.reducer';
 import cloneDeep from 'lodash.clonedeep';
 import { buildControlState } from './buildControlState';
@@ -864,7 +863,7 @@ describe('removeControl', () => {
     const controlRef = ['doctorInfo', 'type'];
     const newState = removeControl(initialState, {
       type: FORMS_REMOVE_CONTROL,
-      payload: { controlRef },
+      payload: controlRef,
     });
 
     const expectedState = cloneDeep(initialState);
@@ -896,7 +895,7 @@ describe('removeControl', () => {
 
     const newState = removeControl(initialState, {
       type: FORMS_REMOVE_CONTROL,
-      payload: { controlRef },
+      payload: controlRef,
     });
 
     const expectedState: FormGroup<Contact> = cloneDeep(initialState);

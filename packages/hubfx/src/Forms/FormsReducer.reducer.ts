@@ -16,7 +16,6 @@ import {
   ControlChange,
   AbstractControl,
   FormErrors,
-  RemoveControl,
   FormControlType,
   AddControl,
 } from './Models/Forms';
@@ -385,7 +384,7 @@ const reindexControl = (
 
 export const removeControl = <T>(
   state: AbstractControl<T>,
-  { payload: { controlRef } }: Action<RemoveControl>,
+  { payload: controlRef }: Action<ControlRef>,
 ) => {
   if (!getFormControl(controlRef, state)) {
     throw 'Control not found';
@@ -529,7 +528,7 @@ export const formsReducer = <T>(
       );
     case FORMS_REMOVE_CONTROL:
       return updateDirty(
-        syncValidate(removeControl(state, action as Action<RemoveControl>)),
+        syncValidate(removeControl(state, action as Action<ControlRef>)),
       );
     case FORMS_RESET_CONTROL:
       return updateDirty(

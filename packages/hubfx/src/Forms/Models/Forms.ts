@@ -72,10 +72,6 @@ export interface AddControl {
   controlRef: ControlRef;
 }
 
-export interface RemoveControl {
-  controlRef: ControlRef;
-}
-
 export interface ControlAsyncValidationResponse {
   controlRef: ControlRef;
   validatorIndex: number;

@@ -46,6 +46,12 @@
     - test  - - DONE
 
 1. Pristine value
+  - action
+  - reducer test
+
+
+  - action effects
+  - test
 
 # TODOS
 
