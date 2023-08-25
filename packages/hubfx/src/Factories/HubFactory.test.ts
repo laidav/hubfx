@@ -90,7 +90,7 @@ describe('HubFactory', () => {
         const action: Action<string> = {
           type: TEST_ACTION,
           payload: 'test action with scoped effect',
-          scopedEffects: [switchMapEffect],
+          scopedEffects: { effects: [switchMapEffect] },
         };
 
         dispatch(action);
@@ -110,7 +110,7 @@ describe('HubFactory', () => {
         const action: Action<string> = {
           type: TEST_ACTION,
           payload: 'test action with scoped effect',
-          scopedEffects: [switchMapEffect],
+          scopedEffects: { effects: [switchMapEffect] },
         };
 
         staggeredDispatch(action, [0, 50, 200]);
@@ -134,10 +134,10 @@ describe('HubFactory', () => {
       });
 
       it('should handle more than one effect each independently', (done) => {
-        const action = {
+        const action: Action<string> = {
           type: TEST_ACTION,
           payload: 'test action with more that one effect',
-          scopedEffects: [switchMapEffect, debounceEffect],
+          scopedEffects: { effects: [switchMapEffect, debounceEffect] },
         };
 
         staggeredDispatch(action, [0, 50, 200]);
@@ -173,22 +173,20 @@ describe('HubFactory', () => {
       });
 
       it('should handle two action with unique signatures independently', (done) => {
-        const action = {
+        const action: Action<string> = {
           type: TEST_ACTION,
           payload: 'test action no key',
-          scopedEffects: [switchMapEffect, debounceEffect],
+          scopedEffects: { effects: [switchMapEffect, debounceEffect] },
         };
-        const actionTwo = {
+        const actionTwo: Action<string> = {
           type: TEST_ACTION,
-          key: 'two',
           payload: 'test action key two',
-          scopedEffects: [switchMapEffect],
+          scopedEffects: { key: 'two', effects: [switchMapEffect] },
         };
-        const actionThree = {
+        const actionThree: Action<string> = {
           type: TEST_ACTION,
-          key: 'three',
           payload: 'test action key three',
-          scopedEffects: [debounceEffect],
+          scopedEffects: { key: 'three', effects: [debounceEffect] },
         };
         //TODO: assess timing of dispatches to improve testing
         staggeredDispatch(action, [0, 50, 200]);

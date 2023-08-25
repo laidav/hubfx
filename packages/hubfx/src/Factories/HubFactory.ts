@@ -30,18 +30,19 @@ export const HubFactory = (effects$: Effect<unknown, unknown>[] = []): Hub => {
   const scopedEffectsDict: { [key: string]: Effect<unknown, unknown>[] } = {};
 
   const mergedScopedEffects$ = dispatcher$.pipe(
-    filter(({ type, key, scopedEffects }) => {
-      const hasEffects = Boolean(scopedEffects && scopedEffects.length);
+    filter(({ type, scopedEffects }) => {
+      const hasEffects = Boolean(scopedEffects && scopedEffects.effects.length);
 
       return (
         hasEffects &&
-        scopedEffectsDict[getScopedEffectSignature(type, key)] === undefined
+        scopedEffectsDict[getScopedEffectSignature(type, scopedEffects.key)] ===
+          undefined
       );
     }),
-    tap(({ type, key, scopedEffects }) => {
+    tap(({ type, scopedEffects: { key, effects: scopedEffects } }) => {
       scopedEffectsDict[getScopedEffectSignature(type, key)] = scopedEffects;
     }),
-    map(({ type, key, scopedEffects }) => {
+    map(({ type, scopedEffects: { key, effects: scopedEffects } }) => {
       const signature = getScopedEffectSignature(type, key);
 
       const pipedEffects = scopedEffects.reduce(
@@ -52,7 +53,7 @@ export const HubFactory = (effects$: Effect<unknown, unknown>[] = []): Hub => {
                 (initialAction) =>
                   getScopedEffectSignature(
                     initialAction.type,
-                    initialAction.key,
+                    initialAction.scopedEffects?.key,
                   ) === signature,
               ),
               effect,
