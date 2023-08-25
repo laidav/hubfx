@@ -64,13 +64,15 @@ const getValueChangeEffects = (formControls: AbstractControl<unknown>[]) =>
   formControls.reduce((acc: Action<ControlRef>[], control) => {
     const { controlRef } = control;
 
+    const effects = getScopedEffectsForControl(control);
+    if (!effects.length) return acc;
+
     return acc.concat({
       type: FORMS_VALUE_CHANGE_EFFECT,
       payload: control.controlRef,
       scopedEffects: {
         key: controlRef.join(':'),
-
-        effects: getScopedEffectsForControl(control),
+        effects,
       },
     });
   }, []);
