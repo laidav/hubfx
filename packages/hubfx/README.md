@@ -34,13 +34,26 @@
 
 - # 2023 08 25 (Fri)
 
-1. update touched action in reducer. handle - DONE
-1. update untouched action in reducer. handle - DONE
+1. Better api 
 
-- create update touched reducer (state, controlRef) - DONE
-  - it will be called when user updates value and when user has action TOUCH CONTROL
+  - hub.state({ reducer, ...otherOptions }) ?
 
-1. Mark control as untouched - DONE
+  - hub.dispatch();
+
+  - hub.messages$
+
+  - key moved to scoped dispatch
+
+  For effects put key into scopedEffects = {
+    key?: string,
+    effects: Effect[]
+}
+
+1. Reorganize packages
+  - hubfx/core
+  - hubfx/forms
+  - hubfx-react
+  - hubfx-react-forms
 
 # TODOS
 
@@ -65,22 +78,7 @@
 
   - one way in one way out rule
 
-1. Better api 
-
-  - hub.state({ reducer, ...otherOptions }) ?
-
-  - hub.dispatch();
-
-  - hub.messages$
-
-  - key moved to scoped dispatch
-
 1. and a idle timeout for scopedEffects
-
-1. For effects put key into scopedEffects = {
-  key?: string,
-  effects: Effect[]
-}
 
 1. add a tap option for neccessary side effects
 
