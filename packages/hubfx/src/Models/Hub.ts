@@ -2,7 +2,7 @@ import { ActionType } from './Action';
 import { Observable } from 'rxjs';
 
 export interface StateConfig<T> {
-  reducer: (state: T, action: ActionType) => T;
+  reducer: (state?: T, action?: ActionType) => T;
   name?: string;
   initialState?: T;
   debug?: boolean;

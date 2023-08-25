@@ -73,7 +73,7 @@ export const HubFactory = (effects$: Effect<unknown, unknown>[] = []): Hub => {
   ).pipe(share());
 
   const state = <T>(config: {
-    reducer: (state: T, action: ActionType) => T;
+    reducer: (state?: T, action?: ActionType) => T;
     name?: string;
     initialState?: T;
     debug?: boolean;
@@ -85,8 +85,8 @@ export const HubFactory = (effects$: Effect<unknown, unknown>[] = []): Hub => {
       tap((action) => {
         debug && console.log(debugName, '[Message Received]', action);
       }),
-      scan(reducer, initialState),
-      startWith(initialState),
+      scan(reducer, initialState !== undefined ? initialState : reducer()),
+      startWith(initialState !== undefined ? initialState : reducer()),
       pairwise(),
       tap(([prevState, newState]) => {
         if (debug) {
