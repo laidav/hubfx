@@ -32,24 +32,7 @@
 
 - this new model can be bound with any UI library for rendering
 
-- # 2023 08 24/25 (Thurs/Fri)
-
-1. reset form
-
-  - each AbstractControl should have a pristine control? - DONE
-
-  - action creator to reset control - DONE
-  - handle reset control in reducer - DONE
-  - test - DONE
-
-  - action creator, value change effects - DONE
-    - test  - - DONE
-
-1. Pristine value - DONE
-  - action - DONE
-  - reducer test - DONE
-
-# TODOS
+- # 2023 08 25 (Fri)
 
 1. update touched action in reducer. handle
 1. update untouched action in reducer. handle
@@ -57,11 +40,11 @@
 - create update touched reducer (state, controlRef)
   - it will be called when user updates value and when user has action TOUCH CONTROL
 
+# TODOS
+
 ## CLEAN UP TODOS
 
 ### FORMS
-
-1. setting values of formgroup and formarrays
 
 1. add test cases formsReducer for testing as a whole
 
@@ -69,7 +52,7 @@
 
 1. better way to copy compare objects than JSON STRINGIFY?
 
-1. Consider submitting property on Form Group?
+1. remove submitting property on Form Group?
 
 1. is it reliable that controlRef can be independently scoped from what the control/data actaully are?
 
@@ -96,7 +79,6 @@
   key?: string,
   effects: Effect[]
 }
-
 
 1. add a tap option for neccessary side effects
 
