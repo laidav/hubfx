@@ -10,6 +10,7 @@ import {
   addFormArrayControl,
   removeControl,
   getChildControls,
+  markControlAsPristine,
 } from './FormsReducer.reducer';
 import cloneDeep from 'lodash.clonedeep';
 import { buildControlState } from './buildControlState';
@@ -26,6 +27,7 @@ import {
   FORMS_ADD_FORM_ARRAY_CONTROL,
   FORMS_REMOVE_CONTROL,
   FORMS_RESET_CONTROL,
+  FORMS_MARK_CONTROL_AS_PRISTINE,
 } from './Forms.actions';
 import {
   FormGroup,
@@ -1130,6 +1132,78 @@ describe('getChildControls', () => {
   });
 });
 
+describe('markControlAsPristine', () => {
+  it('should mark a control as pristine for a FG -> FG', () => {
+    const newDoctorValue = {
+      firstName: 'Dr',
+      lastName: 'Ho',
+      email: 'dr@hoe.com',
+    };
+    const state = buildControlState(config) as FormGroup<Contact>;
+    const expectedChangedState = cloneDeep(state);
+    expectedChangedState.value = {
+      ...expectedChangedState.value,
+      doctorInfo: newDoctorValue,
+    };
+    expectedChangedState.controls.doctorInfo.value = newDoctorValue;
+    expectedChangedState.controls.doctorInfo.controls.firstName.value =
+      newDoctorValue.firstName;
+    expectedChangedState.controls.doctorInfo.controls.lastName.value =
+      newDoctorValue.lastName;
+    expectedChangedState.controls.doctorInfo.controls.email.value =
+      newDoctorValue.email;
+
+    const changedState = updateValues(state, {
+      type: FORMS_CONTROL_CHANGE,
+      payload: {
+        controlRef: ['doctorInfo'],
+        value: {
+          firstName: 'Dr',
+          lastName: 'Ho',
+          email: 'dr@hoe.com',
+        },
+      },
+    }) as FormGroup<Contact>;
+
+    expect(changedState).toEqual(expectedChangedState);
+
+    const newPristineState = markControlAsPristine(changedState, {
+      type: FORMS_MARK_CONTROL_AS_PRISTINE,
+      payload: ['doctorInfo'],
+    });
+
+    const expectedPristineState: FormGroup<Contact> = cloneDeep(changedState);
+    const doctorInfoControl: FormGroup<DoctorInfo> = cloneDeep(
+      changedState.controls.doctorInfo,
+    );
+    delete doctorInfoControl.pristineControl;
+
+    const doctorInfoFirstNameControl = cloneDeep(
+      doctorInfoControl.controls.firstName,
+    );
+    delete doctorInfoFirstNameControl.pristineControl;
+    const doctorInfoLastNameControl = cloneDeep(
+      doctorInfoControl.controls.lastName,
+    );
+    delete doctorInfoLastNameControl.pristineControl;
+    const doctorInfoEmailControl = cloneDeep(doctorInfoControl.controls.email);
+    delete doctorInfoEmailControl.pristineControl;
+
+    expect(newPristineState.controls.doctorInfo.pristineControl).toEqual(
+      doctorInfoControl,
+    );
+    expect(
+      newPristineState.controls.doctorInfo.controls.firstName.pristineControl,
+    ).toEqual(doctorInfoFirstNameControl);
+    expect(
+      newPristineState.controls.doctorInfo.controls.lastName.pristineControl,
+    ).toEqual(doctorInfoLastNameControl);
+    expect(
+      newPristineState.controls.doctorInfo.controls.email.pristineControl,
+    ).toEqual(doctorInfoEmailControl);
+  });
+});
+
 describe('formsReducer', () => {
   describe('reacting to change control', () => {
     const initialState = buildControlState(config) as FormGroup<Contact>;
@@ -1237,7 +1311,7 @@ describe('formsReducer', () => {
     });
   });
 
-  describe('when resettting form', () => {
+  describe('when resetting form', () => {
     let clonedConfig: FormGroupConfig;
     let initialState: FormGroup<Contact>;
     const newValue = {

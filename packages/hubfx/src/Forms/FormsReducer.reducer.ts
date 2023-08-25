@@ -498,6 +498,23 @@ export const handleAsyncValidationResponseSuccess = <T>(
   return newState;
 };
 
+export const markControlAsPristine = <T>(
+  state: T,
+  { payload: controlRef }: Action<ControlRef>,
+) => {
+  const newState = cloneDeep(state);
+  const control = getFormControl(controlRef, newState);
+  const controls = getChildControls(control);
+
+  controls.forEach((control) => {
+    const pristineControl: AbstractControl<unknown> = cloneDeep(control);
+    delete pristineControl.pristineControl;
+    control.pristineControl = pristineControl;
+  });
+
+  return newState;
+};
+
 export const formsReducer = <T>(
   state: AbstractControl<T>,
   action: Action<unknown>,
