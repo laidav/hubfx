@@ -9,6 +9,8 @@ import {
   FORMS_REMOVE_CONTROL,
   FORMS_RESET_CONTROL,
   FORMS_MARK_CONTROL_AS_PRISTINE,
+  FORMS_MARK_CONTROL_AS_TOUCHED,
+  FORMS_MARK_CONTROL_AS_UNTOUCHED,
 } from './Forms.actions';
 import {
   FormControl,
@@ -530,6 +532,21 @@ export const markControlAsTouched = <T>(
   return newState;
 };
 
+export const markControlAsUntouched = <T>(
+  state: AbstractControl<T>,
+  { payload: controlRef }: Action<ControlRef>,
+) => {
+  const newState = cloneDeep(state);
+  const control = getFormControl(controlRef, newState);
+  const childControls = getChildControls(control);
+
+  childControls.forEach((control) => {
+    control.touched = false;
+  });
+
+  return newState;
+};
+
 export const formsReducer = <T>(
   state: AbstractControl<T>,
   action: Action<unknown>,
@@ -563,13 +580,20 @@ export const formsReducer = <T>(
         syncValidate(removeControl(state, action as Action<ControlRef>)),
       );
     case FORMS_RESET_CONTROL:
-      return updateDirty(
-        syncValidate(resetControl(state, action as Action<ControlRef>)),
+      return markControlAsUntouched(
+        updateDirty(
+          syncValidate(resetControl(state, action as Action<ControlRef>)),
+        ),
+        action as Action<ControlRef>,
       );
     case FORMS_MARK_CONTROL_AS_PRISTINE:
       return updateDirty(
         markControlAsPristine(state, action as Action<ControlRef>),
       );
+    case FORMS_MARK_CONTROL_AS_TOUCHED:
+      return markControlAsTouched(state, action as Action<ControlRef>);
+    case FORMS_MARK_CONTROL_AS_UNTOUCHED:
+      return markControlAsUntouched(state, action as Action<ControlRef>);
 
     default:
       return state;

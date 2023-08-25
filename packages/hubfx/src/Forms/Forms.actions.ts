@@ -206,7 +206,7 @@ export const markControlAsPristine = (
 };
 
 export const FORMS_MARK_CONTROL_AS_TOUCHED = 'FORMS_MARK_CONTROL_AS_TOUCHED';
-export const markFormAsTouched = (
+export const markControlAsTouched = (
   controlRef: ControlRef,
 ): Action<ControlRef> => {
   return {
@@ -214,3 +214,12 @@ export const markFormAsTouched = (
     payload: controlRef,
   };
 };
+
+export const FORMS_MARK_CONTROL_AS_UNTOUCHED =
+  'FORMS_MARK_CONTROL_AS_UNTOUCHED';
+export const markControlAsUntouched = (
+  controlRef: ControlRef,
+): Action<ControlRef> => ({
+  type: FORMS_MARK_CONTROL_AS_UNTOUCHED,
+  payload: controlRef,
+});

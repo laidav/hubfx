@@ -34,11 +34,13 @@
 
 - # 2023 08 25 (Fri)
 
-1. update touched action in reducer. handle
-1. update untouched action in reducer. handle
+1. update touched action in reducer. handle - DONE
+1. update untouched action in reducer. handle - DONE
 
-- create update touched reducer (state, controlRef)
+- create update touched reducer (state, controlRef) - DONE
   - it will be called when user updates value and when user has action TOUCH CONTROL
+
+1. Mark control as untouched
 
 # TODOS
 
