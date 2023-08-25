@@ -32,7 +32,7 @@
 
 - this new model can be bound with any UI library for rendering
 
-- # 2023 08 24 (Thurs)
+- # 2023 08 24/25 (Thurs/Fri)
 
 1. reset form
 
@@ -42,8 +42,8 @@
   - handle reset control in reducer - DONE
   - test - DONE
 
-  - action creator, value change effects -
-    - test  -
+  - action creator, value change effects - DONE
+    - test  - - DONE
 
 1. Pristine value
 
