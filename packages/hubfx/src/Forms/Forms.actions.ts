@@ -157,7 +157,7 @@ export const removeControl = <T>(
     payload: { controlRef },
   };
   const newState = reducer(state, mainAction);
-  const formControls = getControlBranch(controlRef, newState);
+  const formControls = getAncestorControls(controlRef.slice(0, -1), newState);
   const effects = getValueChangeEffects(formControls);
   const actions = [mainAction, ...effects];
 
