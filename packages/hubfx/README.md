@@ -40,7 +40,7 @@
 - create update touched reducer (state, controlRef) - DONE
   - it will be called when user updates value and when user has action TOUCH CONTROL
 
-1. Mark control as untouched
+1. Mark control as untouched - DONE
 
 # TODOS
 
