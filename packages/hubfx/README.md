@@ -50,9 +50,10 @@
     effects: Effect[] - DONE
 }
 
+1. clean up type linting errors
+
 1. some tests for hub state
 
-1. clean up type linting errors
 
 1. Reorganize packages
   - hubfx/core
