@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import cloneDeep from 'lodash.clonedeep';
 import { HubFactory } from '../Factories/HubFactory';
 import {
@@ -23,7 +23,7 @@ import {
   uniqueFirstAndLastName,
 } from './AsyncValidators';
 import { buildControlState } from './buildControlState';
-import { Action } from '../Models/Action';
+import { Action, ActionType } from '../Models/Action';
 import { formsReducer } from './FormsReducer.reducer';
 import {
   emergencyContactConfigs,
@@ -34,15 +34,15 @@ import { required, email } from './Validators';
 import { Contact } from './Tests/Models/Contact';
 
 describe('Form.actions', () => {
-  let messages = [];
-  let dispatch;
-  let messages$;
+  let messages: ActionType[] = [];
+  let dispatch: (action: ActionType<unknown>) => void;
+  let messages$: Observable<ActionType>;
   let subscription: Subscription;
 
   //TODO:  Refactor this helper so we can use it multiple tests
   const assertMessages = (
     expectedMessages: Action<unknown>[],
-    done,
+    done: jest.DoneCallback,
     timeout = 1000,
   ) => {
     setTimeout(() => {
@@ -515,7 +515,7 @@ describe('Form.actions', () => {
 
   describe('resetControl', () => {
     it('should run async validation on reset control and all anscestors', (done) => {
-      const clonedConfig: FormGroupConfig = cloneDeep(fullConfig);
+      const clonedConfig = cloneDeep(fullConfig);
       (<FormArrayConfig>(
         clonedConfig.formGroupControls.emergencyContacts
       )).formArrayControls = emergencyContactConfigs;
