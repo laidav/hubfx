@@ -239,19 +239,18 @@ describe('updateValues', () => {
       lastName: 'Ho',
       email: 'dr@hoe.com',
     };
-    const state = buildControlState(config);
+    const state = buildControlState(config) as FormGroup<Contact>;
     const expectedState = cloneDeep(state);
     expectedState.value = {
       ...expectedState.value,
       doctorInfo: newDoctorValue,
     };
-    expectedState.controls.doctorInfo.value = newDoctorValue;
-    expectedState.controls.doctorInfo.controls.firstName.value =
-      newDoctorValue.firstName;
-    expectedState.controls.doctorInfo.controls.lastName.value =
-      newDoctorValue.lastName;
-    expectedState.controls.doctorInfo.controls.email.value =
-      newDoctorValue.email;
+    const doctorInfoControl = expectedState.controls
+      .doctorInfo as FormGroup<DoctorInfo>;
+    doctorInfoControl.value = newDoctorValue;
+    doctorInfoControl.controls.firstName.value = newDoctorValue.firstName;
+    doctorInfoControl.controls.lastName.value = newDoctorValue.lastName;
+    doctorInfoControl.controls.email.value = newDoctorValue.email;
 
     const newState = updateValues(state, {
       type: FORMS_CONTROL_CHANGE,
@@ -274,7 +273,7 @@ describe('updateValues', () => {
       clonedConfig.formGroupControls.emergencyContacts
     )).formArrayControls = emergencyContactConfigs;
 
-    const initialState = buildControlState(clonedConfig);
+    const initialState = buildControlState(clonedConfig) as FormGroup<Contact>;
     const newValue: EmergencyContact[] = [
       {
         firstName: 'Milhouse',
@@ -294,24 +293,25 @@ describe('updateValues', () => {
 
     expectedState.value.emergencyContacts = newValue;
     expectedState.controls.emergencyContacts.value = newValue;
-    expectedState.controls.emergencyContacts.controls[0].value = newValue[0];
-    expectedState.controls.emergencyContacts.controls[0].controls.firstName.value =
-      newValue[0].firstName;
-    expectedState.controls.emergencyContacts.controls[0].controls.lastName.value =
-      newValue[0].lastName;
-    expectedState.controls.emergencyContacts.controls[0].controls.email.value =
-      newValue[0].email;
-    expectedState.controls.emergencyContacts.controls[0].controls.relation.value =
-      newValue[0].relation;
-    expectedState.controls.emergencyContacts.controls[1].value = newValue[1];
-    expectedState.controls.emergencyContacts.controls[1].controls.firstName.value =
-      newValue[1].firstName;
-    expectedState.controls.emergencyContacts.controls[1].controls.lastName.value =
-      newValue[1].lastName;
-    expectedState.controls.emergencyContacts.controls[1].controls.email.value =
-      newValue[1].email;
-    expectedState.controls.emergencyContacts.controls[1].controls.relation.value =
-      newValue[1].relation;
+
+    const emergencyContactControls = expectedState.controls
+      .emergencyContacts as FormArray<unknown>;
+
+    const emergencyContactControls0 = emergencyContactControls
+      .controls[0] as FormGroup<EmergencyContact>;
+    const emergencyContactControls1 = emergencyContactControls
+      .controls[1] as FormGroup<EmergencyContact>;
+
+    emergencyContactControls0.value = newValue[0];
+    emergencyContactControls0.controls.firstName.value = newValue[0].firstName;
+    emergencyContactControls0.controls.lastName.value = newValue[0].lastName;
+    emergencyContactControls0.controls.email.value = newValue[0].email;
+    emergencyContactControls0.controls.relation.value = newValue[0].relation;
+    emergencyContactControls1.value = newValue[1];
+    emergencyContactControls1.controls.firstName.value = newValue[1].firstName;
+    emergencyContactControls1.controls.lastName.value = newValue[1].lastName;
+    emergencyContactControls1.controls.email.value = newValue[1].email;
+    emergencyContactControls1.controls.relation.value = newValue[1].relation;
 
     const newState = updateValues(initialState, {
       type: FORMS_CONTROL_CHANGE,
@@ -713,7 +713,7 @@ describe('addGroupFormControl', () => {
       initialValue: 'proctology',
     };
 
-    const expectedState = cloneDeep(initialState) as FormGroup<Contact>;
+    const expectedState = cloneDeep(initialState);
     expectedState.value = {
       ...expectedState.value,
       doctorInfo: {
@@ -734,7 +734,7 @@ describe('addGroupFormControl', () => {
     const newState = addFormGroupControl(initialState, {
       type: FORMS_ADD_GROUP_CONTROL,
       payload: { controlRef, config: newControlConfig },
-    });
+    }) as FormGroup<Contact>;
 
     expect(newState).toEqual(expectedState);
 
@@ -754,7 +754,7 @@ describe('addGroupFormControl', () => {
     const newStateWithOccupationControl = addFormGroupControl(newState, {
       type: FORMS_ADD_GROUP_CONTROL,
       payload: { controlRef: ['occupation'], config: occupationControlConfig },
-    });
+    }) as FormGroup<Contact>;
 
     expect(newStateWithOccupationControl).toEqual(
       expectedStateWithOccupationControl,
@@ -815,7 +815,7 @@ describe('addFormArrayControl', () => {
         config: newControlConfig,
         controlRef: ['emergencyContacts'],
       },
-    });
+    }) as FormGroup<Contact>;
 
     const newControl = buildControlState(newControlConfig, [
       'emergencyContacts',
@@ -833,7 +833,10 @@ describe('addFormArrayControl', () => {
       },
     ];
 
-    expectedState.controls.emergencyContacts.value = [
+    const emergencyContactsControl = expectedState.controls
+      .emergencyContacts as FormArray<unknown>;
+
+    emergencyContactsControl.value = [
       ...initialValue,
       {
         firstName: 'Barney',
@@ -843,8 +846,8 @@ describe('addFormArrayControl', () => {
       },
     ];
 
-    expectedState.controls.emergencyContacts.controls = [
-      ...expectedState.controls.emergencyContacts.controls,
+    emergencyContactsControl.controls = [
+      ...emergencyContactsControl.controls,
       newControl,
     ];
 
@@ -870,7 +873,7 @@ describe('removeControl', () => {
     const newState = removeControl(initialState, {
       type: FORMS_REMOVE_CONTROL,
       payload: controlRef,
-    });
+    }) as FormGroup<Contact>;
 
     const expectedState = cloneDeep(initialState);
     delete expectedState.controls.doctorInfo.controls.type;
