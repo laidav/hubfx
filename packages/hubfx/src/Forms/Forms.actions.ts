@@ -35,18 +35,17 @@ const getScopedEffectsForControl = <T>(
         const effect: Effect<AbstractControl<T>, FormErrors> = (
           actions$: Observable<Action<AbstractControl<T>>>,
         ) => {
-          return actions$
-            .pipe(map(({ payload: newControlState }) => newControlState))
-            .pipe(
-              validator,
-              map((errors) =>
-                asyncValidationResponseSuccess({
-                  controlRef,
-                  errors,
-                  validatorIndex,
-                }),
-              ),
-            );
+          return actions$.pipe(
+            map(() => formControl),
+            validator,
+            map((errors) =>
+              asyncValidationResponseSuccess({
+                controlRef,
+                errors,
+                validatorIndex,
+              }),
+            ),
+          );
         };
 
         return acc.concat(effect);
