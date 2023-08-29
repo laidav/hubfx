@@ -183,14 +183,18 @@ export const getChildControls = (
   if (control.config.controlType === FormControlType.Group) {
     return [control].concat(
       Object.values((<FormGroup<unknown>>control).controls).reduce(
-        (acc, control) => acc.concat(getChildControls(control)),
+        (acc: AbstractControl<unknown>[], control) =>
+          acc.concat(getChildControls(control)),
         [],
       ),
     );
   } else if (control.config.controlType === FormControlType.Array) {
     return [control].concat(
       (<FormArray<unknown>>control).controls.reduce(
-        (acc, control) => acc.concat(getChildControls(control)),
+        (
+          acc: AbstractControl<unknown>[],
+          control,
+        ): AbstractControl<unknown>[] => acc.concat(getChildControls(control)),
         [],
       ),
     );
@@ -230,7 +234,7 @@ const FORMS_UPDATE_ANCESTOR_VALUES = 'FORMS_UPDATE_ANCESTOR_VALUES';
 const updateAncestorValues = <T>(
   state: AbstractControl<T>,
   { payload: controlRef }: Action<ControlRef>,
-) => {
+): AbstractControl<T> => {
   if (!controlRef.length) return state;
 
   const newState = cloneDeep(state);
@@ -365,7 +369,11 @@ const reindexControl = (
   if (newControl.config.controlType === FormControlType.Group) {
     Object.entries((<FormGroup<unknown>>newControl).controls).forEach(
       ([key, control]) => {
-        newControl.controls[key] = reindexControl(control, arrayRef, newIndex);
+        (<FormGroup<unknown>>newControl).controls[key] = reindexControl(
+          control,
+          arrayRef,
+          newIndex,
+        );
       },
     );
   } else if (newControl.config.controlType === FormControlType.Array) {
@@ -481,7 +489,7 @@ export const handleAsyncValidationResponseSuccess = <T>(
     payload: { controlRef, validatorIndex, errors },
   }: Action<ControlAsyncValidationResponse>,
 ): AbstractControl<T> => {
-  const newState = cloneDeep(state) as AbstractControl<T>;
+  const newState = cloneDeep(state);
   const controlBranch = getAncestorControls(controlRef, newState);
 
   controlBranch.reverse().forEach((control, index) => {
