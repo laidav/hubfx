@@ -102,7 +102,7 @@ export const controlChange = <T, S>(
 export const FORMS_ADD_GROUP_CONTROL = 'FORMS_ADD_GROUP_CONTROL';
 export const addGroupControl = <T>(
   { controlRef, config }: AddControl,
-  state,
+  state: AbstractControl<T>,
   reducer: (
     state: AbstractControl<T>,
     action: Action<unknown>,
