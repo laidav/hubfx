@@ -73,7 +73,7 @@ export const buildControlState = <T>(
     const configControls = (<FormArrayConfig>controlConfig).formArrayControls;
     const controls: AbstractControl<unknown>[] = configControls
       ? configControls.reduce(
-          (acc, config, index) =>
+          (acc: AbstractControl<unknown>[], config, index) =>
             (acc = acc.concat(
               buildControlState(config, controlRef.concat(index)),
             )),
