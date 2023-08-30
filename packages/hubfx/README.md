@@ -50,7 +50,7 @@
     effects: Effect[] - DONE
 }
 
-1. clean up type linting errors
+1. clean up type linting errors - DONE
 
 1. some tests for hub state
 
