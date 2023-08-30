@@ -879,7 +879,7 @@ describe('removeControl', () => {
     delete (<FormGroup<DoctorInfo>>expectedState.controls.doctorInfo).controls
       .type;
     expectedState.controls.doctorInfo.value = {
-      ...expectedState.controls.doctorInfo.value,
+      ...(<FormGroup<DoctorInfo>>expectedState.controls.doctorInfo).value,
       type: undefined,
     };
 
