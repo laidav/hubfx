@@ -36,7 +36,7 @@ const getScopedEffectsForControl = <T>(
           actions$: Observable<Action<AbstractControl<T>>>,
         ) => {
           return actions$.pipe(
-            map(() => formControl),
+            map(({ payload: control }) => control),
             validator,
             map((errors) =>
               asyncValidationResponseSuccess({
@@ -60,7 +60,7 @@ export const FORMS_CONTROL_CHANGE = 'FORMS_CONTROL_CHANGE';
 export const FORMS_VALUE_CHANGE_EFFECT = 'FORMS_ARRAY_VALUE_CHANGE_EFFECT';
 
 const getValueChangeEffects = (formControls: AbstractControl<unknown>[]) =>
-  formControls.reduce((acc: Action<ControlRef>[], control) => {
+  formControls.reduce((acc: Action<AbstractControl<unknown>>[], control) => {
     const { controlRef } = control;
 
     const effects = getScopedEffectsForControl(control);
@@ -68,7 +68,7 @@ const getValueChangeEffects = (formControls: AbstractControl<unknown>[]) =>
 
     return acc.concat({
       type: FORMS_VALUE_CHANGE_EFFECT,
-      payload: control.controlRef,
+      payload: control,
       scopedEffects: {
         key: controlRef.join(':'),
         effects,
