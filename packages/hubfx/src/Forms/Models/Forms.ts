@@ -78,7 +78,7 @@ export interface ControlAsyncValidationResponse {
   errors: FormErrors;
 }
 
-export type ValidatorFn = (value: any) => FormErrors;
+export type ValidatorFn = (value: unknown) => FormErrors;
 
 export type ValidatorAsyncFn = <T>(
   control$: Observable<AbstractControl<T>>,

@@ -11,7 +11,6 @@ import {
   arrayLengthError,
   blacklistedEmail,
 } from '../AsyncValidators';
-import { EmergencyContact } from './Models/EmergencyContact';
 
 interface FullName {
   firstName: string;

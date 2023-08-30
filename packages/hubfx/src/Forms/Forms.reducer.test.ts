@@ -876,7 +876,8 @@ describe('removeControl', () => {
     }) as FormGroup<Contact>;
 
     const expectedState = cloneDeep(initialState);
-    delete expectedState.controls.doctorInfo.controls.type;
+    delete (<FormGroup<DoctorInfo>>expectedState.controls.doctorInfo).controls
+      .type;
     expectedState.controls.doctorInfo.value = {
       ...expectedState.controls.doctorInfo.value,
       type: undefined,
@@ -885,7 +886,7 @@ describe('removeControl', () => {
     expectedState.value = {
       ...expectedState.value,
       doctorInfo: {
-        ...expectedState.controls.doctorInfo.value,
+        ...(<FormGroup<DoctorInfo>>expectedState.controls.doctorInfo).value,
         type: undefined,
       },
     };
@@ -965,14 +966,6 @@ describe('removeControl', () => {
 
 describe('handleAsyncValidation', () => {
   it('should update validation', () => {
-    const initialValue = [
-      {
-        firstName: '',
-        lastName: '',
-        email: '',
-        relation: '',
-      },
-    ];
     const clonedConfig: FormGroupConfig = cloneDeep(config);
     (<FormArrayConfig>(
       clonedConfig.formGroupControls.emergencyContacts
@@ -1153,12 +1146,11 @@ describe('markControlAsPristine', () => {
       doctorInfo: newDoctorValue,
     };
     expectedChangedState.controls.doctorInfo.value = newDoctorValue;
-    expectedChangedState.controls.doctorInfo.controls.firstName.value =
-      newDoctorValue.firstName;
-    expectedChangedState.controls.doctorInfo.controls.lastName.value =
-      newDoctorValue.lastName;
-    expectedChangedState.controls.doctorInfo.controls.email.value =
-      newDoctorValue.email;
+    const doctorControl = expectedChangedState.controls
+      .doctorInfo as FormGroup<DoctorInfo>;
+    doctorControl.controls.firstName.value = newDoctorValue.firstName;
+    doctorControl.controls.lastName.value = newDoctorValue.lastName;
+    doctorControl.controls.email.value = newDoctorValue.email;
 
     const changedState = updateValues(state, {
       type: FORMS_CONTROL_CHANGE,
@@ -1177,11 +1169,10 @@ describe('markControlAsPristine', () => {
     const newPristineState = markControlAsPristine(changedState, {
       type: FORMS_MARK_CONTROL_AS_PRISTINE,
       payload: ['doctorInfo'],
-    });
+    }) as FormGroup<Contact>;
 
-    const expectedPristineState: FormGroup<Contact> = cloneDeep(changedState);
     const doctorInfoControl: FormGroup<DoctorInfo> = cloneDeep(
-      changedState.controls.doctorInfo,
+      changedState.controls.doctorInfo as FormGroup<DoctorInfo>,
     );
     delete doctorInfoControl.pristineControl;
 
@@ -1196,18 +1187,21 @@ describe('markControlAsPristine', () => {
     const doctorInfoEmailControl = cloneDeep(doctorInfoControl.controls.email);
     delete doctorInfoEmailControl.pristineControl;
 
+    const newPristineDoctorControl = newPristineState.controls
+      .doctorInfo as FormGroup<DoctorInfo>;
+
     expect(newPristineState.controls.doctorInfo.pristineControl).toEqual(
       doctorInfoControl,
     );
-    expect(
-      newPristineState.controls.doctorInfo.controls.firstName.pristineControl,
-    ).toEqual(doctorInfoFirstNameControl);
-    expect(
-      newPristineState.controls.doctorInfo.controls.lastName.pristineControl,
-    ).toEqual(doctorInfoLastNameControl);
-    expect(
-      newPristineState.controls.doctorInfo.controls.email.pristineControl,
-    ).toEqual(doctorInfoEmailControl);
+    expect(newPristineDoctorControl.controls.firstName.pristineControl).toEqual(
+      doctorInfoFirstNameControl,
+    );
+    expect(newPristineDoctorControl.controls.lastName.pristineControl).toEqual(
+      doctorInfoLastNameControl,
+    );
+    expect(newPristineDoctorControl.controls.email.pristineControl).toEqual(
+      doctorInfoEmailControl,
+    );
   });
 });
 
@@ -1328,26 +1322,23 @@ describe('formsReducer', () => {
         initialState.controls.emergencyContacts.value[0],
         newValue,
       ];
-      expectedNewState.controls.emergencyContacts.dirty = true;
-      expectedNewState.controls.emergencyContacts.controls[1].value = newValue;
-      expectedNewState.controls.emergencyContacts.controls[1].dirty = true;
 
-      expectedNewState.controls.emergencyContacts.controls[1].controls.firstName.value =
-        newValue.firstName;
-      expectedNewState.controls.emergencyContacts.controls[1].controls.firstName.dirty =
-        true;
-      expectedNewState.controls.emergencyContacts.controls[1].controls.lastName.value =
-        newValue.lastName;
-      expectedNewState.controls.emergencyContacts.controls[1].controls.lastName.dirty =
-        true;
-      expectedNewState.controls.emergencyContacts.controls[1].controls.email.value =
-        newValue.email;
-      expectedNewState.controls.emergencyContacts.controls[1].controls.email.dirty =
-        true;
-      expectedNewState.controls.emergencyContacts.controls[1].controls.relation.value =
-        newValue.relation;
-      expectedNewState.controls.emergencyContacts.controls[1].controls.relation.dirty =
-        true;
+      const emergencyContactsControl = expectedNewState.controls
+        .emergencyContacts as FormArray<unknown>;
+      const emergencyContactControls1 = emergencyContactsControl
+        .controls[1] as FormGroup<EmergencyContact>;
+      emergencyContactsControl.dirty = true;
+      emergencyContactControls1.value = newValue;
+      emergencyContactControls1.dirty = true;
+
+      emergencyContactControls1.controls.firstName.value = newValue.firstName;
+      emergencyContactControls1.controls.firstName.dirty = true;
+      emergencyContactControls1.controls.lastName.value = newValue.lastName;
+      emergencyContactControls1.controls.lastName.dirty = true;
+      emergencyContactControls1.controls.email.value = newValue.email;
+      emergencyContactControls1.controls.email.dirty = true;
+      emergencyContactControls1.controls.relation.value = newValue.relation;
+      emergencyContactControls1.controls.relation.dirty = true;
 
       const newState = formsReducer(initialState, {
         type: FORMS_CONTROL_CHANGE,
