@@ -52,14 +52,27 @@
 
 1. clean up type linting errors - DONE
 
-1. some tests for hub state
 
 
 1. Reorganize packages
-  - hubfx/core
-  - hubfx/forms
+  - hubfx
+    - export items
+    - rollup.config for build
   - hubfx-react
+    - depends on hubfx
+    - bindings and component
+    - export items
+    - rollup.config for build
+
+  - hubfx/forms
+    - depends on hubfx
+    - move things into smaller folders
+    - export items
+
   - hubfx-react-forms
+  - depends on hubfx-react?
+  - depends on hubfx-forms
+
 
 # TODOS
 
@@ -95,6 +108,8 @@
 1. Clean up initil state builder method
 
 1. reduce boilerplate some how?
+
+1. some tests for hub state
 
 ### React project 
 

@@ -23,7 +23,7 @@ import {
   uniqueFirstAndLastName,
 } from './AsyncValidators';
 import { buildControlState } from './buildControlState';
-import { Action, ActionType } from '../Models/Action';
+import { Action } from '../Models/Action';
 import { formsReducer } from './FormsReducer.reducer';
 import {
   emergencyContactConfigs,
@@ -34,9 +34,9 @@ import { required, email } from './Validators';
 import { Contact } from './Tests/Models/Contact';
 
 describe('Form.actions', () => {
-  let messages: ActionType[] = [];
-  let dispatch: (action: ActionType<unknown>) => void;
-  let messages$: Observable<ActionType>;
+  let messages: Action<unknown>[] = [];
+  let dispatch: (action: Action<unknown>) => void;
+  let messages$: Observable<Action<unknown>>;
   let subscription: Subscription;
 
   //TODO:  Refactor this helper so we can use it multiple tests

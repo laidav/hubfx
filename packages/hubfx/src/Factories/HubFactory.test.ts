@@ -1,7 +1,7 @@
 import { createEffect } from '../Helpers/createEffect';
 import { Observable, Subscription, of } from 'rxjs';
 import { delay, switchMap } from 'rxjs/operators';
-import { Action, ActionType } from '../Models/Action';
+import { Action } from '../Models/Action';
 import { HubFactory } from './HubFactory';
 import { switchMapEffect, debounceEffect } from '../Forms/Tests/Effects';
 import { TEST_ACTION, TEST_ACTION_SUCCESS } from '../Forms/Tests/Actions';
@@ -9,8 +9,8 @@ import { TEST_ACTION, TEST_ACTION_SUCCESS } from '../Forms/Tests/Actions';
 describe('HubFactory', () => {
   describe('messages', () => {
     let messages = [];
-    let dispatch: (action: ActionType<unknown>) => void;
-    let messages$: Observable<ActionType>;
+    let dispatch: (action: Action<unknown>) => void;
+    let messages$: Observable<Action<unknown>>;
     let subscription: Subscription;
 
     const assertMessages = (

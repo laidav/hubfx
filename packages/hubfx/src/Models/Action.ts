@@ -11,5 +11,3 @@ export type Action<T = undefined> = {
   : {
       payload: T;
     });
-
-export type ActionType<T = undefined> = Action | Action<T>;
