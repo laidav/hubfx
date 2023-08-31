@@ -1,4 +1,4 @@
-import { Hub } from '../Models/Hub';
+import { Hub, StateConfig } from '../Models/Hub';
 import { Observable, ReplaySubject, merge } from 'rxjs';
 import {
   filter,
@@ -46,7 +46,7 @@ export const HubFactory = (effects$: Effect<unknown, unknown>[] = []): Hub => {
       const signature = getScopedEffectSignature(type, key);
 
       const pipedEffects = effects.reduce(
-        (acc: Observable<ActionType<unknown>>[], effect) =>
+        (acc: Observable<Action<unknown>>[], effect) =>
           acc.concat(
             dispatcher$.pipe(
               filter(
@@ -73,12 +73,7 @@ export const HubFactory = (effects$: Effect<unknown, unknown>[] = []): Hub => {
     ...genericEffects,
   ).pipe(share());
 
-  const state = <T>(config: {
-    reducer: (state?: T, action?: ActionType) => T;
-    name?: string;
-    initialState?: T;
-    debug?: boolean;
-  }) => {
+  const state = <T>(config: StateConfig<T>) => {
     const { reducer, name, debug, initialState } = config;
     const debugName = `[Stream Name] ${name || 'undefined'}`;
 
