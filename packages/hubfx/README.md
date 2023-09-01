@@ -47,6 +47,8 @@
   - hubfx-react-forms
     - depends on hubfx/forms
 
+- set up cicd
+
 
 # TODOS
 
