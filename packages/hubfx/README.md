@@ -36,29 +36,35 @@
 
 1. Reorganize packages
   - hubfx
-    - export items
-    - rollup.config for build
-
-    - do documentation
-      - research best way to explain motivation and issue
-      - article?
-
-    - docs
-      - how to bind to react
-      - how to bind to angular
-      - how to bind to vue?
+    - export items - DONE
+    - rollup.config for build - DONE
 
   - hubfx/forms
     - depends on hubfx
-    - move things into smaller folders
+    - move things into smaller folders in new package
     - export items
 
   - hubfx-react-forms
     - depends on hubfx/forms
 
 
-
 # TODOS
+
+1. Documentation
+  1. Hubfx core
+  - motivation/problem
+  - solution
+  - core concepts
+  - docs
+    - how to bind to react
+    - how to bind to angular
+    - how to bind to vue?
+  - api
+
+  1. Forms
+  - API
+
+  1. forms with react
 
 ## CLEAN UP TODOS
 
