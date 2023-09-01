@@ -32,37 +32,21 @@
 
 - this new model can be bound with any UI library for rendering
 
-- # 2023 08 25 (Fri)
-
-1. Better api 
-  - rename Hub to Hub - DONE
-
-  - hub.state({ reducer, ...otherOptions }) ? - DONE
-
-  - hub.dispatch(); - DONE
-
-  - hub.messages$ - DONE
-
-  - key moved to scoped dispatch - DONE
-
-  For effects put key into scopedEffects = { - DONE
-    key?: string, - DONE
-    effects: Effect[] - DONE
-}
-
-1. clean up type linting errors - DONE
-
-
+- # 2023 09 01 (Fri)
 
 1. Reorganize packages
   - hubfx
     - export items
     - rollup.config for build
-  - hubfx-react
-    - depends on hubfx
-    - bindings and component
-    - export items
-    - rollup.config for build
+
+    - do documentation
+      - research best way to explain motivation and issue
+      - article?
+
+    - docs
+      - how to bind to react
+      - how to bind to angular
+      - how to bind to vue?
 
   - hubfx/forms
     - depends on hubfx
@@ -70,13 +54,11 @@
     - export items
 
   - hubfx-react-forms
-  - depends on hubfx-react?
-  - depends on hubfx-forms
+    - depends on hubfx/forms
+
 
 
 # TODOS
-
-
 
 ## CLEAN UP TODOS
 
