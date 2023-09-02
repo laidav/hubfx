@@ -13,5 +13,5 @@ export interface StateConfig<T> {
 export interface Hub {
   messages$: Observable<Action<unknown>>;
   state: <T>(params: StateConfig<T>) => Observable<T>;
-  dispatch: (action: Action<unknown>) => void;
+  dispatch: (...actions: Action<unknown>[]) => void;
 }

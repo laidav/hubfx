@@ -32,7 +32,7 @@ import { Contact } from '../Testing/Models/Contact';
 
 describe('Form.actions', () => {
   let messages: Action<unknown>[] = [];
-  let dispatch: (action: Action<unknown>) => void;
+  let dispatch: (...action: Action<unknown>[]) => void;
   let messages$: Observable<Action<unknown>>;
   let subscription: Subscription;
 
@@ -101,8 +101,9 @@ describe('Form.actions', () => {
     it('should run async validations for a form control and all anscestors', (done) => {
       const config = cloneDeep(fullConfig);
 
-      config.formGroupControls.emergencyContacts.formArrayControls =
-        emergencyContactConfigs;
+      (<FormArrayConfig>(
+        config.formGroupControls.emergencyContacts
+      )).formArrayControls = emergencyContactConfigs;
 
       const state = buildControlState(config);
       const actions = controlChange(
@@ -176,8 +177,9 @@ describe('Form.actions', () => {
     it('should run async validations for multiple form controls and all common anscestors', (done) => {
       const config = cloneDeep(fullConfig);
 
-      config.formGroupControls.emergencyContacts.formArrayControls =
-        emergencyContactConfigs;
+      (<FormArrayConfig>(
+        config.formGroupControls.emergencyContacts
+      )).formArrayControls = emergencyContactConfigs;
 
       const state = buildControlState(config);
 
