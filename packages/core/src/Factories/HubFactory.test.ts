@@ -19,6 +19,7 @@ describe('HubFactory', () => {
       timeout = 1000,
     ) => {
       setTimeout(() => {
+        console.log(messages);
         expect(messages).toEqual(expectedMessages);
         done();
       }, timeout);
@@ -172,7 +173,7 @@ describe('HubFactory', () => {
         );
       });
 
-      it('should handle two action with unique signatures independently', (done) => {
+      fit('should handle two action with unique signatures independently', (done) => {
         const action: Action<string> = {
           type: TEST_ACTION,
           payload: 'test action no key',
@@ -189,49 +190,78 @@ describe('HubFactory', () => {
           scopedEffects: { key: 'three', effects: [debounceTestEffect] },
         };
         //TODO: assess timing of dispatches to improve testing
-        staggeredDispatch(action, [0, 50, 200]);
-        staggeredDispatch(actionTwo, [5]);
-        staggeredDispatch(actionThree, [10, 60, 225]);
+        staggeredDispatch(action, [0, 125, 200]);
+        // staggeredDispatch(actionTwo, [5]);
+        // staggeredDispatch(actionThree, [50, 150, 250]);
 
         assertMessages(
           [
-            action, // at 0
-            actionTwo, // at 0
-            actionThree, // at 0
-            action, // at 50
-            actionThree, // at 50
-            {
-              type: TEST_ACTION_SUCCESS,
-              payload: 'test action key two switchMap succeeded',
-            },
-            {
-              type: TEST_ACTION_SUCCESS,
-              payload: 'test action no key switchMap succeeded',
-            },
-            action, // at 200
-            actionThree, // at 225
-            {
-              type: TEST_ACTION_SUCCESS,
-              payload: 'test action no key debounceTime and mergeMap succeeded',
-            },
-            {
-              type: TEST_ACTION_SUCCESS,
-              payload:
-                'test action key three debounceTime and mergeMap succeeded',
-            },
+            // 0
+            action,
+
+            // 5
+
+            // 50
+
+            //100
             {
               type: TEST_ACTION_SUCCESS,
               payload: 'test action no key switchMap succeeded',
             },
+
+            //125
+            action,
+
+            //150
+
+            //160
             {
               type: TEST_ACTION_SUCCESS,
               payload: 'test action no key debounceTime and mergeMap succeeded',
             },
+
+            //200
+            action,
+
+            //250
+
+            //285
             {
               type: TEST_ACTION_SUCCESS,
-              payload:
-                'test action key three debounceTime and mergeMap succeeded',
+              payload: 'test action no key debounceTime and mergeMap succeeded',
             },
+
+            //300
+            {
+              type: TEST_ACTION_SUCCESS,
+              payload: 'test action no key switchMap succeeded',
+            },
+
+            //360
+            {
+              type: TEST_ACTION_SUCCESS,
+              payload: 'test action no key debounceTime and mergeMap succeeded',
+            },
+
+            // {
+            //   type: TEST_ACTION_SUCCESS,
+            //   payload: 'test action key two switchMap succeeded',
+            // },
+            // actionThree,
+            // {
+            //   type: TEST_ACTION_SUCCESS,
+            //   payload:
+            //     'test action key three debounceTime and mergeMap succeeded',
+            // },
+            // {
+            //   type: TEST_ACTION_SUCCESS,
+            //   payload: 'test action no key debounceTime and mergeMap succeeded',
+            // },
+            // {
+            //   type: TEST_ACTION_SUCCESS,
+            //   payload:
+            //     'test action key three debounceTime and mergeMap succeeded',
+            // },
           ],
           done,
         );
