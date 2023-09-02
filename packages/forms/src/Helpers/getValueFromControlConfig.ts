@@ -2,15 +2,9 @@ import {
   FormControlConfig,
   FormArrayConfig,
   FormGroupConfig,
-  AbstractControl,
   AbstractControlConfig,
-  FormControlType,
-  ControlRef,
-} from './Models/Controls';
-import { StreamConfig } from '../Models/Stream';
-import { HubFactory } from '../Factories/HubFactory';
-import { formsReducer } from './FormsReducer.reducer';
-import { buildControlState } from './buildControlState';
+} from '../Models/Configs';
+import { FormControlType } from '../Models/FormControlType';
 
 export const getValueFromControlConfig = <T>(
   controlConfig: AbstractControlConfig,
@@ -34,31 +28,4 @@ export const getValueFromControlConfig = <T>(
   } else {
     return (<FormControlConfig<T>>controlConfig).initialValue;
   }
-};
-
-export const formBuilder = <T>(
-  config: AbstractControlConfig,
-): StreamConfig<AbstractControl<T>> => {
-  const initialState: AbstractControl<T> = buildControlState(config);
-
-  return {
-    initialState,
-    reducer: formsReducer,
-    hub: HubFactory(),
-  };
-};
-
-export const isChildControl = (
-  childRef: ControlRef,
-  parentRef: ControlRef,
-): boolean => {
-  const result = parentRef.every((key, index) => {
-    if (key === '*') {
-      return typeof childRef[index] === 'number';
-    }
-
-    return childRef[index] === key;
-  });
-
-  return result;
 };

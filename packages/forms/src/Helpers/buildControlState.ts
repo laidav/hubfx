@@ -2,16 +2,19 @@ import {
   FormControl,
   FormGroup,
   FormArray,
+  AbstractControl,
+} from '../Models/Controls';
+import { ControlRef } from '../Models/ControlRef';
+import { FormErrors } from '../Models/FormErrors';
+import { FormControlType } from '../Models/FormControlType';
+import {
   FormControlConfig,
   FormArrayConfig,
   FormGroupConfig,
-  FormErrors,
-  AbstractControl,
   AbstractControlConfig,
-  FormControlType,
-  ControlRef,
-} from './Models/Controls';
-import { getValueFromControlConfig } from './FormHelpers';
+} from '../Models/Configs';
+
+import { getValueFromControlConfig } from './getValueFromControlConfig';
 import cloneDeep from 'lodash.clonedeep';
 
 export const buildControlState = <T>(

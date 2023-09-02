@@ -1,6 +1,6 @@
-import { config, emergencyContactConfigs } from './Testing/config';
-import { FormGroupConfig, FormArrayConfig } from './Models/Controls';
-import { getValueFromControlConfig } from './FormHelpers';
+import { config, emergencyContactConfigs } from '../Testing/config';
+import { FormGroupConfig, FormArrayConfig } from '../Models/Configs';
+import { getValueFromControlConfig } from './getValueFromControlConfig';
 
 describe('getValueFromConfig', () => {
   it('should return the correct initial empty value from config', () => {
