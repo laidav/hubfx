@@ -21,9 +21,9 @@ import {
   FormErrors,
   FormControlType,
   AddControl,
-} from './Models/Forms';
-import { ControlAsyncValidationResponse } from './Models/Forms';
-import { ControlRef } from './Models/Forms';
+} from './Models/Controls';
+import { ControlAsyncValidationResponse } from './Models/Controls';
+import { ControlRef } from './Models/Controls';
 import { buildControlState } from './buildControlState';
 
 export const syncValidate = <T>(

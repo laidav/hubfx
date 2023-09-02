@@ -8,14 +8,14 @@ import {
   ControlRef,
   AddControl,
   FormArray,
-} from './Models/Forms';
+} from './Models/Controls';
 import {
   getAncestorControls,
   getFormControl,
   getControlBranch,
 } from './FormsReducer.reducer';
 import { Effect } from '../Models/Effect';
-import { FormErrors } from './Models/Forms';
+import { FormErrors } from './Models/Controls';
 
 const getScopedEffectsForControl = <T>(
   formControl: AbstractControl<T>,

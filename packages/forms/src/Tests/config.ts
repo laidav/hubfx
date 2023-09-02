@@ -3,7 +3,7 @@ import {
   FormControlConfig,
   FormArrayConfig,
   FormGroupConfig,
-} from '../Models/Forms';
+} from '../Models/Controls';
 import { required, email, phoneNumber } from '../Validators';
 import {
   uniqueEmail,

@@ -1,5 +1,5 @@
 import { config, emergencyContactConfigs } from './Tests/config';
-import { FormGroupConfig, FormArrayConfig } from './Models/Forms';
+import { FormGroupConfig, FormArrayConfig } from './Models/Controls';
 import { getValueFromControlConfig } from './FormHelpers';
 
 describe('getValueFromConfig', () => {

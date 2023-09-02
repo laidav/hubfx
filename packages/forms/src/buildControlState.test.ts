@@ -13,7 +13,7 @@ import {
   FormControlConfig,
   FormGroupConfig,
   FormControlType,
-} from './Models/Forms';
+} from './Models/Controls';
 import { required, email } from './Validators';
 import { uniqueEmail, blacklistedEmail } from './AsyncValidators';
 import { buildControlState } from './buildControlState';

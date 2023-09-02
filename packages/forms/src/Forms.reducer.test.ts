@@ -41,7 +41,7 @@ import {
   FormGroupConfig,
   FormControlConfig,
   FormControlType,
-} from './Models/Forms';
+} from './Models/Controls';
 import { Contact } from './Tests/Models/Contact';
 import { EmergencyContact } from './Tests/Models/EmergencyContact';
 import { DoctorInfo } from './Tests/Models/DoctorInfo';

@@ -6,7 +6,7 @@ import {
   AbstractControlConfig,
   FormControlType,
   ControlRef,
-} from './Models/Forms';
+} from './Models/Controls';
 import { StreamConfig } from '../Models/Stream';
 import { HubFactory } from '../Factories/HubFactory';
 import { formsReducer } from './FormsReducer.reducer';

@@ -1,5 +1,5 @@
-import { FormErrors } from './Models/Forms';
-import { ValidatorFn } from './Models/Forms';
+import { FormErrors } from './Models/Controls';
+import { ValidatorFn } from './Models/Controls';
 
 export const required: ValidatorFn = (value: unknown) => {
   if (Array.isArray(value)) {

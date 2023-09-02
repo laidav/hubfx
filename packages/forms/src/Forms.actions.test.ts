@@ -15,7 +15,7 @@ import {
   FormControlType,
   FormArrayConfig,
   FormGroup,
-} from './Models/Forms';
+} from './Models/Controls';
 import {
   blacklistedDoctorType,
   uniqueEmail,

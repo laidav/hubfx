@@ -10,7 +10,7 @@ import {
   AbstractControlConfig,
   FormControlType,
   ControlRef,
-} from './Models/Forms';
+} from './Models/Controls';
 import { getValueFromControlConfig } from './FormHelpers';
 import cloneDeep from 'lodash.clonedeep';
 
