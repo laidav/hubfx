@@ -13,7 +13,7 @@ export const controlChange = <T, S>(
     state: AbstractControl<S>,
     action: Action<unknown>,
   ) => AbstractControl<S>,
-): (Action<ControlChange<T>> | Action<ControlRef>)[] => {
+): (Action<ControlChange<T>> | Action<AbstractControl<unknown>>)[] => {
   const { controlRef } = controlChange;
   const mainAction: Action<ControlChange<T>> = {
     type: FORMS_CONTROL_CHANGE,

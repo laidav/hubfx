@@ -1,15 +1,17 @@
 import cloneDeep from 'lodash.clonedeep';
 import { Action } from '@hubfx/core';
 import { AbstractControl } from '../Models/Controls';
-import { ControlRef } from '../Models/ControlRef';
 import { getAncestorControls } from '../Helpers/getAncestorControls';
 
 export const handleAsyncValidation = <T>(
   state: AbstractControl<T>,
-  action: Action<ControlRef>,
+  action: Action<AbstractControl<unknown>>,
 ): AbstractControl<T> => {
   const newState: AbstractControl<T> = cloneDeep(state);
-  const newControlBranch = getAncestorControls(action.payload, newState);
+  const newControlBranch = getAncestorControls(
+    action.payload.controlRef,
+    newState,
+  );
 
   newControlBranch.forEach((control, index) => {
     control.validating = true;

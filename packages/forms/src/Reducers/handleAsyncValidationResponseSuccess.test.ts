@@ -7,8 +7,9 @@ import { FormGroup, FormArray } from '../Models/Controls';
 import { FormArrayConfig, FormGroupConfig } from '../Models/Configs';
 import { Contact } from '../Testing/Models/Contact';
 import { EmergencyContact } from '../Testing/Models/EmergencyContact';
-import { FORMS_VALUE_CHANGE_EFFECT } from '../Actions/ValueChange';
+import { FORMS_VALUE_CHANGE_EFFECT } from '../Actions/valueChange';
 import { FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS } from '../Actions/asyncValidationResponseSuccess';
+import { getFormControl } from '../Helpers/getFormControl';
 
 describe('handleAsyncValidationResponseSuccess', () => {
   it('should update errors for control', () => {
@@ -29,10 +30,11 @@ describe('handleAsyncValidationResponseSuccess', () => {
     const initialState = buildControlState(clonedConfig) as FormGroup<Contact>;
 
     const controlRef = ['emergencyContacts', 0, 'email'];
+    const control = getFormControl(controlRef, initialState);
 
     const validatingState = handleAsyncValidation(initialState, {
       type: FORMS_VALUE_CHANGE_EFFECT,
-      payload: controlRef,
+      payload: control,
     }) as FormGroup<Contact>;
 
     const expectedState: FormGroup<Contact> = cloneDeep(validatingState);

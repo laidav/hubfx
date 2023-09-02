@@ -41,7 +41,10 @@ export const formsReducer = <T>(
         ),
       );
     case FORMS_VALUE_CHANGE_EFFECT:
-      return handleAsyncValidation(state, action as Action<ControlRef>);
+      return handleAsyncValidation(
+        state,
+        action as Action<AbstractControl<unknown>>,
+      );
     case FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS:
       return syncValidate(
         handleAsyncValidationResponseSuccess(
