@@ -32,7 +32,7 @@ import { Contact } from '../Testing/Models/Contact';
 
 describe('Form.actions', () => {
   let messages: Action<unknown>[] = [];
-  let dispatch: (...action: Action<unknown>[]) => void;
+  let dispatch: (...actions: Action<unknown>[]) => void;
   let messages$: Observable<Action<unknown>>;
   let subscription: Subscription;
 
