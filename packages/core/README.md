@@ -83,6 +83,8 @@
 ## CLEAN UP TODOS
 - why is lint function not picking up type errors that jest ts is?
 
+- mainaction in controlChange lint erro
+
 ### FORMS
 
 1. add test cases formsReducer for testing as a whole
