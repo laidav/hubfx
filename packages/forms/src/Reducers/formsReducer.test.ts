@@ -13,14 +13,14 @@ import {
   markControlAsPristine,
   markControlAsTouched,
   markControlAsUntouched,
-} from './FormsReducer.reducer';
+} from './formsReducer';
 import cloneDeep from 'lodash.clonedeep';
 import { buildControlState } from './buildControlState';
 import {
   config,
   emergencyContactConfigs,
   firstNameNotSameAsLast,
-} from './Testing/config';
+} from '../Testing/config';
 import {
   FORMS_CONTROL_CHANGE,
   FORMS_VALUE_CHANGE_EFFECT,
@@ -41,16 +41,16 @@ import {
   FormGroupConfig,
   FormControlConfig,
   FormControlType,
-} from './Models/Controls';
-import { Contact } from './Testing/Models/Contact';
-import { EmergencyContact } from './Testing/Models/EmergencyContact';
-import { DoctorInfo } from './Testing/Models/DoctorInfo';
-import { required, email } from './Validators';
+} from '../Models/Controls';
+import { Contact } from '../Testing/Models/Contact';
+import { EmergencyContact } from '../Testing/Models/EmergencyContact';
+import { DoctorInfo } from '../Testing/Models/DoctorInfo';
+import { required, email } from '../Validators';
 import {
   uniqueEmail,
   uniqueFirstAndLastName,
   blacklistedEmail,
-} from './Testing/AsyncValidators';
+} from '../Testing/AsyncValidators';
 
 describe('updateValues', () => {
   it('should update values only for a FC -> FG', () => {

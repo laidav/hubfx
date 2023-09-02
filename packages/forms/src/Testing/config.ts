@@ -1,9 +1,9 @@
 import {
-  FormControlType,
   FormControlConfig,
   FormArrayConfig,
   FormGroupConfig,
-} from '../Models/Controls';
+} from '../Models/Configs';
+import { FormControlType } from '../Models/FormControlType';
 import { required, email, phoneNumber } from '../Validators';
 import {
   uniqueEmail,
