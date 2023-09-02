@@ -1,6 +1,5 @@
 {
   "name": "@hubfx/core",
-  "version": "0.0.0",
   "description": "State management with rxjs",
   "main": "index.js",
   "scripts": {

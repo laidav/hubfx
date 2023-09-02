@@ -1,7 +1,6 @@
 {
   "name": "@hubfx/forms",
-  "version": "0.0.0",
-  "description": "State management with rxjs",
+  "description": "Form library with hubfx",
   "main": "index.js",
   "scripts": {
     "test": "react-scripts test",
