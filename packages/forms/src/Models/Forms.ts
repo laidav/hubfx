@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { Action } from '../../Models/Action';
+import { Action } from '@hubfx/core';
 
 export enum FormControlType {
   Field = 'Field',
@@ -67,24 +67,19 @@ export interface AddControl {
   controlRef: ControlRef;
 }
 
-export interface AddControl {
-  config: AbstractControlConfig;
-  controlRef: ControlRef;
-}
-
 export interface ControlAsyncValidationResponse {
   controlRef: ControlRef;
   validatorIndex: number;
   errors: FormErrors;
 }
 
+export type FormsReducer = <T>(
+  state: AbstractControl<T>,
+  action: Action<unknown>,
+) => AbstractControl<T>;
+
 export type ValidatorFn = (value: unknown) => FormErrors;
 
 export type ValidatorAsyncFn = <T>(
   control$: Observable<AbstractControl<T>>,
 ) => Observable<FormErrors>;
-
-export type FormsReducer = <T>(
-  state: AbstractControl<T>,
-  action: Action<unknown>,
-) => AbstractControl<T>;
