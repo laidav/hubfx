@@ -46,12 +46,14 @@
       - models
         - fix references to point to core
         - break down
+      - reducer - DONE
+        - fix references to point to core - DONE
+        - breakdown - DONE
+        - tests - PENDING
       - actions
-        - fix references to point to core
-        - breakdown
-      - reducer
-        - fix references to point to core
-        - breakdown
+        - fix references to point to core - DONE
+        - breakdown - DONE
+        - tests - IN PROGRESS
     - export items
 
   - hubfx-react-forms
