@@ -1,4 +1,4 @@
-import { Action } from '../Models/Action';
+import { Action } from '@hubfx/core';
 import { ControlRef } from '../Models/ControlRef';
 export const FORMS_MARK_CONTROL_AS_PRISTINE = 'FORMS_MARK_CONTROL_AS_PRISTINE';
 export const markControlAsPristine = (

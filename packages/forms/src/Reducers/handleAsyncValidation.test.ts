@@ -6,7 +6,8 @@ import { FormGroup, FormArray } from '../Models/Controls';
 import { FormArrayConfig, FormGroupConfig } from '../Models/Configs';
 import { Contact } from '../Testing/Models/Contact';
 import { EmergencyContact } from '../Testing/Models/EmergencyContact';
-import { FORMS_VALUE_CHANGE_EFFECT } from '../Actions/ValueChange';
+import { FORMS_VALUE_CHANGE_EFFECT } from '../Actions/valueChange';
+import { getFormControl } from '../Helpers/getFormControl';
 
 describe('handleAsyncValidation', () => {
   it('should update validation', () => {
@@ -34,9 +35,12 @@ describe('handleAsyncValidation', () => {
     emergencyContactEmail.validating = true;
     emergencyContactEmail.asyncValidateInProgress = { 0: true, 1: true };
 
+    const controlRef = ['emergencyContacts', 0, 'email'];
+    const control = getFormControl(controlRef, initialState);
+
     const newState = handleAsyncValidation(initialState, {
       type: FORMS_VALUE_CHANGE_EFFECT,
-      payload: ['emergencyContacts', 0, 'email'],
+      payload: control,
     });
 
     expect(newState).toEqual(expectedState);
