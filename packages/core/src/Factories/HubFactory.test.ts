@@ -191,7 +191,7 @@ describe('HubFactory', () => {
         };
         //TODO: assess timing of dispatches to improve testing
         staggeredDispatch(action, [0, 125, 200]);
-        // staggeredDispatch(actionTwo, [5]);
+        staggeredDispatch(actionTwo, [5]);
         // staggeredDispatch(actionThree, [50, 150, 250]);
 
         assertMessages(
@@ -200,6 +200,7 @@ describe('HubFactory', () => {
             action,
 
             // 5
+            actionTwo,
 
             // 50
 
@@ -207,6 +208,12 @@ describe('HubFactory', () => {
             {
               type: TEST_ACTION_SUCCESS,
               payload: 'test action no key switchMap succeeded',
+            },
+
+            //105
+            {
+              type: TEST_ACTION_SUCCESS,
+              payload: 'test action key two switchMap succeeded',
             },
 
             //125
@@ -222,6 +229,8 @@ describe('HubFactory', () => {
 
             //200
             action,
+
+            //225
 
             //250
 
@@ -243,10 +252,6 @@ describe('HubFactory', () => {
               payload: 'test action no key debounceTime and mergeMap succeeded',
             },
 
-            // {
-            //   type: TEST_ACTION_SUCCESS,
-            //   payload: 'test action key two switchMap succeeded',
-            // },
             // actionThree,
             // {
             //   type: TEST_ACTION_SUCCESS,
