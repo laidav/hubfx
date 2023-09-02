@@ -1,7 +1,11 @@
 import cloneDeep from 'lodash.clonedeep';
 import { addFormArrayControl } from './addFormArrayControl';
 import { buildControlState } from '../Helpers/buildControlState';
-import { config, emergencyContactConfigs } from '../Testing/config';
+import {
+  config,
+  emergencyContactConfigs,
+  firstNameNotSameAsLast,
+} from '../Testing/config';
 import { FormGroup, FormArray } from '../Models/Controls';
 import { FormControlType } from '../Models/FormControlType';
 import { FORMS_ADD_FORM_ARRAY_CONTROL } from '../Actions/addArrayControl';

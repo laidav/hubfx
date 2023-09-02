@@ -20,8 +20,8 @@ import {
   blacklistedEmail,
   uniqueFirstAndLastName,
 } from '../Testing/AsyncValidators';
-import { buildControlState } from '../buildControlState';
-import { formsReducer } from '../FormsReducer.reducer';
+import { buildControlState } from '../Helpers/buildControlState';
+import { formsReducer } from '../Reducers/formsReducer';
 import {
   emergencyContactConfigs,
   config as fullConfig,

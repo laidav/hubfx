@@ -7,6 +7,7 @@ import {
   updateAncestorValues,
   FORMS_UPDATE_ANCESTOR_VALUES,
 } from './updateAncestorValues';
+import { updateChildValues } from './updateChildValues';
 
 export const updateValues = <T>(
   state: AbstractControl<T>,
