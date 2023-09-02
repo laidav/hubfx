@@ -81,6 +81,7 @@
   1. forms with react
 
 ## CLEAN UP TODOS
+- why is lint function not picking up type errors that jest ts is?
 
 ### FORMS
 
