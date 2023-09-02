@@ -299,8 +299,8 @@ describe('updateValues', () => {
         },
       });
 
-    expect(newStateFunc).toThrow(
-      TypeError(`The number of keys do not match form group: doctorInfo`),
+    expect(newStateFunc).toThrowError(
+      `The number of keys do not match form group: doctorInfo`,
     );
   });
 
@@ -327,10 +327,8 @@ describe('updateValues', () => {
         },
       });
 
-    expect(newStateFunc).toThrow(
-      TypeError(
-        `The number of value items does not match the number of controls in array: emergencyContacts`,
-      ),
+    expect(newStateFunc).toThrowError(
+      `The number of value items does not match the number of controls in array: emergencyContacts`,
     );
   });
 });
