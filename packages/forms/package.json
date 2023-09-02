@@ -1,7 +1,10 @@
 {
   "name": "@hubfx/forms",
   "description": "Form library with hubfx",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "react-scripts test",
     "build": "rimraf dist && rollup --config",
