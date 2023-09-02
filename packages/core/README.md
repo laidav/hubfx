@@ -40,9 +40,19 @@
     - rollup.config for build - DONE
 
   - hubfx/forms
-    - depends on hubfx
-    - create package
+    - depends on hubfx - DONE
+    - create package - DONE
     - move things into smaller folders in new package
+      - fix references to point to core
+      - models
+        - fix references to point to core
+        - break down
+      - actions
+        - fix references to point to core
+        - breakdown
+      - reducer
+        - fix references to point to core
+        - breakdown
     - export items
 
   - hubfx-react-forms
