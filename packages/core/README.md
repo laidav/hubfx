@@ -43,7 +43,6 @@
     - depends on hubfx - DONE
     - create package - DONE
     - move things into smaller folders in new package
-      - fix references to point to core
       - models
         - fix references to point to core
         - break down
