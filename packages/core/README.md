@@ -32,7 +32,7 @@
 
 - this new model can be bound with any UI library for rendering
 
-- # 2023 09 01 (Fri)
+- # 2023 09 02 (Sat)
 
 1. Reorganize packages
   - hubfx
@@ -41,6 +41,7 @@
 
   - hubfx/forms
     - depends on hubfx
+    - create package
     - move things into smaller folders in new package
     - export items
 
