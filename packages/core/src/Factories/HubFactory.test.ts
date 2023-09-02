@@ -19,7 +19,6 @@ describe('HubFactory', () => {
       timeout = 1000,
     ) => {
       setTimeout(() => {
-        console.log(messages);
         expect(messages).toEqual(expectedMessages);
         done();
       }, timeout);
@@ -173,7 +172,7 @@ describe('HubFactory', () => {
         );
       });
 
-      fit('should handle two action with unique signatures independently', (done) => {
+      it('should handle two action with unique signatures independently', (done) => {
         const action: Action<string> = {
           type: TEST_ACTION,
           payload: 'test action no key',
@@ -184,25 +183,13 @@ describe('HubFactory', () => {
           payload: 'test action key two',
           scopedEffects: { key: 'two', effects: [switchMapTestEffect] },
         };
-        const actionThree: Action<string> = {
-          type: TEST_ACTION,
-          payload: 'test action key three',
-          scopedEffects: { key: 'three', effects: [debounceTestEffect] },
-        };
-        //TODO: assess timing of dispatches to improve testing
         staggeredDispatch(action, [0, 125, 200]);
-        staggeredDispatch(actionTwo, [5]);
-        // staggeredDispatch(actionThree, [50, 150, 250]);
+        staggeredDispatch(actionTwo, [130]);
 
         assertMessages(
           [
             // 0
             action,
-
-            // 5
-            actionTwo,
-
-            // 50
 
             //100
             {
@@ -210,16 +197,11 @@ describe('HubFactory', () => {
               payload: 'test action no key switchMap succeeded',
             },
 
-            //105
-            {
-              type: TEST_ACTION_SUCCESS,
-              payload: 'test action key two switchMap succeeded',
-            },
-
             //125
             action,
 
-            //150
+            //130
+            actionTwo,
 
             //160
             {
@@ -230,9 +212,11 @@ describe('HubFactory', () => {
             //200
             action,
 
-            //225
-
-            //250
+            //230
+            {
+              type: TEST_ACTION_SUCCESS,
+              payload: 'test action key two switchMap succeeded',
+            },
 
             //285
             {
@@ -251,22 +235,6 @@ describe('HubFactory', () => {
               type: TEST_ACTION_SUCCESS,
               payload: 'test action no key debounceTime and mergeMap succeeded',
             },
-
-            // actionThree,
-            // {
-            //   type: TEST_ACTION_SUCCESS,
-            //   payload:
-            //     'test action key three debounceTime and mergeMap succeeded',
-            // },
-            // {
-            //   type: TEST_ACTION_SUCCESS,
-            //   payload: 'test action no key debounceTime and mergeMap succeeded',
-            // },
-            // {
-            //   type: TEST_ACTION_SUCCESS,
-            //   payload:
-            //     'test action key three debounceTime and mergeMap succeeded',
-            // },
           ],
           done,
         );
