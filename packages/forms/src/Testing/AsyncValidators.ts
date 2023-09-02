@@ -1,5 +1,5 @@
 import { of, delay, mergeMap } from 'rxjs';
-import { ValidatorAsyncFn } from './Models/Controls';
+import { ValidatorAsyncFn } from '../Models/Controls';
 
 export const uniqueEmail: ValidatorAsyncFn = (control$) => {
   return control$.pipe(

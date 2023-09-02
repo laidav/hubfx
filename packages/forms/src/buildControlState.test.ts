@@ -2,9 +2,9 @@ import {
   config,
   emergencyContactConfigs,
   firstNameNotSameAsLast,
-} from './Tests/config';
-import { Contact } from './Tests/Models/Contact';
-import { DoctorInfo } from './Tests/Models/DoctorInfo';
+} from './Testing/config';
+import { Contact } from './Testing/Models/Contact';
+import { DoctorInfo } from './Testing/Models/DoctorInfo';
 import {
   FormControl,
   FormArray,
@@ -15,7 +15,7 @@ import {
   FormControlType,
 } from './Models/Controls';
 import { required, email } from './Validators';
-import { uniqueEmail, blacklistedEmail } from './AsyncValidators';
+import { uniqueEmail, blacklistedEmail } from './Testing/AsyncValidators';
 import { buildControlState } from './buildControlState';
 
 describe('buildControlState', () => {

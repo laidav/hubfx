@@ -10,7 +10,7 @@ import {
   uniqueFirstAndLastName,
   arrayLengthError,
   blacklistedEmail,
-} from '../AsyncValidators';
+} from './AsyncValidators';
 
 interface FullName {
   firstName: string;

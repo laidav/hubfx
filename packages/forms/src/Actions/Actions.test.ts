@@ -1,37 +1,34 @@
 import { Subscription, Observable } from 'rxjs';
 import cloneDeep from 'lodash.clonedeep';
-import { HubFactory } from '../Factories/HubFactory';
-import {
-  controlChange,
-  addGroupControl,
-  addFormArrayControl,
-  removeControl,
-  resetControl,
-  FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
-} from './Forms.actions';
+import { HubFactory, Action } from '@hubfx/core';
+import { controlChange } from './controlChange';
+import { addGroupControl } from './addGroupControl';
+import { addFormArrayControl } from './addArrayControl';
+import { removeControl } from './removeControl';
+import { resetControl } from './resetControl';
+import { FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS } from './asyncValidationResponseSuccess';
+import { FormGroup } from '../Models/Controls';
 import {
   FormControlConfig,
   FormGroupConfig,
-  FormControlType,
   FormArrayConfig,
-  FormGroup,
-} from './Models/Controls';
+} from '../Models/Configs';
+import { FormControlType } from '../Models';
 import {
   blacklistedDoctorType,
   uniqueEmail,
   blacklistedEmail,
   uniqueFirstAndLastName,
-} from './AsyncValidators';
-import { buildControlState } from './buildControlState';
-import { Action } from '../Models/Action';
-import { formsReducer } from './FormsReducer.reducer';
+} from '../Testing/AsyncValidators';
+import { buildControlState } from '../buildControlState';
+import { formsReducer } from '../FormsReducer.reducer';
 import {
   emergencyContactConfigs,
   config as fullConfig,
   firstNameNotSameAsLast,
-} from './Tests/config';
-import { required, email } from './Validators';
-import { Contact } from './Tests/Models/Contact';
+} from '../Testing/config';
+import { required, email } from '../Validators';
+import { Contact } from '../Testing/Models/Contact';
 
 describe('Form.actions', () => {
   let messages: Action<unknown>[] = [];

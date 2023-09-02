@@ -1,4 +1,4 @@
-import { config, emergencyContactConfigs } from './Tests/config';
+import { config, emergencyContactConfigs } from './Testing/config';
 import { FormGroupConfig, FormArrayConfig } from './Models/Controls';
 import { getValueFromControlConfig } from './FormHelpers';
 

@@ -20,7 +20,7 @@ import {
   config,
   emergencyContactConfigs,
   firstNameNotSameAsLast,
-} from './Tests/config';
+} from './Testing/config';
 import {
   FORMS_CONTROL_CHANGE,
   FORMS_VALUE_CHANGE_EFFECT,
@@ -42,15 +42,15 @@ import {
   FormControlConfig,
   FormControlType,
 } from './Models/Controls';
-import { Contact } from './Tests/Models/Contact';
-import { EmergencyContact } from './Tests/Models/EmergencyContact';
-import { DoctorInfo } from './Tests/Models/DoctorInfo';
+import { Contact } from './Testing/Models/Contact';
+import { EmergencyContact } from './Testing/Models/EmergencyContact';
+import { DoctorInfo } from './Testing/Models/DoctorInfo';
 import { required, email } from './Validators';
 import {
   uniqueEmail,
   uniqueFirstAndLastName,
   blacklistedEmail,
-} from './AsyncValidators';
+} from './Testing/AsyncValidators';
 
 describe('updateValues', () => {
   it('should update values only for a FC -> FG', () => {
