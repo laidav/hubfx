@@ -49,11 +49,11 @@
       - reducer - DONE
         - fix references to point to core - DONE
         - breakdown - DONE
-        - tests - PENDING
+        - tests - DONE
       - actions
         - fix references to point to core - DONE
         - breakdown - DONE
-        - tests - IN PROGRESS
+        - tests - DONE
     - export items
 
   - hubfx-react-forms
