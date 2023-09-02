@@ -2,27 +2,31 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Action, Effect } from '@hubfx/core';
 import { AbstractControl } from '../Models/Controls';
-import { FormErrors } from '../Models/FormErrors';
 import { asyncValidationResponseSuccess } from './asyncValidationResponseSuccess';
+import { ControlAsyncValidationResponse } from '../Models/Payloads';
 
 const getScopedEffectsForControl = <T>(
   formControl: AbstractControl<T>,
-): Effect<AbstractControl<T>, FormErrors>[] => {
+): Effect<AbstractControl<T>, ControlAsyncValidationResponse>[] => {
   const { config, controlRef } = formControl;
   const { asyncValidators } = config;
 
-  let scopedEffects: Effect<AbstractControl<T>, FormErrors>[] = [];
+  let scopedEffects: Effect<
+    AbstractControl<T>,
+    ControlAsyncValidationResponse
+  >[] = [];
 
   if (asyncValidators && asyncValidators.length) {
     scopedEffects = asyncValidators.reduce(
       (
-        acc: Effect<AbstractControl<T>, FormErrors>[],
+        acc: Effect<AbstractControl<T>, ControlAsyncValidationResponse>[],
         validator,
         validatorIndex,
       ) => {
-        const effect: Effect<AbstractControl<T>, FormErrors> = (
-          actions$: Observable<Action<AbstractControl<T>>>,
-        ) => {
+        const effect: Effect<
+          AbstractControl<T>,
+          ControlAsyncValidationResponse
+        > = (actions$: Observable<Action<AbstractControl<T>>>) => {
           return actions$.pipe(
             map(({ payload: control }) => control),
             validator,
