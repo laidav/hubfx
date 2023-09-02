@@ -3,8 +3,8 @@ import { Observable, Subscription, of } from 'rxjs';
 import { delay, switchMap } from 'rxjs/operators';
 import { Action } from '../Models/Action';
 import { HubFactory } from './HubFactory';
-import { switchMapEffect, debounceEffect } from '../Forms/Tests/Effects';
-import { TEST_ACTION, TEST_ACTION_SUCCESS } from '../Forms/Tests/Actions';
+import { switchMapTestEffect, debounceTestEffect } from '../Testing/Effects';
+import { TEST_ACTION, TEST_ACTION_SUCCESS } from '../Testing/Actions';
 
 describe('HubFactory', () => {
   describe('messages', () => {
@@ -90,7 +90,7 @@ describe('HubFactory', () => {
         const action: Action<string> = {
           type: TEST_ACTION,
           payload: 'test action with scoped effect',
-          scopedEffects: { effects: [switchMapEffect] },
+          scopedEffects: { effects: [switchMapTestEffect] },
         };
 
         dispatch(action);
@@ -110,7 +110,7 @@ describe('HubFactory', () => {
         const action: Action<string> = {
           type: TEST_ACTION,
           payload: 'test action with scoped effect',
-          scopedEffects: { effects: [switchMapEffect] },
+          scopedEffects: { effects: [switchMapTestEffect] },
         };
 
         staggeredDispatch(action, [0, 50, 200]);
@@ -137,7 +137,7 @@ describe('HubFactory', () => {
         const action: Action<string> = {
           type: TEST_ACTION,
           payload: 'test action with more that one effect',
-          scopedEffects: { effects: [switchMapEffect, debounceEffect] },
+          scopedEffects: { effects: [switchMapTestEffect, debounceTestEffect] },
         };
 
         staggeredDispatch(action, [0, 50, 200]);
@@ -176,17 +176,17 @@ describe('HubFactory', () => {
         const action: Action<string> = {
           type: TEST_ACTION,
           payload: 'test action no key',
-          scopedEffects: { effects: [switchMapEffect, debounceEffect] },
+          scopedEffects: { effects: [switchMapTestEffect, debounceTestEffect] },
         };
         const actionTwo: Action<string> = {
           type: TEST_ACTION,
           payload: 'test action key two',
-          scopedEffects: { key: 'two', effects: [switchMapEffect] },
+          scopedEffects: { key: 'two', effects: [switchMapTestEffect] },
         };
         const actionThree: Action<string> = {
           type: TEST_ACTION,
           payload: 'test action key three',
-          scopedEffects: { key: 'three', effects: [debounceEffect] },
+          scopedEffects: { key: 'three', effects: [debounceTestEffect] },
         };
         //TODO: assess timing of dispatches to improve testing
         staggeredDispatch(action, [0, 50, 200]);
