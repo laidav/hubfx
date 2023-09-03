@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 
 export type Reducer<T> = (state?: T, action?: Action<unknown>) => T;
 
-export interface StateConfig<T> {
+export interface StoreConfig<T> {
   reducer: Reducer<T>;
   name?: string;
   initialState?: T;
@@ -12,6 +12,6 @@ export interface StateConfig<T> {
 
 export interface Hub {
   messages$: Observable<Action<unknown>>;
-  state: <T>(params: StateConfig<T>) => Observable<T>;
+  store: <T>(params: StoreConfig<T>) => Observable<T>;
   dispatch: (...actions: Action<unknown>[]) => void;
 }

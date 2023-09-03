@@ -1,4 +1,4 @@
-import { Hub, StateConfig } from '../Models/Hub';
+import { Hub, StoreConfig } from '../Models/Hub';
 import { Observable, ReplaySubject, merge } from 'rxjs';
 import {
   filter,
@@ -73,7 +73,7 @@ export const HubFactory = (effects$: Effect<unknown, unknown>[] = []): Hub => {
     ...genericEffects,
   ).pipe(share());
 
-  const state = <T>(config: StateConfig<T>) => {
+  const store = <T>(config: StoreConfig<T>) => {
     const { reducer, name, debug, initialState } = config;
     const debugName = `[Stream Name] ${name || 'undefined'}`;
 
@@ -108,7 +108,7 @@ export const HubFactory = (effects$: Effect<unknown, unknown>[] = []): Hub => {
 
   return {
     messages$,
-    state,
+    store,
     dispatch: (...actions) => {
       actions.forEach((action) => {
         dispatcher$.next(action);
