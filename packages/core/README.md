@@ -39,17 +39,18 @@
     - export items - DONE
     - rollup.config for build - DONE
 
-  - hubfx/forms
-    - export items
-      - what do I need to export?
+  - hubfx/forms - DONE
+    - export items - DONE
+      - what do I need to export? - DONE
 
-      - models
-      - actions
-      - buildReducer
+      - models - DONE
+      - actions - DONE
+      - buildReducer - DONE
 
   - hubfx-react-forms
     - depends on hubfx/forms
     - create package
+      - dependencies
     - design api
       - form wrapper
         - inputs?
@@ -59,6 +60,8 @@
           - on change
           - on touch
         - compare with redux form
+
+    - storybook for testing?
 
 - set up cicd
 
