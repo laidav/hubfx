@@ -40,24 +40,21 @@
     - rollup.config for build - DONE
 
   - hubfx/forms
-    - depends on hubfx - DONE
-    - create package - DONE
-    - move things into smaller folders in new package
-      - models
-        - fix references to point to core
-        - break down
-      - reducer - DONE
-        - fix references to point to core - DONE
-        - breakdown - DONE
-        - tests - DONE
-      - actions
-        - fix references to point to core - DONE
-        - breakdown - DONE
-        - tests - DONE
     - export items
+      - what do I need to export?
 
   - hubfx-react-forms
     - depends on hubfx/forms
+    - create package
+    - design api
+      - form wrapper
+        - inputs?
+
+      - field component
+        - bindings
+          - on change
+          - on touch
+        - compare with redux form
 
 - set up cicd
 
