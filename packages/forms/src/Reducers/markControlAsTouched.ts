@@ -3,8 +3,6 @@ import { Action } from '@hubfx/core';
 import { AbstractControl } from '../Models/Controls';
 import { ControlRef } from '../Models/ControlRef';
 import { getAncestorControls } from '../Helpers/getAncestorControls';
-import { getChildControls } from '../Helpers/getChildControls';
-import { getFormControl } from '../Helpers/getFormControl';
 
 export const markControlAsTouched = <T>(
   state: AbstractControl<T>,
