@@ -35,17 +35,6 @@
 - # 2023 09 02 (Sat)
 
 1. Reorganize packages
-  - hubfx
-    - export items - DONE
-    - rollup.config for build - DONE
-
-  - hubfx/forms - DONE
-    - export items - DONE
-      - what do I need to export? - DONE
-
-      - models - DONE
-      - actions - DONE
-      - buildReducer - DONE
 
   - hubfx-react-forms
     - depends on hubfx/forms
