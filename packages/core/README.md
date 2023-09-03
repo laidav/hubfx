@@ -43,10 +43,9 @@
     - export items
       - what do I need to export?
 
-      - actions
-      - formReducer
       - models
-      - buildControlState
+      - actions
+      - buildReducer
 
   - hubfx-react-forms
     - depends on hubfx/forms

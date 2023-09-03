@@ -12,7 +12,7 @@ import {
   FormGroupConfig,
 } from '../Models/Configs';
 import { FormControlType } from '../Models/FormControlType';
-import { required, email } from '../Validators';
+import { required, email } from '../Validators/Validators';
 import { uniqueEmail, blacklistedEmail } from '../Testing/AsyncValidators';
 import { buildControlState } from './buildControlState';
 

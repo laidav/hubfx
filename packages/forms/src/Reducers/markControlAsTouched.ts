@@ -19,18 +19,3 @@ export const markControlAsTouched = <T>(
 
   return newState;
 };
-
-export const markControlAsUntouched = <T>(
-  state: AbstractControl<T>,
-  { payload: controlRef }: Action<ControlRef>,
-) => {
-  const newState = cloneDeep(state);
-  const control = getFormControl(controlRef, newState);
-  const childControls = getChildControls(control);
-
-  childControls.forEach((control) => {
-    control.touched = false;
-  });
-
-  return newState;
-};

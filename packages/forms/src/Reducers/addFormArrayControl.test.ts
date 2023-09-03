@@ -15,7 +15,7 @@ import {
   FormControlConfig,
 } from '../Models/Configs';
 import { Contact } from '../Testing/Models/Contact';
-import { required, email } from '../Validators';
+import { required, email } from '../Validators/Validators';
 import {
   uniqueEmail,
   uniqueFirstAndLastName,

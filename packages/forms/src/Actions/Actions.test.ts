@@ -27,7 +27,7 @@ import {
   config as fullConfig,
   firstNameNotSameAsLast,
 } from '../Testing/config';
-import { required, email } from '../Validators';
+import { required, email } from '../Validators/Validators';
 import { Contact } from '../Testing/Models/Contact';
 
 describe('Form.actions', () => {
