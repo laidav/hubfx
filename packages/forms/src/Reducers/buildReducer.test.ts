@@ -1,4 +1,4 @@
-import { formsReducer } from './formsReducer';
+import { buildReducer } from './buildReducer';
 import cloneDeep from 'lodash.clonedeep';
 import { buildControlState } from '../Helpers/buildControlState';
 import { config, emergencyContactConfigs } from '../Testing/config';
@@ -8,10 +8,12 @@ import { FormGroup, FormArray } from '../Models/Controls';
 import { FormArrayConfig, FormGroupConfig } from '../Models/Configs';
 import { Contact } from '../Testing/Models/Contact';
 import { EmergencyContact } from '../Testing/Models/EmergencyContact';
+import { Reducer } from '@hubfx/core';
 
-describe('formsReducer', () => {
+describe('buildReducer', () => {
   describe('reacting to change control', () => {
-    const initialState = buildControlState(config) as FormGroup<Contact>;
+    const formsReducer = buildReducer(config) as Reducer<FormGroup<Contact>>;
+    const initialState = formsReducer();
 
     it('should react to FORMS_CONTROL_CHANGE for a FC -> FG', () => {
       expect(
@@ -116,6 +118,7 @@ describe('formsReducer', () => {
   describe('when resetting form', () => {
     let clonedConfig: FormGroupConfig;
     let initialState: FormGroup<Contact>;
+    let formsReducer: Reducer<FormGroup<Contact>>;
     const newValue = {
       firstName: 'Moe changed',
       lastName: 'Syzlak changed',
@@ -129,7 +132,8 @@ describe('formsReducer', () => {
         clonedConfig.formGroupControls.emergencyContacts
       )).formArrayControls = emergencyContactConfigs;
 
-      initialState = buildControlState(clonedConfig) as FormGroup<Contact>;
+      formsReducer = buildReducer(clonedConfig) as Reducer<FormGroup<Contact>>;
+      initialState = formsReducer();
     });
 
     it('should reset entire form', () => {
@@ -160,7 +164,7 @@ describe('formsReducer', () => {
         type: FORMS_RESET_CONTROL,
         payload: ['emergencyContacts', 1],
       });
-      const expectedState = cloneDeep(changedState) as FormGroup<Contact>;
+      const expectedState = cloneDeep(changedState);
       expectedState.dirty = false;
       expectedState.value = initialState.value;
       expectedState.controls.emergencyContacts.value =

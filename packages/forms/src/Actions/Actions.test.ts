@@ -21,7 +21,7 @@ import {
   uniqueFirstAndLastName,
 } from '../Testing/AsyncValidators';
 import { buildControlState } from '../Helpers/buildControlState';
-import { formsReducer } from '../Reducers/formsReducer';
+import { buildReducer } from '../Reducers/buildReducer';
 import {
   emergencyContactConfigs,
   config as fullConfig,
@@ -69,7 +69,9 @@ describe('Form.actions', () => {
         asyncValidators: [uniqueEmail],
       };
 
-      const state = buildControlState(config);
+      const formsReducer = buildReducer(config);
+      const state = formsReducer();
+
       const actions = controlChange(
         {
           value: 'new@email.com',
@@ -105,7 +107,9 @@ describe('Form.actions', () => {
         config.formGroupControls.emergencyContacts
       )).formArrayControls = emergencyContactConfigs;
 
-      const state = buildControlState(config);
+      const formsReducer = buildReducer(config);
+      const state = formsReducer();
+
       const actions = controlChange(
         {
           controlRef: ['emergencyContacts', 1, 'email'],
@@ -181,7 +185,8 @@ describe('Form.actions', () => {
         config.formGroupControls.emergencyContacts
       )).formArrayControls = emergencyContactConfigs;
 
-      const state = buildControlState(config);
+      const formsReducer = buildReducer(config);
+      const state = formsReducer();
 
       const actionsOne = controlChange(
         {
@@ -321,7 +326,9 @@ describe('Form.actions', () => {
     it('should run async validations for an added control and all anscenstors', (done) => {
       const config = cloneDeep(fullConfig);
 
-      const state = buildControlState(config);
+      const formsReducer = buildReducer(config);
+      const state = formsReducer();
+
       const actions = addGroupControl(
         {
           controlRef: ['doctorInfo', 'type'],
@@ -378,7 +385,8 @@ describe('Form.actions', () => {
     it('should run async validations for an added control and all anscenstors', (done) => {
       const config = cloneDeep(fullConfig);
 
-      const state = buildControlState(config);
+      const formsReducer = buildReducer(config);
+      const state = formsReducer();
 
       const newControlConfig: FormGroupConfig = {
         controlType: FormControlType.Group,
@@ -478,7 +486,9 @@ describe('Form.actions', () => {
       (<FormArrayConfig>(
         clonedConfig.formGroupControls.emergencyContacts
       )).formArrayControls = emergencyContactConfigs;
-      const state = buildControlState(clonedConfig) as FormGroup<Contact>;
+
+      const formsReducer = buildReducer(clonedConfig);
+      const state = formsReducer();
 
       const controlRef = ['emergencyContacts', 0];
       const actions = removeControl(controlRef, state, formsReducer);
@@ -518,7 +528,8 @@ describe('Form.actions', () => {
       (<FormArrayConfig>(
         clonedConfig.formGroupControls.emergencyContacts
       )).formArrayControls = emergencyContactConfigs;
-      const state = buildControlState(clonedConfig) as FormGroup<Contact>;
+      const formsReducer = buildReducer(clonedConfig);
+      const state = formsReducer();
 
       const controlRef = ['emergencyContacts', 0];
       const actions = resetControl(controlRef, state, formsReducer);
