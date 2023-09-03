@@ -1,6 +1,5 @@
 export { addFormArrayControl } from './addFormArrayControl';
 export { addFormGroupControl } from './addFormGroupControl';
-export { buildReducer } from './buildReducer';
 export { handleAsyncValidation } from './handleAsyncValidation';
 export { handleAsyncValidationResponseSuccess } from './handleAsyncValidationResponseSuccess';
 export { markControlAsPristine } from './markControlAsPristine';
