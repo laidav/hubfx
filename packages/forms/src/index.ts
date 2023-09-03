@@ -1,4 +1,4 @@
 export * from './Models';
 export * from './Actions';
-export * from './Reducers';
-export * from './Validators';
+export * as Reducers from './Reducers';
+export * as Validators from './Validators';

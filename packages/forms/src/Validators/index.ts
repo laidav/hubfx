@@ -1,1 +1,1 @@
-export { required, email, phoneNumber } from './Validators';
+export * from './Validators';
