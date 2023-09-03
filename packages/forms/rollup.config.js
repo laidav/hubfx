@@ -11,5 +11,5 @@ export default {
     },
   ],
   plugins: [typescript()],
-  external: ['rxjs', 'rxjs/operators'],
+  external: ['rxjs', 'rxjs/operators', 'lodash.clonedeep'],
 };

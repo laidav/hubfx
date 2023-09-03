@@ -1,5 +1,5 @@
 import cloneDeep from 'lodash.clonedeep';
-import { markControlAsUntouched } from './markControlAsTouched';
+import { markControlAsUntouched } from './markControlAsUntouched';
 import { markControlAsTouched } from './markControlAsTouched';
 import { buildControlState } from '../Helpers/buildControlState';
 import { config } from '../Testing/config';

@@ -27,7 +27,7 @@ import { addFormArrayControl } from './addFormArrayControl';
 import { removeControl } from './removeControl';
 import { markControlAsPristine } from './markControlAsPristine';
 import { markControlAsTouched } from './markControlAsTouched';
-import { markControlAsUntouched } from './markControlAsTouched';
+import { markControlAsUntouched } from './markControlAsUntouched';
 import { resetControl } from './resetControl';
 import { buildControlState } from '../Helpers/buildControlState';
 
