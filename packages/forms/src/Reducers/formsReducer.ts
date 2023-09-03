@@ -1,4 +1,4 @@
-import { Action } from '@hubfx/core';
+import { Action, Reducer } from '@hubfx/core';
 import { FORMS_CONTROL_CHANGE } from '../Actions/controlChange';
 import { FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS } from '../Actions/asyncValidationResponseSuccess';
 import { FORMS_VALUE_CHANGE_EFFECT } from '../Actions/valueChange';
@@ -29,10 +29,10 @@ import { markControlAsTouched } from './markControlAsTouched';
 import { markControlAsUntouched } from './markControlAsTouched';
 import { resetControl } from './resetControl';
 
-export const formsReducer = <T>(
-  state: AbstractControl<T>,
-  action: Action<unknown>,
-): AbstractControl<T> => {
+export const formsReducer: Reducer<AbstractControl<unknown>> = (
+  state,
+  action,
+) => {
   switch (action.type) {
     case FORMS_CONTROL_CHANGE:
       return updateDirty(
