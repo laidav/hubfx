@@ -42,7 +42,8 @@
       - dependencies
     - design api
       - form wrapper
-        - inputs?
+        - context api
+        - parameters?
 
       - field component
         - bindings
