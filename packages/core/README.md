@@ -35,7 +35,6 @@
 - # 2023 09 02 (Sat)
 
 1. Reorganize packages
-
   - hubfx-react-forms - DONE
     - depends on hubfx/forms - DONE
     - create package
@@ -45,13 +44,16 @@
         - context api - DONE
         - parameters? - DONE
 
-      - field component
-        - bindings
-          - on change
-          - on touch
-        - compare with redux form
+      - field component - DONE
+        - bindings - DONE
+          - on change - DONE
+          - on touch - DONE
+        - compare with redux form - DONE
 
-    - storybook for testing?
+1. Story book for testing hubfx-react-forms
+  - install story book
+  - find good cases for demo and testing
+  - 
 
 - set up cicd
 
