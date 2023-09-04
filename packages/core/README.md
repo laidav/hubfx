@@ -36,14 +36,14 @@
 
 1. Reorganize packages
 
-  - hubfx-react-forms
-    - depends on hubfx/forms
+  - hubfx-react-forms - DONE
+    - depends on hubfx/forms - DONE
     - create package
       - dependencies
     - design api
-      - form wrapper
-        - context api
-        - parameters?
+      - form wrapper - DONE
+        - context api - DONE
+        - parameters? - DONE
 
       - field component
         - bindings

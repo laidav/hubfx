@@ -10,8 +10,10 @@ export interface StoreConfig<T> {
   debug?: boolean;
 }
 
+export type Dispatcher = (...actions: Action<unknown>[]) => void;
+
 export interface Hub {
   messages$: Observable<Action<unknown>>;
   store: <T>(params: StoreConfig<T>) => Observable<T>;
-  dispatch: (...actions: Action<unknown>[]) => void;
+  dispatch: Dispatcher;
 }

@@ -6,3 +6,4 @@ export { markControlAsTouched } from './markControlAsTouched';
 export { markControlAsUntouched } from './markControlAsUntouched';
 export { removeControl } from './removeControl';
 export { resetControl } from './resetControl';
+export { controlChange } from './controlChange';
