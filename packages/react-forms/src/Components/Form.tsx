@@ -7,7 +7,7 @@ import { useObservable } from '../Hooks/useObservable';
 export const FormContext = React.createContext(null) as React.Context<{
   state: AbstractControl<unknown>;
   dispatch: Dispatcher;
-  reducer: Reducer<unknown>;
+  reducer: Reducer<AbstractControl<unknown>>;
 }>;
 
 interface FormProps {

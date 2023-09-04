@@ -1,12 +1,19 @@
 import React, { useContext, ChangeEvent, DragEvent, FocusEvent } from 'react';
-import { Hub, HubFactory } from '@hubfx/core';
-import { ControlChange, controlChange, ControlRef } from '@hubfx/forms';
+import {
+  ControlChange,
+  controlChange,
+  ControlRef,
+  getFormControl,
+  markControlAsTouched,
+  FormControl,
+} from '@hubfx/forms';
 import { FormContext } from './Form';
 
 export type EventHandler<Event> = (event: Event, name?: string) => void;
 
 export interface CommonFieldInputProps {
   name: string;
+  //TODO: these drag drop and focus events
   onDragStart?: EventHandler<DragEvent<unknown>>;
   onDrop?: EventHandler<DragEvent<unknown>>;
   onFocus?: EventHandler<FocusEvent<unknown>>;
@@ -23,31 +30,32 @@ export interface WrappedFieldInputProps extends CommonFieldInputProps {
 }
 
 export interface FieldProps {
-  component: React.JSXElementConstructor<WrappedFieldInputProps>;
+  component: React.JSXElementConstructor<{
+    input: WrappedFieldInputProps;
+    control: FormControl<unknown>;
+  }>;
   controlRef: ControlRef;
-  hub: Hub;
 }
 
-const DefaultInput = (props) => <input {...props} />;
-
-const Field = ({
-  component: Component = DefaultInput,
-  controlRef,
-  hub = HubFactory(),
-}: FieldProps) => {
+const Field = ({ component: Component, controlRef, ...props }: FieldProps) => {
   const { state, reducer, dispatch } = useContext(FormContext);
+  const control = getFormControl(controlRef, state);
+  const inputProps = {
+    name: controlRef.join('.'),
+    value: control.value,
+    onBlur: () => {
+      dispatch(markControlAsTouched(controlRef));
+    },
+    onChange: (value: unknown) => {
+      const change: ControlChange<unknown> = {
+        controlRef,
+        value,
+      };
+      dispatch(...controlChange(change, state, reducer));
+    },
+  };
 
-  return (
-    <Component
-      onChange={(value: unknown) => {
-        const change: ControlChange<unknown> = {
-          controlRef,
-          value,
-        };
-        const actions = controlChange(change, state, reducer);
-      }}
-    />
-  );
+  return <Component input={inputProps} control={control} {...props} />;
 };
 
 export default Field;
