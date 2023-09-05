@@ -9,7 +9,10 @@
     "test": "jest",
     "build": "rimraf dist && rollup --config",
     "lint": "eslint --max-warnings 0 \"src/**/*.ts*\" && prettier --check src/",
-    "fix": "eslint --fix \"src/**/*.ts*\" && prettier --write \"src/**/*.(ts*|scss)\""
+    "fix": "eslint --fix \"src/**/*.ts*\" && prettier --write \"src/**/*.(ts*|scss)\"",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "test-storybook": "test-storybook"
   },
   "author": "David Lai",
   "license": "ISC",
@@ -18,8 +21,8 @@
     "@hubfx/forms": "*"
   },
   "peerDependencies": {
-    "rxjs": "^7.8.1",
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
-    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0"
+    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "rxjs": "^7.8.1"
   }
 }

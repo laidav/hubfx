@@ -16,7 +16,11 @@ interface FormProps {
   children: (state: AbstractControl<unknown>) => React.ReactNode;
 }
 
-const Form = ({ formConfig, hub = HubFactory(), children }: FormProps) => {
+export const Form = ({
+  formConfig,
+  hub = HubFactory(),
+  children,
+}: FormProps) => {
   const state = useObservable(hub.store({ reducer: buildReducer(formConfig) }));
   return (
     <FormContext.Provider
@@ -26,8 +30,7 @@ const Form = ({ formConfig, hub = HubFactory(), children }: FormProps) => {
         reducer: buildReducer(formConfig),
       }}
     >
-      {children(state)}
+      {children && children(state)}
     </FormContext.Provider>
   );
 };
-export default Form;
