@@ -6,6 +6,10 @@ export const Input = ({ input, meta }: WrappedFieldProps) => {
       <input {...input} type="text" className={meta.dirty ? 'dirty' : ''} />
       <br />
       {meta.value}
+      <br />
+      {meta.dirty && <>dirty</>}
+      <br />
+      {meta.touched && <>touched</>}
     </>
   );
 };
