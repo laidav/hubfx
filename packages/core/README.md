@@ -35,8 +35,10 @@
 - # 2023 09 08 (Fri)
 
 1. Story book for testing hubfx-react-forms
-  - install story book - DONE
-  - fixed hub not subscribing - DONE
+  - update form api
+    - form to have its own hub
+    - expose all the methods in the form component passed to children
+
   - find good cases for demo and testing
     - contact form
       - firstName 
