@@ -9,7 +9,10 @@
     "build": "npm run build -w packages/core && npm run build -w packages/forms",
     "test": "npm run test --workspaces --if-present",
     "lint": "npm run lint --workspaces",
-    "fix": "npm run fix --workspaces"
+    "fix": "npm run fix --workspaces",
+    "storybook": "npm run storybook --workspaces --if-present",
+    "test-storybook": "npm run test-storybook --workspaces --if-present",
+    "build-storybook": "npm run build-storybook --workspaces --if-present"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.0",
