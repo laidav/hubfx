@@ -1,7 +1,13 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { FormControlConfig, FormControlType } from '@hubfx/forms';
+import {
+  FormGroupConfig,
+  FormControlType,
+  FormControlConfig,
+} from '@hubfx/forms';
 import { Form } from './Form';
+import { Field } from './Field';
+import { Input } from './Input';
 
 const meta: Meta<typeof Form> = {
   component: Form,
@@ -11,21 +17,26 @@ const meta: Meta<typeof Form> = {
 export default meta;
 type Story = StoryObj<typeof Form>;
 
-const formControlConfig: FormControlConfig<string> = {
-  initialValue: 'hello',
-  controlType: FormControlType.Field,
+const formControlConfig: FormGroupConfig = {
+  controlType: FormControlType.Group,
+  formGroupControls: {
+    firstName: {
+      initialValue: 'john',
+    } as FormControlConfig<string>,
+  },
 };
 
 export const Primary: Story = {
-  args: {
-    formConfig: formControlConfig,
-    children: (state) => {
-      console.log(state);
-      return (
-        <>
-          <h1>hello</h1>
-        </>
-      );
-    },
-  },
+  render: () => (
+    <Form formConfig={formControlConfig}>
+      {(state, hub) => {
+        console.log(state);
+        return (
+          <>
+            <Field controlRef={['firstName']} component={Input} />
+          </>
+        );
+      }}
+    </Form>
+  ),
 };

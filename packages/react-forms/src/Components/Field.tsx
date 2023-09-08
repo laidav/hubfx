@@ -1,4 +1,10 @@
-import React, { useContext, ChangeEvent, DragEvent, FocusEvent } from 'react';
+import React, {
+  useContext,
+  ChangeEvent,
+  DragEvent,
+  FocusEvent,
+  BaseSyntheticEvent,
+} from 'react';
 import {
   ControlChange,
   controlChange,
@@ -24,20 +30,26 @@ export interface EventOrValueHandler<Event> extends EventHandler<Event> {
 }
 
 export interface WrappedFieldInputProps extends CommonFieldInputProps {
-  value: unknown;
+  value: any;
   onBlur: EventOrValueHandler<FocusEvent<unknown>>;
   onChange: EventOrValueHandler<ChangeEvent<unknown>>;
 }
 
+export interface WrappedFieldProps {
+  input: WrappedFieldInputProps;
+  meta: FormControl<unknown>;
+}
+
 export interface FieldProps {
-  component: React.JSXElementConstructor<{
-    input: WrappedFieldInputProps;
-    control: FormControl<unknown>;
-  }>;
+  component: React.JSXElementConstructor<WrappedFieldProps>;
   controlRef: ControlRef;
 }
 
-const Field = ({ component: Component, controlRef, ...props }: FieldProps) => {
+export const Field = ({
+  component: Component,
+  controlRef,
+  ...props
+}: FieldProps) => {
   const { state, reducer, dispatch } = useContext(FormContext);
   const control = getFormControl(controlRef, state);
   const inputProps = {
@@ -46,16 +58,15 @@ const Field = ({ component: Component, controlRef, ...props }: FieldProps) => {
     onBlur: () => {
       dispatch(markControlAsTouched(controlRef));
     },
-    onChange: (value: unknown) => {
+    onChange: (event: BaseSyntheticEvent) => {
+      const nativeEvent = event.nativeEvent as InputEvent;
       const change: ControlChange<unknown> = {
         controlRef,
-        value,
+        value: nativeEvent.data,
       };
       dispatch(...controlChange(change, state, reducer));
     },
   };
 
-  return <Component input={inputProps} control={control} {...props} />;
+  return <Component input={inputProps} meta={control} {...props} />;
 };
-
-export default Field;
