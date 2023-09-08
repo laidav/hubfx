@@ -5,9 +5,6 @@ export interface ScopedEffects<T> {
 }
 export type Action<T = undefined> = {
   type: string;
+  payload?: T;
   scopedEffects?: ScopedEffects<T>;
-} & (T extends undefined
-  ? object
-  : {
-      payload: T;
-    });
+};

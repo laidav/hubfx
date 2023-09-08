@@ -295,7 +295,7 @@ describe('HubFactory', () => {
       });
     });
 
-    fit('respond to messages and update state', (done) => {
+    it('respond to messages and update state', (done) => {
       const state$ = hub.store({ reducer });
 
       subscription = state$.subscribe((result) => {
