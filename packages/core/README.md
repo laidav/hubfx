@@ -32,34 +32,32 @@
 
 - this new model can be bound with any UI library for rendering
 
-- # 2023 09 02 (Sat)
-
-1. Reorganize packages
-  - hubfx-react-forms - DONE
-    - depends on hubfx/forms - DONE
-    - create package
-      - dependencies
-    - design api
-      - form wrapper - DONE
-        - context api - DONE
-        - parameters? - DONE
-
-      - field component - DONE
-        - bindings - DONE
-          - on change - DONE
-          - on touch - DONE
-        - compare with redux form - DONE
+- # 2023 09 08 (Fri)
 
 1. Story book for testing hubfx-react-forms
   - install story book - DONE
   - fixed hub not subscribing - DONE
   - find good cases for demo and testing
-    - form
-    - field
-  - 
+    - contact form
+      - firstName 
+        - simple group with form control STORY 1
+      - lastName
+        - required
+      - email
+        - should sync validation - STORY TWO
+
+        - show async validation - STORY THREE
+          - debounce
+          - show pending
+          - unique email
+
+      - emergency contacts to demo form array - STORY FOUR
+        - cross field validation, minimum two emergency contacts
+          - blacklisted email async validation
+        - 
+        - add and remove controls
 
 - set up cicd
-
 
 # TODOS
 
