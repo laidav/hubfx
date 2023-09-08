@@ -51,8 +51,11 @@
         - compare with redux form - DONE
 
 1. Story book for testing hubfx-react-forms
-  - install story book
+  - install story book - DONE
+  - fixed hub not subscribing - DONE
   - find good cases for demo and testing
+    - form
+    - field
   - 
 
 - set up cicd

@@ -12,8 +12,8 @@ export const FormContext = React.createContext(null) as React.Context<{
 
 interface FormProps {
   formConfig: AbstractControlConfig;
-  hub: Hub;
-  children: (state: AbstractControl<unknown>) => React.ReactNode;
+  hub?: Hub;
+  children?: (state: AbstractControl<unknown>) => React.ReactNode;
 }
 
 export const Form = ({
@@ -22,6 +22,7 @@ export const Form = ({
   children,
 }: FormProps) => {
   const state = useObservable(hub.store({ reducer: buildReducer(formConfig) }));
+
   return (
     <FormContext.Provider
       value={{
@@ -30,7 +31,7 @@ export const Form = ({
         reducer: buildReducer(formConfig),
       }}
     >
-      {children && children(state)}
+      {state !== undefined && children && children(state)}
     </FormContext.Provider>
   );
 };
