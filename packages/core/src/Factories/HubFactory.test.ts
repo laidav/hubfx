@@ -3,6 +3,7 @@ import { Observable, Subscription, of } from 'rxjs';
 import { delay, switchMap } from 'rxjs/operators';
 import { Action } from '../Models/Action';
 import { HubFactory } from './HubFactory';
+import { Hub, Reducer } from '../Models';
 import { switchMapTestEffect, debounceTestEffect } from '../Testing/Effects';
 import { TEST_ACTION, TEST_ACTION_SUCCESS } from '../Testing/Actions';
 
@@ -239,6 +240,78 @@ describe('HubFactory', () => {
           done,
         );
       });
+    });
+  });
+
+  describe('store', () => {
+    const INCREMENT = 'INCREMENT';
+    const increment = (): Action => ({ type: INCREMENT });
+
+    const initialState = { count: 0 };
+    const reducer: Reducer<{ count: number }> = (
+      state = initialState,
+      action,
+    ) => {
+      switch (action?.type) {
+        case INCREMENT:
+          return {
+            ...state,
+            count: state.count + 1,
+          };
+        default:
+          return state;
+      }
+    };
+    let hub: Hub;
+    let subscription: Subscription;
+    let states: { count: number }[];
+
+    const assertStates = (
+      expectedStates: { count: number }[],
+      done: jest.DoneCallback,
+      timeout = 1000,
+    ) => {
+      setTimeout(() => {
+        expect(states).toEqual(expectedStates);
+        done();
+      }, timeout);
+    };
+
+    beforeEach(() => {
+      hub = HubFactory();
+      states = [];
+    });
+
+    afterEach(() => {
+      subscription.unsubscribe();
+    });
+
+    it('create an observable and emit initial value', (done) => {
+      const state$ = hub.store({ reducer });
+
+      subscription = state$.subscribe((result) => {
+        expect(result).toEqual(initialState);
+        done();
+      });
+    });
+
+    fit('respond to messages and update state', (done) => {
+      const state$ = hub.store({ reducer });
+
+      subscription = state$.subscribe((result) => {
+        states = states.concat(result);
+      });
+
+      const action = increment();
+
+      hub.dispatch(action);
+      hub.dispatch(action);
+      hub.dispatch(action);
+
+      assertStates(
+        [{ count: 0 }, { count: 1 }, { count: 2 }, { count: 3 }],
+        done,
+      );
     });
   });
 });

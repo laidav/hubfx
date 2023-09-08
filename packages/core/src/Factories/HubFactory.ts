@@ -77,12 +77,14 @@ export const HubFactory = (effects$: Effect<unknown, unknown>[] = []): Hub => {
     const { reducer, name, debug, initialState } = config;
     const debugName = `[Stream Name] ${name || 'undefined'}`;
 
+    const seedState = initialState !== undefined ? initialState : reducer();
+
     const state$ = messages$.pipe(
       tap((action) => {
         debug && console.log(debugName, '[Message Received]', action);
       }),
-      scan(reducer, initialState !== undefined ? initialState : reducer()),
-      startWith(initialState !== undefined ? initialState : reducer()),
+      scan(reducer, seedState),
+      startWith(null, seedState),
       pairwise(),
       tap(([prevState, newState]) => {
         if (debug) {
@@ -100,7 +102,7 @@ export const HubFactory = (effects$: Effect<unknown, unknown>[] = []): Hub => {
           }
         }
       }),
-      map((pair) => pair[1]),
+      map((pair) => pair[1] as T),
     );
 
     return state$;
