@@ -12,27 +12,22 @@ export const FormContext = React.createContext(null) as React.Context<{
 
 interface FormProps {
   formConfig: AbstractControlConfig;
-  hub?: Hub;
+  hub: Hub;
   children?: (state: AbstractControl<unknown>, hub: Hub) => React.ReactNode;
 }
 
-export const Form = ({
-  formConfig,
-  hub = HubFactory(),
-  children,
-}: FormProps) => {
-  const hubStored = useRef(hub).current;
-  const state = useObservable(hubStored, buildReducer(formConfig));
+export const Form = ({ formConfig, hub, children }: FormProps) => {
+  const state = useObservable(hub.store({ reducer: buildReducer(formConfig) }));
 
   return (
     <FormContext.Provider
       value={{
         state,
-        dispatch: hubStored.dispatch,
+        dispatch: hub.dispatch,
         reducer: buildReducer(formConfig),
       }}
     >
-      {state !== undefined && children && children(state, hubStored)}
+      {state !== undefined && children && children(state, hub)}
     </FormContext.Provider>
   );
 };

@@ -8,6 +8,7 @@ import {
 import { Form } from './Form';
 import { Field } from './Field';
 import { Input } from './Input';
+import { HubFactory } from '@hubfx/core';
 
 const meta: Meta<typeof Form> = {
   component: Form,
@@ -26,9 +27,11 @@ const formControlConfig: FormGroupConfig = {
   },
 };
 
+const hub = HubFactory();
+
 export const Primary: Story = {
   render: () => (
-    <Form formConfig={formControlConfig}>
+    <Form formConfig={formControlConfig} hub={hub}>
       {(state, hub) => {
         console.log(state);
         return (
