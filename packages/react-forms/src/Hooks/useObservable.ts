@@ -1,8 +1,8 @@
-import { Observable } from 'rxjs';
 import { useEffect, useState, useRef } from 'react';
+import { Hub, Reducer } from '@hubfx/core';
 
-export const useObservable = <T>(obs$: Observable<T>) => {
-  const currentObs$ = useRef(obs$).current;
+export const useObservable = <T>(hub: Hub, reducer: Reducer<T>) => {
+  const currentObs$ = useRef(hub.store({ reducer })).current;
   const [state, setState] = useState<T | undefined>(undefined);
 
   useEffect(() => {

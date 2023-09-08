@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { HubFactory, Hub, Dispatcher, Reducer } from '@hubfx/core';
 import { buildReducer, AbstractControl } from '@hubfx/forms';
 import { AbstractControlConfig } from '@hubfx/forms';
@@ -21,17 +21,18 @@ export const Form = ({
   hub = HubFactory(),
   children,
 }: FormProps) => {
-  const state = useObservable(hub.store({ reducer: buildReducer(formConfig) }));
+  const hubStored = useRef(hub).current;
+  const state = useObservable(hubStored, buildReducer(formConfig));
 
   return (
     <FormContext.Provider
       value={{
         state,
-        dispatch: hub.dispatch,
+        dispatch: hubStored.dispatch,
         reducer: buildReducer(formConfig),
       }}
     >
-      {state !== undefined && children && children(state, hub)}
+      {state !== undefined && children && children(state, hubStored)}
     </FormContext.Provider>
   );
 };

@@ -3,7 +3,7 @@ import React, {
   ChangeEvent,
   DragEvent,
   FocusEvent,
-  BaseSyntheticEvent,
+  FormEvent,
 } from 'react';
 import {
   ControlChange,
@@ -58,11 +58,10 @@ export const Field = ({
     onBlur: () => {
       dispatch(markControlAsTouched(controlRef));
     },
-    onChange: (event: BaseSyntheticEvent) => {
-      const nativeEvent = event.nativeEvent as InputEvent;
+    onChange: (event: FormEvent<HTMLInputElement>) => {
       const change: ControlChange<unknown> = {
         controlRef,
-        value: nativeEvent.data,
+        value: event.currentTarget.value,
       };
       dispatch(...controlChange(change, state, reducer));
     },
