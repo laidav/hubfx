@@ -5,12 +5,11 @@ import {
   FormControlType,
   FormControlConfig,
   Validators,
-  FormGroup,
+  getFormControl,
 } from '@hubfx/forms';
 import { Form } from './Form';
 import { Field } from './Field';
 import { Input } from './Input';
-import { HubFactory } from '@hubfx/core';
 
 const meta: Meta<typeof Form> = {
   component: Form,
@@ -34,10 +33,16 @@ export const BasicControl: Story = {
         } as FormGroupConfig
       }
     >
-      {() => {
+      {(state) => {
         return (
           <>
             <Field controlRef={['firstName']} component={Input} />
+            <div>
+              First Name:{' '}
+              <span>
+                {getFormControl(['firstName'], state).value as string}
+              </span>
+            </div>
           </>
         );
       }}
