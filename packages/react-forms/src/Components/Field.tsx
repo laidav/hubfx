@@ -56,7 +56,7 @@ export const Field = ({
     name: controlRef.join('.'),
     value: control.value,
     onBlur: () => {
-      dispatch(markControlAsTouched(controlRef));
+      if (!control.touched) dispatch(markControlAsTouched(controlRef));
     },
     onChange: (event: FormEvent<HTMLInputElement>) => {
       const change: ControlChange<unknown> = {

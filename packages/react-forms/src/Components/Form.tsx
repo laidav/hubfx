@@ -19,6 +19,7 @@ interface FormProps {
 
 export const Form = ({ formConfig, hub = useHub(), children }: FormProps) => {
   const state = useObservable(hub.store({ reducer: buildReducer(formConfig) }));
+  console.log('render');
 
   return (
     <FormContext.Provider
