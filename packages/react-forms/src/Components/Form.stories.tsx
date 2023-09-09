@@ -74,12 +74,12 @@ export const Validation: Story = {
             <Field
               controlRef={['firstName']}
               component={Input}
-              label="First Name"
+              label="First Name (required)"
             />
             <Field
               controlRef={['lastName']}
               component={Input}
-              label="Last Name"
+              label="Last Name (required)"
             />
           </div>
         );
