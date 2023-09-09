@@ -39,7 +39,7 @@
   - find good cases for demo and testing
     - contact form
       - firstName 
-        - simple group with form control STORY 1
+        - simple group with form control STORY 1 - DONE
       - lastName
         - required
       - email

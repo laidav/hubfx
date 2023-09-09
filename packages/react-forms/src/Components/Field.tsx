@@ -43,6 +43,7 @@ export interface WrappedFieldProps {
 export interface FieldProps {
   component: React.JSXElementConstructor<WrappedFieldProps>;
   controlRef: ControlRef;
+  [key: string]: unknown;
 }
 
 export const Field = ({

@@ -59,15 +59,28 @@ export const Validation: Story = {
               initialValue: 'john',
               validators: [Validators.required],
             } as FormControlConfig<string>,
+            lastName: {
+              initialValue: '',
+              validators: [Validators.required],
+            } as FormControlConfig<string>,
           },
         } as FormGroupConfig
       }
     >
       {() => {
         return (
-          <>
-            <Field controlRef={['firstName']} component={Input} />
-          </>
+          <div className="form-group">
+            <Field
+              controlRef={['firstName']}
+              component={Input}
+              label="First Name"
+            />
+            <Field
+              controlRef={['lastName']}
+              component={Input}
+              label="Last Name"
+            />
+          </div>
         );
       }}
     </Form>

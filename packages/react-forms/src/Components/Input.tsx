@@ -1,11 +1,26 @@
 import React from 'react';
 import { WrappedFieldProps } from './Field';
+
+export interface InputProps extends WrappedFieldProps {
+  label?: string;
+}
+
 export const Input = ({
   input,
   meta: { touched, errors },
-}: WrappedFieldProps) => {
+  label,
+}: InputProps) => {
   return (
-    <>
+    <div className="mb-3">
+      {label && (
+        <label
+          className={`form-label ${
+            touched && errors.required ? 'text-danger' : ''
+          }`}
+        >
+          {label}
+        </label>
+      )}
       <input
         {...input}
         type="text"
@@ -18,6 +33,6 @@ export const Input = ({
           <small className="text-danger">Field is required</small>
         </div>
       )}
-    </>
+    </div>
   );
 };
