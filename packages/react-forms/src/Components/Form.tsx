@@ -1,8 +1,9 @@
-import React, { useRef } from 'react';
-import { HubFactory, Hub, Dispatcher, Reducer } from '@hubfx/core';
+import React from 'react';
+import { Hub, Dispatcher, Reducer } from '@hubfx/core';
 import { buildReducer, AbstractControl } from '@hubfx/forms';
 import { AbstractControlConfig } from '@hubfx/forms';
 import { useObservable } from '../Hooks/useObservable';
+import { useHub } from '../Hooks/useHub';
 
 export const FormContext = React.createContext(null) as React.Context<{
   state: AbstractControl<unknown>;
@@ -12,11 +13,11 @@ export const FormContext = React.createContext(null) as React.Context<{
 
 interface FormProps {
   formConfig: AbstractControlConfig;
+  hub: Hub;
   children?: (state: AbstractControl<unknown>, hub: Hub) => React.ReactNode;
 }
 
-export const Form = ({ formConfig, children }: FormProps) => {
-  const hub = useRef(HubFactory()).current;
+export const Form = ({ formConfig, hub = useHub(), children }: FormProps) => {
   const state = useObservable(hub.store({ reducer: buildReducer(formConfig) }));
 
   return (
