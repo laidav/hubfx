@@ -10,6 +10,9 @@ export const Input = ({
   meta: { touched, errors, validating, valid },
   label,
 }: InputProps) => {
+  if (input.name === 'email') {
+    console.log(valid);
+  }
   return (
     <div className="mb-3">
       {label && (
@@ -23,7 +26,7 @@ export const Input = ({
         {...input}
         type="text"
         className={`form-control ${
-          touched && errors.required ? 'is-invalid' : ''
+          (touched && !valid) || errors.blacklistedEmail ? 'is-invalid' : ''
         }`}
       />
       {touched && errors.required && (
