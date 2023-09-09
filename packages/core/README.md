@@ -106,6 +106,8 @@
 ### Other Items
 1. Documentation
 
+1. update config interface to not need the type property?
+
   - one way in one way out rule
 
 1. and a idle timeout for scopedEffects
@@ -119,6 +121,7 @@
 1. reduce boilerplate some how?
 
 1. some tests for hub state
+
 
 ### React project 
 
