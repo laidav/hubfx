@@ -35,9 +35,6 @@
 - # 2023 09 08 (Fri)
 
 1. Story book for testing hubfx-react-forms
-  - update form api
-    - form to have its own hub
-    - expose all the methods in the form component passed to children
 
   - find good cases for demo and testing
     - contact form
@@ -58,6 +55,13 @@
           - blacklisted email async validation
         - 
         - add and remove controls
+
+      - resetting form - STORY FIVE
+        - or different parts of it
+
+  - update form api
+    - form to have its own hub
+    - expose all the methods in the form component passed to children
 
 - set up cicd
 
