@@ -10,6 +10,7 @@ import {
 import { Form } from './Form';
 import { Field } from './Field';
 import { Input } from './Input';
+import { blacklistedEmail } from '../Testing/AsyncValidators/blacklistedEmail';
 
 const meta: Meta<typeof Form> = {
   component: Form,
@@ -80,6 +81,52 @@ export const Validation: Story = {
               component={Input}
               label="Last Name"
             />
+          </div>
+        );
+      }}
+    </Form>
+  ),
+};
+
+export const AsyncValidation: Story = {
+  render: () => (
+    <Form
+      formConfig={
+        {
+          controlType: FormControlType.Group,
+          formGroupControls: {
+            firstName: {
+              initialValue: 'john',
+              validators: [Validators.required],
+            } as FormControlConfig<string>,
+            lastName: {
+              initialValue: '',
+              validators: [Validators.required],
+            } as FormControlConfig<string>,
+            email: {
+              initialValue: '',
+              validators: [Validators.required, Validators.email],
+              asyncValidators: [blacklistedEmail],
+            } as FormControlConfig<string>,
+          },
+        } as FormGroupConfig
+      }
+    >
+      {(state) => {
+        console.log(state);
+        return (
+          <div className="form-group">
+            <Field
+              controlRef={['firstName']}
+              component={Input}
+              label="First Name"
+            />
+            <Field
+              controlRef={['lastName']}
+              component={Input}
+              label="Last Name"
+            />
+            <Field controlRef={['email']} component={Input} label="Email" />
           </div>
         );
       }}
