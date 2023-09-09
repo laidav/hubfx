@@ -62,11 +62,6 @@
 
   - update form api
     - expose all the methods in the form component passed to children
-
-- set up cicd
-
-# TODOS
-
 1. Documentation
   1. Hubfx core
   - motivation/problem
@@ -78,10 +73,16 @@
     - how to bind to vue?
   - api
 
-  1. Forms
+
+# TODOS
+
+
+1. Forms
   - API
 
-  1. forms with react
+1. forms with react
+
+1. set up cicd
 
 ## CLEAN UP TODOS
 - why is lint function not picking up type errors that jest ts is?
