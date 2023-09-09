@@ -52,12 +52,13 @@ export const syncValidate = <T>(
   }
 
   const validators = control.config.validators;
-  const errors = validators?.reduce((errors, validator) => {
-    return {
-      ...errors,
-      ...validator(control.value),
-    };
-  }, {} as FormErrors);
+  const errors =
+    validators?.reduce((errors, validator) => {
+      return {
+        ...errors,
+        ...validator(control.value),
+      };
+    }, {} as FormErrors) || {};
 
   const groupControlHasError = errors
     ? Object.values(errors).some((error) => error)

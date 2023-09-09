@@ -20,8 +20,6 @@ const meta: Meta<typeof Form> = {
 export default meta;
 type Story = StoryObj<typeof Form>;
 
-const hub = HubFactory();
-
 export const BasicControl: Story = {
   render: () => (
     <Form
@@ -35,10 +33,8 @@ export const BasicControl: Story = {
           },
         } as FormGroupConfig
       }
-      hub={hub}
     >
-      {(state) => {
-        console.log(state);
+      {() => {
         return (
           <>
             <Field controlRef={['firstName']} component={Input} />
@@ -63,10 +59,8 @@ export const Validation: Story = {
           },
         } as FormGroupConfig
       }
-      hub={hub}
     >
-      {(state) => {
-        console.log(state);
+      {() => {
         return (
           <>
             <Field controlRef={['firstName']} component={Input} />
