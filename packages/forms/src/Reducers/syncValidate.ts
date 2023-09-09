@@ -1,17 +1,16 @@
 import { FormArray, FormGroup, AbstractControl } from '../Models/Controls';
 import { FormErrors } from '../Models/FormErrors';
+import cloneDeep from 'lodash.clonedeep';
 
 export const syncValidate = <T>(
   control: AbstractControl<T>,
 ): AbstractControl<T> => {
-  let newControl: AbstractControl<T> = {
-    ...control,
-  };
+  let newControl: AbstractControl<T> = cloneDeep(control);
 
   let controlsHasErrors = false;
 
-  if (Array.isArray((<FormArray<T>>control).controls)) {
-    const controls = (<FormArray<T>>control).controls;
+  if (Array.isArray((<FormArray<T>>newControl).controls)) {
+    const controls = (<FormArray<T>>newControl).controls;
     newControl = {
       ...newControl,
       controls: controls.map((control) => syncValidate(control)),
@@ -24,7 +23,7 @@ export const syncValidate = <T>(
 
       return false;
     });
-  } else if ((<FormGroup<T>>control).controls) {
+  } else if ((<FormGroup<T>>newControl).controls) {
     const controls = (<FormGroup<T>>control).controls;
     newControl = {
       ...newControl,
@@ -52,13 +51,18 @@ export const syncValidate = <T>(
   }
 
   const validators = control.config.validators;
-  const errors =
+  const syncErrors =
     validators?.reduce((errors, validator) => {
       return {
         ...errors,
         ...validator(control.value),
       };
     }, {} as FormErrors) || {};
+
+  const errors = {
+    ...newControl.errors,
+    ...syncErrors,
+  };
 
   const groupControlHasError = errors
     ? Object.values(errors).some((error) => error)

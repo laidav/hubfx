@@ -125,7 +125,15 @@ export const AsyncValidation: Story = {
               component={Input}
               label="Last Name"
             />
-            <Field controlRef={['email']} component={Input} label="Email" />
+            <Field
+              controlRef={['email']}
+              component={Input}
+              label={
+                <span>
+                  Email <i>(not@allowed.com is blacklisted)</i>
+                </span>
+              }
+            />
           </div>
         );
       }}

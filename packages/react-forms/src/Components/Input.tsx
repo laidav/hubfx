@@ -2,7 +2,7 @@ import React from 'react';
 import { WrappedFieldProps } from './Field';
 
 export interface InputProps extends WrappedFieldProps {
-  label?: string;
+  label?: string | React.ReactElement;
 }
 
 export const Input = ({
