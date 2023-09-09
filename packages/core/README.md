@@ -43,8 +43,8 @@
       - lastName
         - required
       - email
-        - should sync validation - STORY TWO
-          - update errors to be mandatory empty object at least
+        - should sync validation - STORY TWO - DONE
+          - update errors to be mandatory empty object at least - DONE
 
         - show async validation - STORY THREE
           - debounce
