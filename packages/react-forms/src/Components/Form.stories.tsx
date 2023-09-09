@@ -4,6 +4,8 @@ import {
   FormGroupConfig,
   FormControlType,
   FormControlConfig,
+  Validators,
+  FormGroup,
 } from '@hubfx/forms';
 import { Form } from './Form';
 import { Field } from './Field';
@@ -18,21 +20,52 @@ const meta: Meta<typeof Form> = {
 export default meta;
 type Story = StoryObj<typeof Form>;
 
-const formControlConfig: FormGroupConfig = {
-  controlType: FormControlType.Group,
-  formGroupControls: {
-    firstName: {
-      initialValue: 'john',
-    } as FormControlConfig<string>,
-  },
-};
-
 const hub = HubFactory();
 
-export const Primary: Story = {
+export const BasicControl: Story = {
   render: () => (
-    <Form formConfig={formControlConfig} hub={hub}>
-      {(state, hub) => {
+    <Form
+      formConfig={
+        {
+          controlType: FormControlType.Group,
+          formGroupControls: {
+            firstName: {
+              initialValue: 'john',
+            } as FormControlConfig<string>,
+          },
+        } as FormGroupConfig
+      }
+      hub={hub}
+    >
+      {(state) => {
+        console.log(state);
+        return (
+          <>
+            <Field controlRef={['firstName']} component={Input} />
+          </>
+        );
+      }}
+    </Form>
+  ),
+};
+
+export const Validation: Story = {
+  render: () => (
+    <Form
+      formConfig={
+        {
+          controlType: FormControlType.Group,
+          formGroupControls: {
+            firstName: {
+              initialValue: 'john',
+              validators: [Validators.required],
+            } as FormControlConfig<string>,
+          },
+        } as FormGroupConfig
+      }
+      hub={hub}
+    >
+      {(state) => {
         console.log(state);
         return (
           <>

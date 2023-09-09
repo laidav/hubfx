@@ -10,6 +10,7 @@ export const Input = ({ input, meta }: WrappedFieldProps) => {
       {meta.dirty && <>dirty</>}
       <br />
       {meta.touched && <>touched</>}
+      {meta.touched && meta.errors?.required && <>is required</>}
     </>
   );
 };
