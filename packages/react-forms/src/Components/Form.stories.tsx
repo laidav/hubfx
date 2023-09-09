@@ -57,7 +57,7 @@ export const Validation: Story = {
           controlType: FormControlType.Group,
           formGroupControls: {
             firstName: {
-              initialValue: 'john',
+              initialValue: 'John',
               validators: [Validators.required],
             } as FormControlConfig<string>,
             lastName: {
@@ -96,11 +96,11 @@ export const AsyncValidation: Story = {
           controlType: FormControlType.Group,
           formGroupControls: {
             firstName: {
-              initialValue: 'john',
+              initialValue: 'John',
               validators: [Validators.required],
             } as FormControlConfig<string>,
             lastName: {
-              initialValue: '',
+              initialValue: 'Doe',
               validators: [Validators.required],
             } as FormControlConfig<string>,
             email: {
@@ -112,8 +112,7 @@ export const AsyncValidation: Story = {
         } as FormGroupConfig
       }
     >
-      {(state) => {
-        console.log(state);
+      {() => {
         return (
           <div className="form-group">
             <Field

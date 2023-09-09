@@ -13,6 +13,23 @@ import { getControl } from '../Helpers/getControl';
 
 describe('handleAsyncValidationResponseSuccess', () => {
   it('should update errors for control', () => {
+    const initialState = buildControlState(config) as FormGroup<Contact>;
+
+    const validatedState = handleAsyncValidationResponseSuccess(initialState, {
+      type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
+      payload: {
+        controlRef: ['email'],
+        validatorIndex: 0,
+        errors: {
+          uniqueEmail: true,
+        },
+      },
+    }) as FormGroup<Contact>;
+
+    expect(validatedState.controls.email.errors.uniqueEmail).toBe(true);
+  });
+
+  it('should update validating status and errors for control', () => {
     const clonedConfig: FormGroupConfig = cloneDeep(config);
     (<FormArrayConfig>(
       clonedConfig.formGroupControls.emergencyContacts
