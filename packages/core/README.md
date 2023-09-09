@@ -44,6 +44,7 @@
         - required
       - email
         - should sync validation - STORY TWO
+          - update errors to be mandatory empty object at least
 
         - show async validation - STORY THREE
           - debounce

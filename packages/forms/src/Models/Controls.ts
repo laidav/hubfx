@@ -11,7 +11,7 @@ export interface FormControl<T> {
   dirty: boolean;
   touched: boolean;
   valid: boolean;
-  errors?: FormErrors;
+  errors: FormErrors;
   asyncValidateInProgress: { [key: string | number]: boolean };
   validating?: boolean;
   config: AbstractControlConfig;

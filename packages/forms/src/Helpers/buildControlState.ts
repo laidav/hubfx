@@ -37,12 +37,13 @@ export const buildControlState = <T>(
       );
     }
 
-    const errors = controlConfig.validators?.reduce((errors, validator) => {
-      return {
-        ...errors,
-        ...validator(getValueFromControlConfig(controlConfig)),
-      };
-    }, {} as FormErrors);
+    const errors =
+      controlConfig.validators?.reduce((errors, validator) => {
+        return {
+          ...errors,
+          ...validator(getValueFromControlConfig(controlConfig)),
+        };
+      }, {} as FormErrors) || {};
 
     const groupControlHasError = errors
       ? Object.values(errors).some((error) => error)
@@ -84,12 +85,13 @@ export const buildControlState = <T>(
         )
       : [];
 
-    const errors = controlConfig.validators?.reduce((errors, validator) => {
-      return {
-        ...errors,
-        ...validator(getValueFromControlConfig(controlConfig)),
-      };
-    }, {} as FormErrors);
+    const errors =
+      controlConfig.validators?.reduce((errors, validator) => {
+        return {
+          ...errors,
+          ...validator(getValueFromControlConfig(controlConfig)),
+        };
+      }, {} as FormErrors) || {};
 
     const arrayControlHasError = errors
       ? Object.values(errors).some((error) => error)
@@ -121,12 +123,13 @@ export const buildControlState = <T>(
     return { pristineControl: cloneDeep(result), ...result };
     // Form Field
   } else {
-    const errors = controlConfig.validators?.reduce((errors, validator) => {
-      return {
-        ...errors,
-        ...validator(getValueFromControlConfig(controlConfig)),
-      };
-    }, {} as FormErrors);
+    const errors =
+      controlConfig.validators?.reduce((errors, validator) => {
+        return {
+          ...errors,
+          ...validator(getValueFromControlConfig(controlConfig)),
+        };
+      }, {} as FormErrors) || {};
 
     const result: FormControl<T> = {
       controlRef,
