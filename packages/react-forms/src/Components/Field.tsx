@@ -9,7 +9,7 @@ import {
   ControlChange,
   controlChange,
   ControlRef,
-  getFormControl,
+  getControl,
   markControlAsTouched,
   FormControl,
 } from '@hubfx/forms';
@@ -51,7 +51,7 @@ export const Field = ({
   ...props
 }: FieldProps) => {
   const { state, reducer, dispatch } = useContext(FormContext);
-  const control = getFormControl(controlRef, state);
+  const control = getControl(controlRef, state);
   const inputProps = {
     name: controlRef.join('.'),
     value: control.value,

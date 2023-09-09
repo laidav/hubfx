@@ -3,7 +3,7 @@ import { Action } from '@hubfx/core';
 import { FormArray, FormGroup, AbstractControl } from '../Models/Controls';
 import { FormControlType } from '../Models/FormControlType';
 import { ControlRef } from '../Models/ControlRef';
-import { getFormControl } from '../Helpers/getFormControl';
+import { getControl } from '../Helpers/getControl';
 import {
   updateAncestorValues,
   FORMS_UPDATE_ANCESTOR_VALUES,
@@ -46,7 +46,7 @@ export const removeControl = <T>(
   state: AbstractControl<T>,
   { payload: controlRef }: Action<ControlRef>,
 ) => {
-  if (!getFormControl(controlRef, state)) {
+  if (!getControl(controlRef, state)) {
     throw 'Control not found';
   }
 
@@ -54,7 +54,7 @@ export const removeControl = <T>(
 
   const newState = cloneDeep(state);
 
-  const parentControl = getFormControl(controlRef.slice(0, -1), newState);
+  const parentControl = getControl(controlRef.slice(0, -1), newState);
   const key = controlRef.slice(-1)[0];
 
   if (parentControl.config.controlType === FormControlType.Group) {

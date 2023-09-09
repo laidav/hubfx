@@ -1,1 +1,1 @@
-export { getFormControl } from './getFormControl';
+export { getControl } from './getControl';

@@ -1,6 +1,6 @@
 import { AbstractControl } from '../Models/Controls';
 import { ControlRef } from '../Models/ControlRef';
-import { getFormControl } from './getFormControl';
+import { getControl } from './getControl';
 
 export const getAncestorControls = (
   controlRef: ControlRef,
@@ -10,7 +10,7 @@ export const getAncestorControls = (
     (acc, key) => {
       const currentRef = acc.currentRef.concat(key);
       const formControls = acc.formControls.concat(
-        getFormControl(currentRef, form),
+        getControl(currentRef, form),
       );
       return {
         currentRef,

@@ -1,7 +1,7 @@
 import { Action } from '@hubfx/core';
 import { AbstractControl, FormArray } from '../Models/Controls';
 import { AddControl } from '../Models/Payloads';
-import { getFormControl } from '../Helpers/getFormControl';
+import { getControl } from '../Helpers/getControl';
 import { getControlBranch } from '../Helpers/getControlBranch';
 import { getValueChangeEffects } from './valueChange';
 
@@ -21,8 +21,7 @@ export const addFormArrayControl = <T>(
 
   const newState = reducer(state, mainAction);
   const index =
-    (<FormArray<unknown>>getFormControl(controlRef, newState)).controls.length -
-    1;
+    (<FormArray<unknown>>getControl(controlRef, newState)).controls.length - 1;
   const formControls = getControlBranch(controlRef.concat(index), newState);
   const effects = getValueChangeEffects(formControls);
   const actions = [mainAction, ...effects];

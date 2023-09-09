@@ -2,7 +2,7 @@ import cloneDeep from 'lodash.clonedeep';
 import { Action } from '@hubfx/core';
 import { AbstractControl } from '../Models/Controls';
 import { ControlChange } from '../Models/Payloads';
-import { getFormControl } from '../Helpers/getFormControl';
+import { getControl } from '../Helpers/getControl';
 import {
   updateAncestorValues,
   FORMS_UPDATE_ANCESTOR_VALUES,
@@ -14,7 +14,7 @@ export const updateValues = <T>(
   { payload: { controlRef, value } }: Action<ControlChange<unknown>>,
 ): AbstractControl<T> => {
   const newState = cloneDeep(state);
-  const newControl = getFormControl(controlRef, newState);
+  const newControl = getControl(controlRef, newState);
   newControl.value = value;
 
   const updatedAncestorsState = updateAncestorValues(newState, {

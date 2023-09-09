@@ -3,7 +3,7 @@ import { Action } from '@hubfx/core';
 import { FormArray, AbstractControl } from '../Models/Controls';
 import { AddControl } from '../Models/Payloads';
 import { buildControlState } from '../Helpers/buildControlState';
-import { getFormControl } from '../Helpers/getFormControl';
+import { getControl } from '../Helpers/getControl';
 import {
   updateAncestorValues,
   FORMS_UPDATE_ANCESTOR_VALUES,
@@ -15,10 +15,7 @@ export const addFormArrayControl = <T>(
 ) => {
   const newState = cloneDeep(state);
 
-  const arrayControl = getFormControl(
-    controlRef,
-    newState,
-  ) as FormArray<unknown>;
+  const arrayControl = getControl(controlRef, newState) as FormArray<unknown>;
 
   const newIndex = arrayControl.controls.length
     ? arrayControl.controls.length

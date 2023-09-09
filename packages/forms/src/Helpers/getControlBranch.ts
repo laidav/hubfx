@@ -1,6 +1,6 @@
 import { AbstractControl } from '../Models/Controls';
 import { ControlRef } from '../Models/ControlRef';
-import { getFormControl } from './getFormControl';
+import { getControl } from './getControl';
 import { getAncestorControls } from './getAncestorControls';
 import { getChildControls } from './getChildControls';
 
@@ -9,9 +9,7 @@ export const getControlBranch = (
   form: AbstractControl<unknown>,
 ): AbstractControl<unknown>[] => {
   const ancestors = getAncestorControls(controlRef, form);
-  const childControls = getChildControls(
-    getFormControl(controlRef, form),
-  ).slice(1);
+  const childControls = getChildControls(getControl(controlRef, form)).slice(1);
 
   return ancestors.concat(childControls);
 };

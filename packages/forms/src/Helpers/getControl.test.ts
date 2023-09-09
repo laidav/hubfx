@@ -1,12 +1,12 @@
-import { getFormControl } from './getFormControl';
-import { buildControlState } from '../Helpers/buildControlState';
+import { getControl } from './getControl';
+import { buildControlState } from './buildControlState';
 import { config } from '../Testing/config';
 import { FormGroup, FormArray, FormControl } from '../Models/Controls';
 import { FormArrayConfig, FormGroupConfig } from '../Models/Configs';
 import { Contact } from '../Testing/Models/Contact';
 import { EmergencyContact } from '../Testing/Models/EmergencyContact';
 
-describe('getFormControl', () => {
+describe('getControl', () => {
   const contactFormGroup = buildControlState(config) as FormGroup<Contact>;
   const BASE_FORM_CONTROL = {
     dirty: false,
@@ -26,7 +26,7 @@ describe('getFormControl', () => {
         required: true,
       },
     } as FormControl<string>;
-    expect(getFormControl(['firstName'], contactFormGroup)).toEqual({
+    expect(getControl(['firstName'], contactFormGroup)).toEqual({
       pristineControl: expectedControl,
       ...expectedControl,
     });
@@ -43,9 +43,7 @@ describe('getFormControl', () => {
       },
     } as FormControl<string>;
 
-    expect(
-      getFormControl(['doctorInfo', 'firstName'], contactFormGroup),
-    ).toEqual({
+    expect(getControl(['doctorInfo', 'firstName'], contactFormGroup)).toEqual({
       pristineControl: expectedControlDoctorInfoFirstName,
       ...expectedControlDoctorInfoFirstName,
     });
@@ -62,7 +60,7 @@ describe('getFormControl', () => {
       },
     } as FormArray<EmergencyContact[]>;
 
-    expect(getFormControl(['emergencyContacts'], contactFormGroup)).toEqual({
+    expect(getControl(['emergencyContacts'], contactFormGroup)).toEqual({
       pristineControl: expectedEmergencyContactsControl,
       ...expectedEmergencyContactsControl,
     });

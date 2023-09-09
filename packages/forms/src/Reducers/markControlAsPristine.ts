@@ -2,7 +2,7 @@ import cloneDeep from 'lodash.clonedeep';
 import { Action } from '@hubfx/core';
 import { AbstractControl } from '../Models/Controls';
 import { ControlRef } from '../Models/ControlRef';
-import { getFormControl } from '../Helpers/getFormControl';
+import { getControl } from '../Helpers/getControl';
 import { getChildControls } from '../Helpers/getChildControls';
 
 export const markControlAsPristine = <T>(
@@ -10,7 +10,7 @@ export const markControlAsPristine = <T>(
   { payload: controlRef }: Action<ControlRef>,
 ) => {
   const newState = cloneDeep(state);
-  const control = getFormControl(controlRef, newState);
+  const control = getControl(controlRef, newState);
   const controls = getChildControls(control);
 
   controls.forEach((control) => {

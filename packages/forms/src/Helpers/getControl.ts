@@ -6,7 +6,7 @@ import {
 } from '../Models/Controls';
 import { ControlRef } from '../Models/ControlRef';
 
-export const getFormControl = (
+export const getControl = (
   controlRef: ControlRef,
   control: AbstractControl<unknown>,
 ): AbstractControl<unknown> => {

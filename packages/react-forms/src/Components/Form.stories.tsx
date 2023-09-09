@@ -5,7 +5,7 @@ import {
   FormControlType,
   FormControlConfig,
   Validators,
-  getFormControl,
+  getControl,
 } from '@hubfx/forms';
 import { Form } from './Form';
 import { Field } from './Field';
@@ -39,9 +39,7 @@ export const BasicControl: Story = {
             <Field controlRef={['firstName']} component={Input} />
             <div>
               First Name:{' '}
-              <span>
-                {getFormControl(['firstName'], state).value as string}
-              </span>
+              <span>{getControl(['firstName'], state).value as string}</span>
             </div>
           </>
         );

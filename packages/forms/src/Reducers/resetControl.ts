@@ -2,7 +2,7 @@ import cloneDeep from 'lodash.clonedeep';
 import { Action } from '@hubfx/core';
 import { FormArray, FormGroup, AbstractControl } from '../Models/Controls';
 import { ControlRef } from '../Models/ControlRef';
-import { getFormControl } from '../Helpers/getFormControl';
+import { getControl } from '../Helpers/getControl';
 import {
   updateAncestorValues,
   FORMS_UPDATE_ANCESTOR_VALUES,
@@ -22,8 +22,8 @@ export const resetControl = <T>(
   const parentRef = controlRef.slice(0, -1);
   const newState = cloneDeep(state);
 
-  const control = getFormControl(controlRef, newState);
-  const parentControl = getFormControl(parentRef, newState) as
+  const control = getControl(controlRef, newState);
+  const parentControl = getControl(parentRef, newState) as
     | FormGroup<unknown>
     | FormArray<unknown>;
   parentControl.controls[controlRef.slice(-1)[0]] = {

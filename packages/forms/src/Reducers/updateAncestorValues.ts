@@ -3,7 +3,7 @@ import { Action } from '@hubfx/core';
 import { FormArray, FormGroup, AbstractControl } from '../Models/Controls';
 import { FormControlType } from '../Models/FormControlType';
 import { ControlRef } from '../Models/ControlRef';
-import { getFormControl } from '../Helpers/getFormControl';
+import { getControl } from '../Helpers/getControl';
 
 export const FORMS_UPDATE_ANCESTOR_VALUES = 'FORMS_UPDATE_ANCESTOR_VALUES';
 export const updateAncestorValues = <T>(
@@ -13,11 +13,11 @@ export const updateAncestorValues = <T>(
   if (!controlRef.length) return state;
 
   const newState = cloneDeep(state);
-  const control = getFormControl(controlRef, newState);
+  const control = getControl(controlRef, newState);
   const value = control?.value;
   const [key] = controlRef.slice(-1);
   const parentRef = controlRef.slice(0, -1);
-  const parentControl = getFormControl(parentRef, newState);
+  const parentControl = getControl(parentRef, newState);
 
   if (parentControl.config.controlType === FormControlType.Group) {
     (<FormGroup<unknown>>parentControl).value = {

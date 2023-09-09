@@ -8,14 +8,14 @@ import { FormGroup, AbstractControl } from '../Models/Controls';
 import { AddControl } from '../Models/Payloads';
 import { FormControlType } from '../Models/FormControlType';
 import { buildControlState } from '../Helpers/buildControlState';
-import { getFormControl } from '../Helpers/getFormControl';
+import { getControl } from '../Helpers/getControl';
 
 export const addFormGroupControl = <T>(
   state: AbstractControl<T>,
   { payload: { controlRef, config } }: Action<AddControl>,
 ) => {
   const newState = cloneDeep(state);
-  const newControl = getFormControl(
+  const newControl = getControl(
     controlRef.slice(0, -1),
     newState,
   ) as FormGroup<unknown>;
