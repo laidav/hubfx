@@ -61,7 +61,6 @@
         - or different parts of it
 
   - update form api
-    - form to have its own hub?  how should hubs be shared?
     - expose all the methods in the form component passed to children
 
 - set up cicd
