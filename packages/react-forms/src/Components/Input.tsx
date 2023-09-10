@@ -10,9 +10,6 @@ export const Input = ({
   meta: { touched, errors, validating, valid },
   label,
 }: InputProps) => {
-  if (input.name === 'email') {
-    console.log(valid);
-  }
   return (
     <div className="mb-3">
       {label && (
