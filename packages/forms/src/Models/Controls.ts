@@ -13,7 +13,7 @@ export interface FormControl<T> {
   valid: boolean;
   errors: FormErrors;
   asyncValidateInProgress: { [key: string | number]: boolean };
-  validating?: boolean;
+  pending?: boolean;
   config: AbstractControlConfig;
 }
 

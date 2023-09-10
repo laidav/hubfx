@@ -29,7 +29,7 @@ describe('handleAsyncValidationResponseSuccess', () => {
     expect(validatedState.controls.email.errors.uniqueEmail).toBe(true);
   });
 
-  it('should update validating status and errors for control', () => {
+  it('should update pending status and errors for control', () => {
     const clonedConfig: FormGroupConfig = cloneDeep(config);
     (<FormArrayConfig>(
       clonedConfig.formGroupControls.emergencyContacts
@@ -49,12 +49,12 @@ describe('handleAsyncValidationResponseSuccess', () => {
     const controlRef = ['emergencyContacts', 0, 'email'];
     const control = getControl(controlRef, initialState);
 
-    const validatingState = handleAsyncValidation(initialState, {
+    const pendingState = handleAsyncValidation(initialState, {
       type: FORMS_VALUE_CHANGE_EFFECT,
       payload: control,
     }) as FormGroup<Contact>;
 
-    const expectedState: FormGroup<Contact> = cloneDeep(validatingState);
+    const expectedState: FormGroup<Contact> = cloneDeep(pendingState);
 
     const emergencyContacts = <FormArray<EmergencyContact[]>>(
       expectedState.controls.emergencyContacts
@@ -75,8 +75,8 @@ describe('handleAsyncValidationResponseSuccess', () => {
       uniqueEmail: true,
     };
 
-    let validatingSuccessState = handleAsyncValidationResponseSuccess(
-      validatingState,
+    let pendingSuccessState = handleAsyncValidationResponseSuccess(
+      pendingState,
       {
         type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
         payload: {
@@ -89,15 +89,15 @@ describe('handleAsyncValidationResponseSuccess', () => {
       },
     );
 
-    expectedState.validating = true;
-    emergencyContacts.validating = true;
-    emergencyContact.validating = true;
-    emergencyContactEmail.validating = true;
+    expectedState.pending = true;
+    emergencyContacts.pending = true;
+    emergencyContact.pending = true;
+    emergencyContactEmail.pending = true;
 
-    expect(validatingSuccessState).toEqual(expectedState);
+    expect(pendingSuccessState).toEqual(expectedState);
 
-    validatingSuccessState = handleAsyncValidationResponseSuccess(
-      validatingSuccessState,
+    pendingSuccessState = handleAsyncValidationResponseSuccess(
+      pendingSuccessState,
       {
         type: FORMS_CONTROL_ASYNC_VALIDATION_RESPONSE_SUCCESS,
         payload: {
@@ -122,10 +122,10 @@ describe('handleAsyncValidationResponseSuccess', () => {
       blacklistedEmail: true,
     };
 
-    expectedState.validating = false;
-    emergencyContacts.validating = false;
-    emergencyContact.validating = false;
-    emergencyContactEmail.validating = false;
-    expect(validatingSuccessState).toEqual(expectedState);
+    expectedState.pending = false;
+    emergencyContacts.pending = false;
+    emergencyContact.pending = false;
+    emergencyContactEmail.pending = false;
+    expect(pendingSuccessState).toEqual(expectedState);
   });
 });

@@ -14,7 +14,7 @@ export const handleAsyncValidation = <T>(
   );
 
   newControlBranch.forEach((control, index) => {
-    control.validating = true;
+    control.pending = true;
 
     if (index === newControlBranch.length - 1) {
       control.config.asyncValidators.forEach((_, j) => {

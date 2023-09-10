@@ -21,7 +21,7 @@ describe('buildControlState', () => {
     dirty: false,
     touched: false,
     asyncValidateInProgress: {},
-    validating: false,
+    pending: false,
   };
 
   it('should build the control state for for type field', () => {

@@ -12,7 +12,7 @@ describe('getControl', () => {
     dirty: false,
     touched: false,
     asyncValidateInProgress: {},
-    validating: false,
+    pending: false,
   };
 
   it('should get form control', () => {

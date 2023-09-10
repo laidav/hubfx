@@ -7,7 +7,7 @@ export interface InputProps extends WrappedFieldProps {
 
 export const Input = ({
   input,
-  meta: { touched, errors, validating, valid },
+  meta: { touched, errors, pending, valid },
   label,
 }: InputProps) => {
   return (
@@ -43,9 +43,9 @@ export const Input = ({
           </small>
         </div>
       )}
-      {validating && (
+      {pending && (
         <div>
-          <small className="text-warning">Validating</small>
+          <small className="text-warning">Pending</small>
         </div>
       )}
     </div>

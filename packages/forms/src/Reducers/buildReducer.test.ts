@@ -55,7 +55,7 @@ describe('buildReducer', () => {
               required: false,
             },
             asyncValidateInProgress: {},
-            validating: false,
+            pending: false,
           },
         },
       });

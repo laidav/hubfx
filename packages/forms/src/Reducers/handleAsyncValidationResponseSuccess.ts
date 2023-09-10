@@ -8,7 +8,7 @@ const isControlValidating = (control: AbstractControl<unknown>): boolean => {
   if (!control.asyncValidateInProgress) return false;
 
   return Object.values(control.asyncValidateInProgress).some(
-    (validating) => validating,
+    (pending) => pending,
   );
 };
 
@@ -29,10 +29,10 @@ export const handleAsyncValidationResponseSuccess = <T>(
         ...errors,
       };
     }
-    const validating =
+    const pending =
       isControlValidating(control) ||
-      Boolean(controlBranch[index - 1]?.validating);
-    control.validating = validating;
+      Boolean(controlBranch[index - 1]?.pending);
+    control.pending = pending;
   });
 
   return newState;

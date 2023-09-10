@@ -29,10 +29,10 @@ describe('handleAsyncValidation', () => {
 
     const emergencyContactEmail = emergencyContact.controls.email;
 
-    expectedState.validating = true;
-    emergencyContacts.validating = true;
-    emergencyContact.validating = true;
-    emergencyContactEmail.validating = true;
+    expectedState.pending = true;
+    emergencyContacts.pending = true;
+    emergencyContact.pending = true;
+    emergencyContactEmail.pending = true;
     emergencyContactEmail.asyncValidateInProgress = { 0: true, 1: true };
 
     const controlRef = ['emergencyContacts', 0, 'email'];
