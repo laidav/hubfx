@@ -164,6 +164,7 @@ export const CrossFieldValidation: Story = {
               asyncValidators: [blacklistedEmail],
             } as FormControlConfig<string>,
             emergencyContacts: {
+              controlType: FormControlType.Array,
               validators: [arrayLengthRequired],
               formArrayControls: [
                 {
@@ -234,7 +235,11 @@ export const CrossFieldValidation: Story = {
               {({ controls }) => (
                 <>
                   {controls.map((control) => {
-                    <div>{control.controlRef.join(',')}</div>;
+                    return (
+                      <div key={control.controlRef.join(',')}>
+                        {control.controlRef.join(',')}
+                      </div>
+                    );
                   })}
                 </>
               )}

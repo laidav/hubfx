@@ -19,8 +19,6 @@ export interface FormArrayProps {
 export const FormArray = ({ controlRef, children }: FormArrayProps) => {
   const { state } = useContext(FormContext);
   const { controls } = getControl(controlRef, state) as IFormArray<unknown>;
-  console.log(state);
-  console.log(controlRef);
   console.log(controls);
-  return <div>{children && controls && children({ controls })}</div>;
+  return <div>{children && children({ controls })}</div>;
 };
