@@ -12,6 +12,7 @@ import { Field } from './Field';
 import { Input } from './Input';
 import { blacklistedEmail } from '../Testing/AsyncValidators/blacklistedEmail';
 import { arrayLengthRequired } from '../Testing/Validators/arrayLengthRequired';
+import { FormArray } from './FormArray';
 
 const meta: Meta<typeof Form> = {
   component: Form,
@@ -229,6 +230,15 @@ export const CrossFieldValidation: Story = {
                 </span>
               }
             />
+            <FormArray controlRef={['emergencyContacts']}>
+              {({ controls }) => (
+                <>
+                  {controls.map((control) => {
+                    <div>{control.controlRef.join(',')}</div>;
+                  })}
+                </>
+              )}
+            </FormArray>
           </div>
         );
       }}
