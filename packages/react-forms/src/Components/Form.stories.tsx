@@ -6,11 +6,13 @@ import {
   FormControlConfig,
   Validators,
   getControl,
+  FormArrayConfig,
 } from '@hubfx/forms';
 import { Form } from './Form';
 import { Field } from './Field';
 import { Input } from './Input';
 import { blacklistedEmail } from '../Testing/AsyncValidators/blacklistedEmail';
+import { arrayLengthRequired } from '../Testing/Validators/arrayLengthRequired';
 
 const meta: Meta<typeof Form> = {
   component: Form,
@@ -108,6 +110,100 @@ export const AsyncValidation: Story = {
               validators: [Validators.required, Validators.email],
               asyncValidators: [blacklistedEmail],
             } as FormControlConfig<string>,
+          },
+        } as FormGroupConfig
+      }
+    >
+      {() => {
+        return (
+          <div className="form-group">
+            <Field
+              controlRef={['firstName']}
+              component={Input}
+              label="First Name"
+            />
+            <Field
+              controlRef={['lastName']}
+              component={Input}
+              label="Last Name"
+            />
+            <Field
+              controlRef={['email']}
+              component={Input}
+              label={
+                <span>
+                  Email <i>(not@allowed.com is blacklisted)</i>
+                </span>
+              }
+            />
+          </div>
+        );
+      }}
+    </Form>
+  ),
+};
+
+export const CrossFieldValidation: Story = {
+  render: () => (
+    <Form
+      formConfig={
+        {
+          controlType: FormControlType.Group,
+          formGroupControls: {
+            firstName: {
+              initialValue: 'John',
+              validators: [Validators.required],
+            } as FormControlConfig<string>,
+            lastName: {
+              initialValue: 'Doe',
+              validators: [Validators.required],
+            } as FormControlConfig<string>,
+            email: {
+              initialValue: '',
+              validators: [Validators.required, Validators.email],
+              asyncValidators: [blacklistedEmail],
+            } as FormControlConfig<string>,
+            emergencyContacts: {
+              validators: [arrayLengthRequired],
+              formArrayControls: [
+                {
+                  controlType: FormControlType.Group,
+                  formGroupControls: {
+                    firstName: {
+                      initialValue: 'Homer',
+                      validators: [Validators.required],
+                    } as FormControlConfig<string>,
+                    lastName: {
+                      initialValue: 'Simpson',
+                      validators: [Validators.required],
+                    } as FormControlConfig<string>,
+                    email: {
+                      initialValue: 'Homer@homer.com',
+                      validators: [Validators.required, Validators.email],
+                      asyncValidators: [blacklistedEmail],
+                    } as FormControlConfig<string>,
+                  },
+                } as FormGroupConfig,
+                {
+                  controlType: FormControlType.Group,
+                  formGroupControls: {
+                    firstName: {
+                      initialValue: 'Moe',
+                      validators: [Validators.required],
+                    } as FormControlConfig<string>,
+                    lastName: {
+                      initialValue: 'Syzlak',
+                      validators: [Validators.required],
+                    } as FormControlConfig<string>,
+                    email: {
+                      initialValue: 'moe@syzlak.com',
+                      validators: [Validators.required, Validators.email],
+                      asyncValidators: [blacklistedEmail],
+                    } as FormControlConfig<string>,
+                  },
+                } as FormGroupConfig,
+              ],
+            } as FormArrayConfig,
           },
         } as FormGroupConfig
       }
