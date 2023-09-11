@@ -36,7 +36,7 @@ export const BasicControl: Story = {
         } as FormGroupConfig
       }
     >
-      {(state) => {
+      {({ state }) => {
         return (
           <>
             <Field controlRef={['firstName']} component={Input} />
