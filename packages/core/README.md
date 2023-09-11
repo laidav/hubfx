@@ -55,13 +55,16 @@
         - cross field validation, minimum two emergency contacts
           - blacklisted email async validation
         - 
-        - add and remove controls
+        - add and remove controls - STORY FIVE
 
-      - resetting form - STORY FIVE
+      - resetting form - STORY SIX
         - or different parts of it
 
   - update form api
     - expose all the methods in the form component passed to children
+
+1. Update config api so we don't need type property
+
 1. Documentation
   1. Hubfx core
   - motivation/problem
@@ -75,7 +78,6 @@
 
 
 # TODOS
-
 
 1. Forms
   - API
