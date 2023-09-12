@@ -155,8 +155,20 @@ export const FormArrays: Story = {
               <b>Emergency Contacts:</b>
             </p>
             <FormArray controlRef={['emergencyContacts']}>
-              {({ controls, addControl, removeControl }) => (
+              {({
+                formArray: {
+                  controls,
+                  errors: { arrayLengthRequired },
+                },
+                addControl,
+                removeControl,
+              }) => (
                 <>
+                  {arrayLengthRequired && (
+                    <p className="text-danger">
+                      At least one emergency contact required.
+                    </p>
+                  )}
                   {controls.map((control, index) => {
                     return (
                       <div key={control.controlRef.join(',')}>
