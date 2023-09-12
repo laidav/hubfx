@@ -1,12 +1,11 @@
-import { FormControlType } from './FormControlType';
 import { ValidatorFn, ValidatorAsyncFn } from './Validators';
 
 export interface FormGroupConfig extends AbstractControlConfig {
-  formGroupControls: { [key: string]: AbstractControlConfig };
+  controls: { [key: string]: AbstractControlConfig };
 }
 
 export interface FormArrayConfig extends AbstractControlConfig {
-  formArrayControls?: AbstractControlConfig[];
+  controls: AbstractControlConfig[];
 }
 
 export interface FormControlConfig<T> extends AbstractControlConfig {
@@ -14,7 +13,6 @@ export interface FormControlConfig<T> extends AbstractControlConfig {
 }
 
 export interface AbstractControlConfig {
-  controlType?: FormControlType; //default 'Field';
   validators?: ValidatorFn[];
   asyncValidators?: ValidatorAsyncFn[];
 }

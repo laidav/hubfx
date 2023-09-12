@@ -6,7 +6,6 @@ import {
 } from '../Models/Controls';
 import { ControlRef } from '../Models/ControlRef';
 import { FormErrors } from '../Models/FormErrors';
-import { FormControlType } from '../Models/FormControlType';
 import {
   FormControlConfig,
   FormArrayConfig,
@@ -22,15 +21,17 @@ export const buildControlState = <T>(
   controlRef: ControlRef = [],
 ): AbstractControl<T> => {
   // Form Group
-  if (controlConfig.controlType === FormControlType.Group) {
+  const controls = (<FormGroupConfig | FormArrayConfig>controlConfig).controls;
+  if (controls && !(controls instanceof Array)) {
     const controls = {} as { [key: string]: FormControl<unknown> };
     const groupInitialValue: {
       [key: string]: unknown;
     } = getValueFromControlConfig(controlConfig);
 
-    for (const key in (<FormGroupConfig>controlConfig).formGroupControls) {
-      const formGroupControlConfig = (<FormGroupConfig>controlConfig)
-        .formGroupControls[key];
+    for (const key in (<FormGroupConfig>controlConfig).controls) {
+      const formGroupControlConfig = (<FormGroupConfig>controlConfig).controls[
+        key
+      ];
       controls[key] = buildControlState(
         formGroupControlConfig,
         controlRef.concat(key),
@@ -73,8 +74,8 @@ export const buildControlState = <T>(
 
     return { pristineControl: cloneDeep(result), ...result };
     // Form Array
-  } else if (controlConfig.controlType === FormControlType.Array) {
-    const configControls = (<FormArrayConfig>controlConfig).formArrayControls;
+  } else if (controls && controls instanceof Array) {
+    const configControls = (<FormArrayConfig>controlConfig).controls;
     const controls: AbstractControl<unknown>[] = configControls
       ? configControls.reduce(
           (acc: AbstractControl<unknown>[], config, index) =>

@@ -35,11 +35,11 @@ describe('getValueFromConfig', () => {
     expect(
       getValueFromControlConfig({
         ...config,
-        formGroupControls: {
-          ...config.formGroupControls,
+        controls: {
+          ...config.controls,
           emergencyContacts: {
-            ...config.formGroupControls.emergencyContacts,
-            formArrayControls: emergencyContactConfigs,
+            ...config.controls.emergencyContacts,
+            controls: emergencyContactConfigs,
           } as FormArrayConfig,
         },
       } as FormGroupConfig),

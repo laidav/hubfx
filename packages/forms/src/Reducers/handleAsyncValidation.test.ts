@@ -12,9 +12,8 @@ import { getControl } from '../Helpers/getControl';
 describe('handleAsyncValidation', () => {
   it('should update validation', () => {
     const clonedConfig: FormGroupConfig = cloneDeep(config);
-    (<FormArrayConfig>(
-      clonedConfig.formGroupControls.emergencyContacts
-    )).formArrayControls = emergencyContactConfigs;
+    (<FormArrayConfig>clonedConfig.controls.emergencyContacts).controls =
+      emergencyContactConfigs;
     const initialState = buildControlState(clonedConfig) as FormGroup<Contact>;
 
     const expectedState: FormGroup<Contact> = cloneDeep(initialState);

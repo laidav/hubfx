@@ -12,7 +12,6 @@ import {
   FormGroupConfig,
   FormArrayConfig,
 } from '../Models/Configs';
-import { FormControlType } from '../Models';
 import {
   blacklistedDoctorType,
   uniqueEmail,
@@ -100,9 +99,8 @@ describe('Form.actions', () => {
     it('should run async validations for a form control and all anscestors', (done) => {
       const config = cloneDeep(fullConfig);
 
-      (<FormArrayConfig>(
-        config.formGroupControls.emergencyContacts
-      )).formArrayControls = emergencyContactConfigs;
+      (<FormArrayConfig>config.controls.emergencyContacts).controls =
+        emergencyContactConfigs;
 
       const formsReducer = buildReducer(config);
       const state = formsReducer();
@@ -178,9 +176,8 @@ describe('Form.actions', () => {
     it('should run async validations for multiple form controls and all common anscestors', (done) => {
       const config = cloneDeep(fullConfig);
 
-      (<FormArrayConfig>(
-        config.formGroupControls.emergencyContacts
-      )).formArrayControls = emergencyContactConfigs;
+      (<FormArrayConfig>config.controls.emergencyContacts).controls =
+        emergencyContactConfigs;
 
       const formsReducer = buildReducer(config);
       const state = formsReducer();
@@ -386,10 +383,9 @@ describe('Form.actions', () => {
       const state = formsReducer();
 
       const newControlConfig: FormGroupConfig = {
-        controlType: FormControlType.Group,
         validators: [firstNameNotSameAsLast],
         asyncValidators: [uniqueFirstAndLastName],
-        formGroupControls: {
+        controls: {
           firstName: {
             initialValue: 'Barney',
             validators: [required],
@@ -480,9 +476,8 @@ describe('Form.actions', () => {
   describe('removeControl', () => {
     it('should run asyncvalidation on all anscestors', (done) => {
       const clonedConfig: FormGroupConfig = cloneDeep(fullConfig);
-      (<FormArrayConfig>(
-        clonedConfig.formGroupControls.emergencyContacts
-      )).formArrayControls = emergencyContactConfigs;
+      (<FormArrayConfig>clonedConfig.controls.emergencyContacts).controls =
+        emergencyContactConfigs;
 
       const formsReducer = buildReducer(clonedConfig);
       const state = formsReducer();
@@ -522,9 +517,8 @@ describe('Form.actions', () => {
   describe('resetControl', () => {
     it('should run async validation on reset control and all anscestors', (done) => {
       const clonedConfig = cloneDeep(fullConfig);
-      (<FormArrayConfig>(
-        clonedConfig.formGroupControls.emergencyContacts
-      )).formArrayControls = emergencyContactConfigs;
+      (<FormArrayConfig>clonedConfig.controls.emergencyContacts).controls =
+        emergencyContactConfigs;
       const formsReducer = buildReducer(clonedConfig);
       const state = formsReducer();
 

@@ -31,18 +31,16 @@ describe('handleAsyncValidationResponseSuccess', () => {
 
   it('should update pending status and errors for control', () => {
     const clonedConfig: FormGroupConfig = cloneDeep(config);
-    (<FormArrayConfig>(
-      clonedConfig.formGroupControls.emergencyContacts
-    )).formArrayControls = emergencyContactConfigs;
+    (<FormArrayConfig>clonedConfig.controls.emergencyContacts).controls =
+      emergencyContactConfigs;
 
     clonedConfig.asyncValidators = [];
-    (<FormArrayConfig>(
-      clonedConfig.formGroupControls.emergencyContacts
-    )).asyncValidators = [];
+    (<FormArrayConfig>clonedConfig.controls.emergencyContacts).asyncValidators =
+      [];
 
-    (<FormArrayConfig>(
-      clonedConfig.formGroupControls.emergencyContacts
-    )).formArrayControls.forEach((control) => (control.asyncValidators = []));
+    (<FormArrayConfig>clonedConfig.controls.emergencyContacts).controls.forEach(
+      (control) => (control.asyncValidators = []),
+    );
 
     const initialState = buildControlState(clonedConfig) as FormGroup<Contact>;
 

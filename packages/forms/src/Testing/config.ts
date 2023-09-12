@@ -3,7 +3,6 @@ import {
   FormArrayConfig,
   FormGroupConfig,
 } from '../Models/Configs';
-import { FormControlType } from '../Models/FormControlType';
 import { required, email, phoneNumber } from '../Validators/Validators';
 import {
   uniqueEmail,
@@ -25,10 +24,9 @@ export const firstNameNotSameAsLast = (value: FullName) => {
 
 export const emergencyContactConfigs: FormGroupConfig[] = [
   {
-    controlType: FormControlType.Group,
     validators: [firstNameNotSameAsLast],
     asyncValidators: [uniqueFirstAndLastName],
-    formGroupControls: {
+    controls: {
       firstName: {
         initialValue: 'Homer',
         validators: [required],
@@ -49,10 +47,9 @@ export const emergencyContactConfigs: FormGroupConfig[] = [
     },
   },
   {
-    controlType: FormControlType.Group,
     validators: [firstNameNotSameAsLast],
     asyncValidators: [uniqueFirstAndLastName],
-    formGroupControls: {
+    controls: {
       firstName: {
         initialValue: 'moe',
         validators: [required],
@@ -75,10 +72,9 @@ export const emergencyContactConfigs: FormGroupConfig[] = [
 ];
 
 export const config: FormGroupConfig = {
-  controlType: FormControlType.Group,
   validators: [firstNameNotSameAsLast],
   asyncValidators: [uniqueFirstAndLastName],
-  formGroupControls: {
+  controls: {
     firstName: {
       initialValue: '',
       validators: [required],
@@ -97,15 +93,14 @@ export const config: FormGroupConfig = {
       validators: [required, phoneNumber],
     } as FormControlConfig<string>,
     emergencyContacts: {
-      controlType: FormControlType.Array,
       validators: [required],
       asyncValidators: [arrayLengthError],
+      controls: [],
     } as FormArrayConfig,
     doctorInfo: {
-      controlType: FormControlType.Group,
       validators: [firstNameNotSameAsLast],
       asyncValidators: [uniqueFirstAndLastName],
-      formGroupControls: {
+      controls: {
         firstName: {
           initialValue: '',
           validators: [required],

@@ -81,14 +81,14 @@ describe('syncValidate', () => {
 
   it('should validate only for a FormArray in a FormGroup', () => {
     const emergencyContactsConfig = {
-      ...(config.formGroupControls.emergencyContacts as FormArrayConfig),
-      formArrayControls: emergencyContactConfigs,
+      ...(config.controls.emergencyContacts as FormArrayConfig),
+      controls: emergencyContactConfigs,
     };
 
     const nonEmptyConfig: FormGroupConfig = {
       ...config,
-      formGroupControls: {
-        ...config.formGroupControls,
+      controls: {
+        ...config.controls,
         emergencyContacts: emergencyContactsConfig,
       },
     };

@@ -95,14 +95,14 @@ describe('updateValues', () => {
 
   it('should update values only for a FC -> FG -> FA -> FG ', () => {
     const emergencyContactsConfig = {
-      ...(config.formGroupControls.emergencyContacts as FormArrayConfig),
-      formArrayControls: emergencyContactConfigs,
+      ...(config.controls.emergencyContacts as FormArrayConfig),
+      controls: emergencyContactConfigs,
     };
 
     const nonEmptyConfig: FormGroupConfig = {
       ...config,
-      formGroupControls: {
-        ...config.formGroupControls,
+      controls: {
+        ...config.controls,
         emergencyContacts: emergencyContactsConfig,
       },
     };
@@ -226,9 +226,8 @@ describe('updateValues', () => {
 
   it('should update values only for a FA -> FG', () => {
     const clonedConfig: FormGroupConfig = cloneDeep(config);
-    (<FormArrayConfig>(
-      clonedConfig.formGroupControls.emergencyContacts
-    )).formArrayControls = emergencyContactConfigs;
+    (<FormArrayConfig>clonedConfig.controls.emergencyContacts).controls =
+      emergencyContactConfigs;
 
     const initialState = buildControlState(clonedConfig) as FormGroup<Contact>;
     const newValue: EmergencyContact[] = [
@@ -306,9 +305,8 @@ describe('updateValues', () => {
 
   it('should throw an error if trying to update a FA index that does not exist', () => {
     const clonedConfig: FormGroupConfig = cloneDeep(config);
-    (<FormArrayConfig>(
-      clonedConfig.formGroupControls.emergencyContacts
-    )).formArrayControls = emergencyContactConfigs;
+    (<FormArrayConfig>clonedConfig.controls.emergencyContacts).controls =
+      emergencyContactConfigs;
     const state = buildControlState(clonedConfig);
 
     const newStateFunc = () =>

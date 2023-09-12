@@ -1,10 +1,11 @@
+import { FormArrayConfig, FormGroupConfig } from '../Models';
 import { FormArray, FormGroup, AbstractControl } from '../Models/Controls';
-import { FormControlType } from '../Models';
 
 export const getChildControls = (
   control: AbstractControl<unknown>,
 ): AbstractControl<unknown>[] => {
-  if (control.config.controlType === FormControlType.Group) {
+  const controls = (<FormGroupConfig | FormArrayConfig>control.config).controls;
+  if (controls && !(controls instanceof Array)) {
     return [control].concat(
       Object.values((<FormGroup<unknown>>control).controls).reduce(
         (acc: AbstractControl<unknown>[], control) =>
@@ -12,7 +13,7 @@ export const getChildControls = (
         [],
       ),
     );
-  } else if (control.config.controlType === FormControlType.Array) {
+  } else if (controls && controls instanceof Array) {
     return [control].concat(
       (<FormArray<unknown>>control).controls.reduce(
         (

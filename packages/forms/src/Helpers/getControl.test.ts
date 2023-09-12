@@ -18,7 +18,7 @@ describe('getControl', () => {
   it('should get form control', () => {
     const expectedControl = {
       ...BASE_FORM_CONTROL,
-      config: config.formGroupControls.firstName,
+      config: config.controls.firstName,
       controlRef: ['firstName'],
       value: '',
       valid: false,
@@ -33,8 +33,7 @@ describe('getControl', () => {
 
     const expectedControlDoctorInfoFirstName = {
       ...BASE_FORM_CONTROL,
-      config: (<FormGroupConfig>config.formGroupControls.doctorInfo)
-        .formGroupControls.firstName,
+      config: (<FormGroupConfig>config.controls.doctorInfo).controls.firstName,
       controlRef: ['doctorInfo', 'firstName'],
       value: '',
       valid: false,
@@ -50,7 +49,7 @@ describe('getControl', () => {
 
     const expectedEmergencyContactsControl = {
       ...BASE_FORM_CONTROL,
-      config: <FormArrayConfig>config.formGroupControls.emergencyContacts,
+      config: <FormArrayConfig>config.controls.emergencyContacts,
       controlRef: ['emergencyContacts'],
       value: [] as EmergencyContact[],
       controls: [] as FormControl<EmergencyContact>[],

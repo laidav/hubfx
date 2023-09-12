@@ -2,7 +2,6 @@ import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import {
   FormGroupConfig,
-  FormControlType,
   FormControlConfig,
   Validators,
   FormArrayConfig,
@@ -53,8 +52,7 @@ export const Validation: Story = {
     <Form
       formConfig={
         {
-          controlType: FormControlType.Group,
-          formGroupControls: {
+          controls: {
             firstName: {
               initialValue: 'John',
               validators: [Validators.required],
@@ -92,8 +90,7 @@ const contactFormConfig = ({
   lastName,
   email,
 }: Contact): FormGroupConfig => ({
-  controlType: FormControlType.Group,
-  formGroupControls: {
+  controls: {
     firstName: {
       initialValue: firstName,
       validators: [Validators.required],
@@ -131,12 +128,10 @@ export const FormArrays: Story = {
     <Form
       formConfig={
         {
-          controlType: FormControlType.Group,
-          formGroupControls: {
+          controls: {
             emergencyContacts: {
-              controlType: FormControlType.Array,
               validators: [arrayLengthRequired],
-              formArrayControls: [
+              controls: [
                 {
                   firstName: 'Homer',
                   lastName: 'Simpson',

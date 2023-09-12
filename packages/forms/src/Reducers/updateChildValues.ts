@@ -1,11 +1,13 @@
 import cloneDeep from 'lodash.clonedeep';
 import { FormArray, FormGroup, AbstractControl } from '../Models/Controls';
-import { FormControlType } from '../Models/FormControlType';
+import { FormArrayConfig, FormGroupConfig } from '../Models';
 
 export const updateChildValues = <T>(state: AbstractControl<T>) => {
   const newState: AbstractControl<T> = cloneDeep(state);
   const value = newState.value;
-  if (newState.config.controlType === FormControlType.Group) {
+  const config = newState.config as FormArrayConfig | FormGroupConfig;
+  const controls = config.controls;
+  if (controls && !(controls instanceof Array)) {
     if (
       Object.keys(value).length !==
       Object.keys((<FormGroup<T>>newState).controls).length
@@ -25,7 +27,7 @@ export const updateChildValues = <T>(state: AbstractControl<T>) => {
         (<FormGroup<T>>newState).controls[key],
       );
     });
-  } else if (newState.config.controlType === FormControlType.Array) {
+  } else if (controls && controls instanceof Array) {
     (<FormArray<T>>newState).controls.forEach((control, index) => {
       if (!Array.isArray(value)) {
         throw `value must be an array for form array: ${newState.controlRef.join(

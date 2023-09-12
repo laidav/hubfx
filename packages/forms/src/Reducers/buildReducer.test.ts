@@ -63,9 +63,8 @@ describe('buildReducer', () => {
 
     it('should react to a FORMS_CONTROL_CHANGE FG -> FA -> FG', () => {
       const clonedConfig: FormGroupConfig = cloneDeep(config);
-      (<FormArrayConfig>(
-        clonedConfig.formGroupControls.emergencyContacts
-      )).formArrayControls = emergencyContactConfigs;
+      (<FormArrayConfig>clonedConfig.controls.emergencyContacts).controls =
+        emergencyContactConfigs;
 
       const initialState = buildControlState(
         clonedConfig,
@@ -128,9 +127,8 @@ describe('buildReducer', () => {
 
     beforeEach(() => {
       clonedConfig = cloneDeep(config);
-      (<FormArrayConfig>(
-        clonedConfig.formGroupControls.emergencyContacts
-      )).formArrayControls = emergencyContactConfigs;
+      (<FormArrayConfig>clonedConfig.controls.emergencyContacts).controls =
+        emergencyContactConfigs;
 
       formsReducer = buildReducer(clonedConfig) as Reducer<FormGroup<Contact>>;
       initialState = formsReducer();

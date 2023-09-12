@@ -17,9 +17,7 @@ describe('removeControl', () => {
   it('should remove a formGroup control', () => {
     const configWithType: FormGroupConfig = cloneDeep(config);
 
-    (<FormGroupConfig>(
-      configWithType.formGroupControls.doctorInfo
-    )).formGroupControls.type = {
+    (<FormGroupConfig>configWithType.controls.doctorInfo).controls.type = {
       initialValue: 'test',
     } as FormControlConfig<string>;
 
@@ -54,9 +52,8 @@ describe('removeControl', () => {
 
   it('should remove an array control item', () => {
     const clonedConfig: FormGroupConfig = cloneDeep(config);
-    (<FormArrayConfig>(
-      clonedConfig.formGroupControls.emergencyContacts
-    )).formArrayControls = emergencyContactConfigs;
+    (<FormArrayConfig>clonedConfig.controls.emergencyContacts).controls =
+      emergencyContactConfigs;
     const initialState = buildControlState(clonedConfig) as FormGroup<Contact>;
 
     const controlRef = ['emergencyContacts', 0];

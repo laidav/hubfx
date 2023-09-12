@@ -1,9 +1,9 @@
 import cloneDeep from 'lodash.clonedeep';
 import { Action } from '@hubfx/core';
 import { FormArray, FormGroup, AbstractControl } from '../Models/Controls';
-import { FormControlType } from '../Models/FormControlType';
 import { ControlRef } from '../Models/ControlRef';
 import { getControl } from '../Helpers/getControl';
+import { FormGroupConfig, FormArrayConfig } from '../Models';
 
 export const FORMS_UPDATE_ANCESTOR_VALUES = 'FORMS_UPDATE_ANCESTOR_VALUES';
 export const updateAncestorValues = <T>(
@@ -19,12 +19,15 @@ export const updateAncestorValues = <T>(
   const parentRef = controlRef.slice(0, -1);
   const parentControl = getControl(parentRef, newState);
 
-  if (parentControl.config.controlType === FormControlType.Group) {
+  const config = parentControl.config as FormArrayConfig | FormGroupConfig;
+  const controls = config.controls;
+
+  if (controls && !(controls instanceof Array)) {
     (<FormGroup<unknown>>parentControl).value = {
       ...(<FormGroup<unknown>>parentControl.value),
       [key]: value,
     };
-  } else if (parentControl.config.controlType === FormControlType.Array) {
+  } else if (controls && controls instanceof Array) {
     (<FormArray<unknown[]>>parentControl).value = (<FormArray<unknown[]>>(
       parentControl
     )).controls.map((control) => control.value);

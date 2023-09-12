@@ -4,22 +4,22 @@ import {
   FormGroupConfig,
   AbstractControlConfig,
 } from '../Models/Configs';
-import { FormControlType } from '../Models/FormControlType';
 
 export const getValueFromControlConfig = <T>(
   controlConfig: AbstractControlConfig,
 ): T => {
-  if (controlConfig.controlType === FormControlType.Group) {
+  const controls = (<FormArrayConfig | FormGroupConfig>controlConfig).controls;
+  if (controls && !(controls instanceof Array)) {
     const result: { [key: string]: unknown } = {};
 
-    for (const key in (<FormGroupConfig>controlConfig).formGroupControls) {
-      const control = (<FormGroupConfig>controlConfig).formGroupControls[key];
+    for (const key in (<FormGroupConfig>controlConfig).controls) {
+      const control = (<FormGroupConfig>controlConfig).controls[key];
       result[key] = getValueFromControlConfig(control);
     }
 
     return result as T;
-  } else if (controlConfig.controlType === FormControlType.Array) {
-    const configs = (<FormArrayConfig>controlConfig).formArrayControls;
+  } else if (controls && controls instanceof Array) {
+    const configs = (<FormArrayConfig>controlConfig).controls;
     const result = configs
       ? configs.map((controlConfig) => getValueFromControlConfig(controlConfig))
       : [];

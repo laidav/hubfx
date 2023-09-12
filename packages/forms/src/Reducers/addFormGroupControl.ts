@@ -6,9 +6,9 @@ import {
 } from './updateAncestorValues';
 import { FormGroup, AbstractControl } from '../Models/Controls';
 import { AddControl } from '../Models/Payloads';
-import { FormControlType } from '../Models/FormControlType';
 import { buildControlState } from '../Helpers/buildControlState';
 import { getControl } from '../Helpers/getControl';
+import { FormArrayConfig, FormGroupConfig } from '../Models';
 
 export const addFormGroupControl = <T>(
   state: AbstractControl<T>,
@@ -20,7 +20,10 @@ export const addFormGroupControl = <T>(
     newState,
   ) as FormGroup<unknown>;
 
-  if (newControl.config.controlType !== FormControlType.Group) {
+  const controls = (<FormArrayConfig | FormGroupConfig>newControl.config)
+    .controls;
+
+  if (!controls || (controls && controls instanceof Array)) {
     throw 'The control this is being added to is not a FormGroup control';
   }
 
