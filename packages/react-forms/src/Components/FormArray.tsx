@@ -24,15 +24,16 @@ export interface FormArrayProps {
 export const FormArray = ({ controlRef, children }: FormArrayProps) => {
   const { state, dispatch, reducer } = useContext(FormContext);
   const { controls } = getControl(controlRef, state) as IFormArray<unknown>;
-  const addControl = (config: AbstractControlConfig) => {
-    dispatch(...addFormArrayControl({ controlRef, config }, state, reducer));
+
+  const formArrayChildrenProps: FormArrayChildrenProps = {
+    controls,
+    addControl: (config: AbstractControlConfig) => {
+      dispatch(...addFormArrayControl({ controlRef, config }, state, reducer));
+    },
+    removeControl: (controlRef: ControlRef) => {
+      dispatch(...removeFormArrayControl(controlRef, state, reducer));
+    },
   };
 
-  const removeControl = (controlRef: ControlRef) => {
-    dispatch(...removeFormArrayControl(controlRef, state, reducer));
-  };
-
-  return (
-    <div>{children && children({ controls, addControl, removeControl })}</div>
-  );
+  return <div>{children && children(formArrayChildrenProps)}</div>;
 };

@@ -220,3 +220,5 @@ export const FormArrays: Story = {
     </Form>
   ),
 };
+
+export const ResetForm: Story = {};

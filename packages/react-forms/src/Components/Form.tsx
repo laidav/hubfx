@@ -1,7 +1,12 @@
 import React, { useRef } from 'react';
 import { Hub, Dispatcher, Reducer } from '@hubfx/core';
 import { buildReducer, AbstractControl } from '@hubfx/forms';
-import { AbstractControlConfig, getControl, ControlRef } from '@hubfx/forms';
+import {
+  AbstractControlConfig,
+  getControl,
+  ControlRef,
+  resetControl,
+} from '@hubfx/forms';
 import { useObservable } from '../Hooks/useObservable';
 import { useHub } from '../Hooks/useHub';
 
@@ -14,6 +19,7 @@ export const FormContext = React.createContext(null) as React.Context<{
 export interface FormChildrenProps {
   state: AbstractControl<unknown>;
   getControl: (controlRef: ControlRef) => AbstractControl<unknown>;
+  resetControl: (controlRef: ControlRef) => void;
 }
 
 interface FormProps {
@@ -29,6 +35,7 @@ export const Form = ({ formConfig, hub = useHub(), children }: FormProps) => {
   const formChildrenProps: FormChildrenProps = {
     state,
     getControl: (controlRef) => getControl(controlRef, state),
+    resetControl: (controlRef) => resetControl(controlRef, state, reducer),
   };
 
   return (
