@@ -35,7 +35,9 @@ export const Form = ({ formConfig, hub = useHub(), children }: FormProps) => {
   const formChildrenProps: FormChildrenProps = {
     state,
     getControl: (controlRef) => getControl(controlRef, state),
-    resetControl: (controlRef) => resetControl(controlRef, state, reducer),
+    resetControl: (controlRef) => {
+      hub.dispatch(...resetControl(controlRef, state, reducer));
+    },
   };
 
   return (

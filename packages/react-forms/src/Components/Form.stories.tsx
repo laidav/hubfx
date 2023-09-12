@@ -93,37 +93,6 @@ export const Validation: Story = {
   ),
 };
 
-export const AsyncValidation: Story = {
-  render: () => (
-    <Form
-      formConfig={
-        {
-          controlType: FormControlType.Group,
-          formGroupControls: {
-            firstName: {
-              initialValue: 'John',
-              validators: [Validators.required],
-            } as FormControlConfig<string>,
-            lastName: {
-              initialValue: 'Doe',
-              validators: [Validators.required],
-            } as FormControlConfig<string>,
-            email: {
-              initialValue: '',
-              validators: [Validators.required, Validators.email],
-              asyncValidators: [blacklistedEmail],
-            } as FormControlConfig<string>,
-          },
-        } as FormGroupConfig
-      }
-    >
-      {({ state }) => {
-        return <ContactForm formGroup={state as FormGroup<Contact>} />;
-      }}
-    </Form>
-  ),
-};
-
 const contactFormConfig = ({ firstName, lastName, email }: Contact) => ({
   controlType: FormControlType.Group,
   formGroupControls: {
@@ -142,6 +111,22 @@ const contactFormConfig = ({ firstName, lastName, email }: Contact) => ({
     } as FormControlConfig<string>,
   },
 });
+
+export const AsyncValidation: Story = {
+  render: () => (
+    <Form
+      formConfig={contactFormConfig({
+        firstName: 'John',
+        lastName: 'Doe',
+        email: '',
+      })}
+    >
+      {({ state }) => {
+        return <ContactForm formGroup={state as FormGroup<Contact>} />;
+      }}
+    </Form>
+  ),
+};
 
 export const FormArrays: Story = {
   render: () => (
@@ -221,4 +206,23 @@ export const FormArrays: Story = {
   ),
 };
 
-export const ResetForm: Story = {};
+export const ResetForm: Story = {
+  render: () => (
+    <Form
+      formConfig={contactFormConfig({
+        firstName: 'Bart',
+        lastName: 'Simpson',
+        email: 'bart@man.com',
+      })}
+    >
+      {({ state, resetControl }) => (
+        <>
+          <ContactForm formGroup={state as FormGroup<Contact>} />
+          <button type="button" onClick={() => resetControl(state.controlRef)}>
+            Reset Form
+          </button>
+        </>
+      )}
+    </Form>
+  ),
+};
