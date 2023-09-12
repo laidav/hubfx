@@ -1,12 +1,6 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import {
-  FormGroupConfig,
-  FormControlConfig,
-  Validators,
-  FormArrayConfig,
-  FormGroup,
-} from '@hubfx/forms';
+import { Validators, FormGroup, FormBuilder } from '@hubfx/forms';
 import { Form } from './Form';
 import { Field } from './Field';
 import { Input } from './Input';
@@ -27,11 +21,9 @@ type Story = StoryObj<typeof Form>;
 export const BasicControl: Story = {
   render: () => (
     <Form
-      formConfig={
-        {
-          initialValue: 'john',
-        } as FormControlConfig<string>
-      }
+      formConfig={FormBuilder.control({
+        initialValue: 'john',
+      })}
     >
       {({ state }) => {
         return (
@@ -50,20 +42,18 @@ export const BasicControl: Story = {
 export const Validation: Story = {
   render: () => (
     <Form
-      formConfig={
-        {
-          controls: {
-            firstName: {
-              initialValue: 'John',
-              validators: [Validators.required],
-            } as FormControlConfig<string>,
-            lastName: {
-              initialValue: '',
-              validators: [Validators.required],
-            } as FormControlConfig<string>,
-          },
-        } as FormGroupConfig
-      }
+      formConfig={FormBuilder.group({
+        controls: {
+          firstName: FormBuilder.control({
+            initialValue: 'John',
+            validators: [Validators.required],
+          }),
+          lastName: FormBuilder.control({
+            initialValue: '',
+            validators: [Validators.required],
+          }),
+        },
+      })}
     >
       {() => {
         return (
@@ -85,27 +75,24 @@ export const Validation: Story = {
   ),
 };
 
-const contactFormConfig = ({
-  firstName,
-  lastName,
-  email,
-}: Contact): FormGroupConfig => ({
-  controls: {
-    firstName: {
-      initialValue: firstName,
-      validators: [Validators.required],
-    } as FormControlConfig<string>,
-    lastName: {
-      initialValue: lastName,
-      validators: [Validators.required],
-    } as FormControlConfig<string>,
-    email: {
-      initialValue: email,
-      validators: [Validators.required, Validators.email],
-      asyncValidators: [blacklistedEmail],
-    } as FormControlConfig<string>,
-  },
-});
+const contactFormConfig = ({ firstName, lastName, email }: Contact) =>
+  FormBuilder.group({
+    controls: {
+      firstName: FormBuilder.control({
+        initialValue: firstName,
+        validators: [Validators.required],
+      }),
+      lastName: FormBuilder.control({
+        initialValue: lastName,
+        validators: [Validators.required],
+      }),
+      email: FormBuilder.control({
+        initialValue: email,
+        validators: [Validators.required, Validators.email],
+        asyncValidators: [blacklistedEmail],
+      }),
+    },
+  });
 
 export const AsyncValidation: Story = {
   render: () => (
@@ -126,22 +113,20 @@ export const AsyncValidation: Story = {
 export const FormArrays: Story = {
   render: () => (
     <Form
-      formConfig={
-        {
-          controls: {
-            emergencyContacts: {
-              validators: [arrayLengthRequired],
-              controls: [
-                {
-                  firstName: 'Homer',
-                  lastName: 'Simpson',
-                  email: 'homer@homer.com',
-                },
-              ].map(contactFormConfig),
-            } as FormArrayConfig,
-          },
-        } as FormGroupConfig
-      }
+      formConfig={FormBuilder.group({
+        controls: {
+          emergencyContacts: FormBuilder.array({
+            validators: [arrayLengthRequired],
+            controls: [
+              {
+                firstName: 'Homer',
+                lastName: 'Simpson',
+                email: 'homer@homer.com',
+              },
+            ].map(contactFormConfig),
+          }),
+        },
+      })}
     >
       {() => {
         return (
@@ -214,11 +199,13 @@ export const FormArrays: Story = {
 export const ResetForm: Story = {
   render: () => (
     <Form
-      formConfig={contactFormConfig({
-        firstName: 'Bart',
-        lastName: 'Simpson',
-        email: 'bart@man.com',
-      })}
+      formConfig={FormBuilder.group(
+        contactFormConfig({
+          firstName: 'Bart',
+          lastName: 'Simpson',
+          email: 'bart@man.com',
+        }),
+      )}
     >
       {({ state, resetControl }) => (
         <>
