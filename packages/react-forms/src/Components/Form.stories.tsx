@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import {
   FormGroupConfig,
@@ -6,13 +6,16 @@ import {
   FormControlConfig,
   Validators,
   FormArrayConfig,
+  FormGroup,
 } from '@hubfx/forms';
 import { Form } from './Form';
 import { Field } from './Field';
 import { Input } from './Input';
+import { ContactForm } from './ContactForm';
 import { blacklistedEmail } from '../Testing/AsyncValidators/blacklistedEmail';
 import { arrayLengthRequired } from '../Testing/Validators/arrayLengthRequired';
 import { FormArray } from './FormArray';
+import { Contact } from '../Testing/Models/Contact';
 
 const meta: Meta<typeof Form> = {
   component: Form,
@@ -114,96 +117,52 @@ export const AsyncValidation: Story = {
         } as FormGroupConfig
       }
     >
-      {() => {
-        return (
-          <div className="form-group">
-            <Field
-              controlRef={['firstName']}
-              component={Input}
-              label="First Name"
-            />
-            <Field
-              controlRef={['lastName']}
-              component={Input}
-              label="Last Name"
-            />
-            <Field
-              controlRef={['email']}
-              component={Input}
-              label={
-                <span>
-                  Email <i>(not@allowed.com is blacklisted)</i>
-                </span>
-              }
-            />
-          </div>
-        );
+      {({ state }) => {
+        return <ContactForm formGroup={state as FormGroup<Contact>} />;
       }}
     </Form>
   ),
 };
 
-export const CrossFieldValidation: Story = {
+export const FormArrays: Story = {
   render: () => (
     <Form
       formConfig={
         {
           controlType: FormControlType.Group,
           formGroupControls: {
-            firstName: {
-              initialValue: 'John',
-              validators: [Validators.required],
-            } as FormControlConfig<string>,
-            lastName: {
-              initialValue: 'Doe',
-              validators: [Validators.required],
-            } as FormControlConfig<string>,
-            email: {
-              initialValue: '',
-              validators: [Validators.required, Validators.email],
-              asyncValidators: [blacklistedEmail],
-            } as FormControlConfig<string>,
             emergencyContacts: {
               controlType: FormControlType.Array,
               validators: [arrayLengthRequired],
               formArrayControls: [
                 {
-                  controlType: FormControlType.Group,
-                  formGroupControls: {
-                    firstName: {
-                      initialValue: 'Homer',
-                      validators: [Validators.required],
-                    } as FormControlConfig<string>,
-                    lastName: {
-                      initialValue: 'Simpson',
-                      validators: [Validators.required],
-                    } as FormControlConfig<string>,
-                    email: {
-                      initialValue: 'Homer@homer.com',
-                      validators: [Validators.required, Validators.email],
-                      asyncValidators: [blacklistedEmail],
-                    } as FormControlConfig<string>,
-                  },
-                } as FormGroupConfig,
+                  firstName: 'Homer',
+                  lastName: 'Simpson',
+                  email: 'homer@homer.com',
+                },
                 {
-                  controlType: FormControlType.Group,
-                  formGroupControls: {
-                    firstName: {
-                      initialValue: 'Moe',
-                      validators: [Validators.required],
-                    } as FormControlConfig<string>,
-                    lastName: {
-                      initialValue: 'Syzlak',
-                      validators: [Validators.required],
-                    } as FormControlConfig<string>,
-                    email: {
-                      initialValue: 'moe@syzlak.com',
-                      validators: [Validators.required, Validators.email],
-                      asyncValidators: [blacklistedEmail],
-                    } as FormControlConfig<string>,
-                  },
-                } as FormGroupConfig,
-              ],
+                  firstName: 'Moe',
+                  lastName: 'Syzlak',
+                  email: 'moe@syzlak.com',
+                },
+              ].map(({ firstName, lastName, email }) => ({
+                controlType: FormControlType.Group,
+                formGroupControls: {
+                  firstName: {
+                    initialValue: firstName,
+                    validators: [Validators.required],
+                  } as FormControlConfig<string>,
+                  lastName: {
+                    initialValue: lastName,
+                    validators: [Validators.required],
+                  } as FormControlConfig<string>,
+                  email: {
+                    initialValue: email,
+                    validators: [Validators.required, Validators.email],
+                    asyncValidators: [blacklistedEmail],
+                  } as FormControlConfig<string>,
+                },
+              })),
             } as FormArrayConfig,
           },
         } as FormGroupConfig
@@ -212,33 +171,22 @@ export const CrossFieldValidation: Story = {
       {() => {
         return (
           <div className="form-group">
-            <Field
-              controlRef={['firstName']}
-              component={Input}
-              label="First Name"
-            />
-            <Field
-              controlRef={['lastName']}
-              component={Input}
-              label="Last Name"
-            />
-            <Field
-              controlRef={['email']}
-              component={Input}
-              label={
-                <span>
-                  Email <i>(not@allowed.com is blacklisted)</i>
-                </span>
-              }
-            />
+            <p>
+              <b>Emergency Contacts:</b>
+            </p>
             <FormArray controlRef={['emergencyContacts']}>
               {({ controls }) => (
                 <>
-                  {controls.map((control) => {
+                  {controls.map((control, index) => {
                     return (
-                      <div key={control.controlRef.join(',')}>
-                        {control.controlRef.join(',')}
-                      </div>
+                      <Fragment key={control.controlRef.join(',')}>
+                        <p>
+                          <b>Contact #{index + 1}:</b>
+                        </p>
+                        <ContactForm
+                          formGroup={control as FormGroup<Contact>}
+                        />
+                      </Fragment>
                     );
                   })}
                 </>

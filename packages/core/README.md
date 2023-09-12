@@ -52,15 +52,14 @@
           - unique email
 
       - emergency contacts to demo form array - STORY FOUR
-        - cross field validation, minimum two emergency contacts
-          - blacklisted email async validation
 
+      - add and remove controls - STORY FIVE
 
-          - formarray
-        - 
-        - add and remove controls - STORY FIVE
+      - cross field validation, minimum two emergency contacts - STORY SIX
+        - blacklisted email async validation
+        - formarray
 
-      - resetting form - STORY SIX
+      - resetting form - STORY SEVEN
         - or different parts of it
 
   - update form api
