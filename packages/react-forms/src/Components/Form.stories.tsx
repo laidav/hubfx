@@ -124,6 +124,25 @@ export const AsyncValidation: Story = {
   ),
 };
 
+const contactFormConfig = ({ firstName, lastName, email }: Contact) => ({
+  controlType: FormControlType.Group,
+  formGroupControls: {
+    firstName: {
+      initialValue: firstName,
+      validators: [Validators.required],
+    } as FormControlConfig<string>,
+    lastName: {
+      initialValue: lastName,
+      validators: [Validators.required],
+    } as FormControlConfig<string>,
+    email: {
+      initialValue: email,
+      validators: [Validators.required, Validators.email],
+      asyncValidators: [blacklistedEmail],
+    } as FormControlConfig<string>,
+  },
+});
+
 export const FormArrays: Story = {
   render: () => (
     <Form
@@ -145,24 +164,7 @@ export const FormArrays: Story = {
                   lastName: 'Syzlak',
                   email: 'moe@syzlak.com',
                 },
-              ].map(({ firstName, lastName, email }) => ({
-                controlType: FormControlType.Group,
-                formGroupControls: {
-                  firstName: {
-                    initialValue: firstName,
-                    validators: [Validators.required],
-                  } as FormControlConfig<string>,
-                  lastName: {
-                    initialValue: lastName,
-                    validators: [Validators.required],
-                  } as FormControlConfig<string>,
-                  email: {
-                    initialValue: email,
-                    validators: [Validators.required, Validators.email],
-                    asyncValidators: [blacklistedEmail],
-                  } as FormControlConfig<string>,
-                },
-              })),
+              ].map(contactFormConfig),
             } as FormArrayConfig,
           },
         } as FormGroupConfig
