@@ -159,11 +159,6 @@ export const FormArrays: Story = {
                   lastName: 'Simpson',
                   email: 'homer@homer.com',
                 },
-                {
-                  firstName: 'Moe',
-                  lastName: 'Syzlak',
-                  email: 'moe@syzlak.com',
-                },
               ].map(contactFormConfig),
             } as FormArrayConfig,
           },
@@ -177,7 +172,7 @@ export const FormArrays: Story = {
               <b>Emergency Contacts:</b>
             </p>
             <FormArray controlRef={['emergencyContacts']}>
-              {({ controls }) => (
+              {({ controls, addControl }) => (
                 <>
                   {controls.map((control, index) => {
                     return (
@@ -191,6 +186,20 @@ export const FormArrays: Story = {
                       </Fragment>
                     );
                   })}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      addControl(
+                        contactFormConfig({
+                          firstName: '',
+                          lastName: '',
+                          email: '',
+                        }),
+                      );
+                    }}
+                  >
+                    Add Contact
+                  </button>
                 </>
               )}
             </FormArray>

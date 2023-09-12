@@ -1,14 +1,17 @@
 import React, { useContext } from 'react';
 import {
+  AbstractControlConfig,
   AbstractControl,
   ControlRef,
   FormArray as IFormArray,
   getControl,
+  addFormArrayControl,
 } from '@hubfx/forms';
 import { FormContext } from './Form';
 
 export interface FormArrayChildrenProps {
   controls: AbstractControl<unknown>[];
+  addControl: (config: AbstractControlConfig) => void;
 }
 
 export interface FormArrayProps {
@@ -17,8 +20,10 @@ export interface FormArrayProps {
 }
 
 export const FormArray = ({ controlRef, children }: FormArrayProps) => {
-  const { state } = useContext(FormContext);
+  const { state, dispatch, reducer } = useContext(FormContext);
   const { controls } = getControl(controlRef, state) as IFormArray<unknown>;
-  console.log(controls);
-  return <div>{children && children({ controls })}</div>;
+  const addControl = (config: AbstractControlConfig) => {
+    dispatch(...addFormArrayControl({ controlRef, config }, state, reducer));
+  };
+  return <div>{children && children({ controls, addControl })}</div>;
 };
