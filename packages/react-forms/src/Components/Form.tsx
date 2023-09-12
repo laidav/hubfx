@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Hub, Dispatcher, Reducer } from '@hubfx/core';
 import { buildReducer, AbstractControl } from '@hubfx/forms';
 import { AbstractControlConfig, getControl, ControlRef } from '@hubfx/forms';
@@ -23,9 +23,8 @@ interface FormProps {
 }
 
 export const Form = ({ formConfig, hub = useHub(), children }: FormProps) => {
-  const state = useObservable(
-    hub.store({ reducer: buildReducer(formConfig), debug: true }),
-  );
+  const reducer = useRef(buildReducer(formConfig)).current;
+  const state = useObservable(hub.store({ reducer, debug: true }));
 
   const formChildrenProps: FormChildrenProps = {
     state,
@@ -37,7 +36,7 @@ export const Form = ({ formConfig, hub = useHub(), children }: FormProps) => {
       value={{
         state,
         dispatch: hub.dispatch,
-        reducer: buildReducer(formConfig),
+        reducer,
       }}
     >
       {state !== undefined && children && children(formChildrenProps)}
