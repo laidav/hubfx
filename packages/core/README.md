@@ -32,38 +32,8 @@
 
 - this new model can be bound with any UI library for rendering
 
-- # 2023 09 08 (Fri)
+- # 2023 09 12 (Tues)
 
-1. Story book for testing hubfx-react-forms
-
-  - find good cases for demo and testing
-    - contact form
-      - firstName 
-        - simple group with form control STORY 1 - DONE
-      - lastName
-        - required
-      - email
-        - should sync validation - STORY TWO - DONE
-          - update errors to be mandatory empty object at least - DONE
-
-        - show async validation - STORY THREE - DONE
-          - debounce
-          - show pending
-          - unique email
-
-      - emergency contacts to demo form array - STORY FOUR - DONE
-
-      - add and remove controls - STORY FIVE - DONE
-
-      - cross field validation, minimum two emergency contacts - STORY SIX - DONE
-        - blacklisted email async validation
-        - formarray
-
-      - resetting form - STORY SEVEN - DONE
-        - or different parts of it
-
-  - update form api - DONE
-    - expose needed methods in the form component passed to children - DONE
 
 1. Update config api so we don't need type property
 
@@ -90,8 +60,6 @@
 
 ## CLEAN UP TODOS
 - why is lint function not picking up type errors that jest ts is?
-
-- mainaction in controlChange lint erro
 
 ### FORMS
 
