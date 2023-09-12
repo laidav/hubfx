@@ -172,18 +172,29 @@ export const FormArrays: Story = {
               <b>Emergency Contacts:</b>
             </p>
             <FormArray controlRef={['emergencyContacts']}>
-              {({ controls, addControl }) => (
+              {({ controls, addControl, removeControl }) => (
                 <>
                   {controls.map((control, index) => {
                     return (
-                      <Fragment key={control.controlRef.join(',')}>
+                      <div key={control.controlRef.join(',')}>
                         <p>
                           <b>Contact #{index + 1}:</b>
                         </p>
-                        <ContactForm
-                          formGroup={control as FormGroup<Contact>}
-                        />
-                      </Fragment>
+                        <div className="d-flex align-items-center">
+                          <ContactForm
+                            formGroup={control as FormGroup<Contact>}
+                          />
+                          <button
+                            className="ml-5"
+                            type="button"
+                            onClick={() => {
+                              removeControl(control.controlRef);
+                            }}
+                          >
+                            Remove Contact
+                          </button>
+                        </div>
+                      </div>
                     );
                   })}
                   <button
