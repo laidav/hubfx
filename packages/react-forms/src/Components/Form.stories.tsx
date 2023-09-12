@@ -30,22 +30,16 @@ export const BasicControl: Story = {
     <Form
       formConfig={
         {
-          controlType: FormControlType.Group,
-          formGroupControls: {
-            firstName: {
-              initialValue: 'john',
-            } as FormControlConfig<string>,
-          },
-        } as FormGroupConfig
+          initialValue: 'john',
+        } as FormControlConfig<string>
       }
     >
-      {({ getControl }) => {
+      {({ state }) => {
         return (
           <>
-            <Field controlRef={['firstName']} component={Input} />
+            <Field controlRef={[]} component={Input} />
             <div>
-              First Name:{' '}
-              <span>{getControl(['firstName']).value as string}</span>
+              First Name: <span>{state.value as string}</span>
             </div>
           </>
         );
@@ -93,7 +87,11 @@ export const Validation: Story = {
   ),
 };
 
-const contactFormConfig = ({ firstName, lastName, email }: Contact) => ({
+const contactFormConfig = ({
+  firstName,
+  lastName,
+  email,
+}: Contact): FormGroupConfig => ({
   controlType: FormControlType.Group,
   formGroupControls: {
     firstName: {
@@ -218,7 +216,12 @@ export const ResetForm: Story = {
       {({ state, resetControl }) => (
         <>
           <ContactForm formGroup={state as FormGroup<Contact>} />
-          <button type="button" onClick={() => resetControl(state.controlRef)}>
+          <button
+            type="button"
+            onClick={() => {
+              resetControl(state.controlRef);
+            }}
+          >
             Reset Form
           </button>
         </>

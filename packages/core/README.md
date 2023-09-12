@@ -46,24 +46,24 @@
         - should sync validation - STORY TWO - DONE
           - update errors to be mandatory empty object at least - DONE
 
-        - show async validation - STORY THREE
+        - show async validation - STORY THREE - DONE
           - debounce
           - show pending
           - unique email
 
-      - emergency contacts to demo form array - STORY FOUR
+      - emergency contacts to demo form array - STORY FOUR - DONE
 
-      - add and remove controls - STORY FIVE
+      - add and remove controls - STORY FIVE - DONE
 
-      - cross field validation, minimum two emergency contacts - STORY SIX
+      - cross field validation, minimum two emergency contacts - STORY SIX - DONE
         - blacklisted email async validation
         - formarray
 
-      - resetting form - STORY SEVEN
+      - resetting form - STORY SEVEN - DONE
         - or different parts of it
 
-  - update form api
-    - expose all the methods in the form component passed to children
+  - update form api - DONE
+    - expose needed methods in the form component passed to children - DONE
 
 1. Update config api so we don't need type property
 
