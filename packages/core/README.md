@@ -1,3 +1,60 @@
+# Hubfx Core
+
+## Description
+
+Reactive state management with RxJS.
+
+## Table of Contents
+
+1. [Core concepts](#core-concepts)
+  1. [Hub and Stores](#hub-stores)
+  1. [Effects](#scoped-effects)
+  1. [One Way In, One Way Out](#one-way)
+
+## Core concepts <a name="core-concepts"></a>
+
+Taking inspiraton from [redux](https://redux.js.org/introduction/core-concepts), Hubfx uses the same concepts regarding Actions, Reducers, Store. These concepts are coupled with RxJS observables to manage state modelled as reactive streams.
+
+### Hub and Stores <a name="hub-stores"></a>
+
+Hub is responsible for dispatching actions to the store(s) registered to the hub. It is also responsible for handling side effects i.e api calls and other async operations...
+
+- PICTURE OF HUB AND STORE AND DISPATCH ACTIONS 1.
+
+### Effects<a name="effects"></a>
+
+- When initializing a `Hub` we can declare effects. The hub can listen for various actions and perform side-effects as needed. The effects are additional reactive streams registered stores are listening too.
+
+- PICTURE of hub
+  - example?
+
+### Scoped Effects<a name="scoped-effects">
+
+- We can also dynamically create effect streams scoped to a particular ACTION when an action is dispatch.
+
+  - picture
+    - example?
+```
+{ type: UPDATE_TODO }
+```
+Then you would 
+
+In Hubfx we can declare a scoped 
+
+
+
+
+
+- # 2023 09 12 (Thurs)
+  - documentation
+  - Description
+  - Core concepts
+    - hub
+    - scoped effects
+      - key
+
+    - diagram
+
 # Motivation:
 
 1. Current UI Library/Frameworks still require us to imperatively manage state
@@ -31,8 +88,6 @@
     - we can separate concerns and test our application logic via streams
 
 - this new model can be bound with any UI library for rendering
-
-- # 2023 09 12 (Tues)
 
 
 1. Update config api so we don't need type property
