@@ -15,35 +15,30 @@ Reactive state management with RxJS.
 
 Taking inspiraton from [redux](https://redux.js.org/introduction/core-concepts), Hubfx uses the same concepts regarding Actions, Reducers, Store. These concepts are coupled with RxJS observables to manage state modelled as reactive streams.
 
+In this documentation the term *stream* will refer to an RxJS observable stream.
+
 ### Hub and Stores <a name="hub-stores"></a>
 
-Hub is responsible for dispatching actions to the store(s) registered to the hub. It is also responsible for handling side effects i.e api calls and other async operations...
+The **Hub** is responsible for dispatching actions to the store(s) registered to the hub. It is also responsible for handling side effects. The main stream that initiates all actions and effects is the `dispatcher$` 
 
 - PICTURE OF HUB AND STORE AND DISPATCH ACTIONS 1.
 
 ### Effects<a name="effects"></a>
 
-- When initializing a `Hub` we can declare effects. The hub can listen for various actions and perform side-effects as needed. The effects are additional reactive streams registered stores are listening too.
+- When initializing a hub we can declare effects. The hub can listen for various actions and perform side-effects as needed. Stores that are registered to the hub will be listening to these effects as well the dispatcher.
 
-- PICTURE of hub
+- PICTURE of hub (image 2)
   - example?
 
 ### Scoped Effects<a name="scoped-effects">
 
-- We can also dynamically create effect streams scoped to a particular ACTION when an action is dispatch.
+- **Scoped Effects** create effect streams scoped to a particular ACTION when an action is dispatch.
 
-  - picture
+  - (image 3)
     - example?
-```
-{ type: UPDATE_TODO }
-```
-Then you would 
+    - Search Todos  -> async action updates state... effect stream created
 
-In Hubfx we can declare a scoped 
-
-
-
-
+- An effect can also be scoped to a unique to a unique composite key between
 
 - # 2023 09 12 (Thurs)
   - documentation
