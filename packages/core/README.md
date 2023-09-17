@@ -9,9 +9,12 @@ Reactive state management with RxJS.
 1. [Core concepts](#core-concepts)
   1. [Hub and Stores](#hub-stores)
   1. [Effects](#effects)
-  1. [Scoped Effects](#scoped-effects)
-  1. [Reactive State Tree](#state-tree)
+     1. [Scoped Effects](#scoped-effects)
+  1. [Integrating with UI](#integration)
   1. [Testing](#testing)
+  
+  
+
 
 ## Core concepts <a name="core-concepts"></a>
 
@@ -32,9 +35,7 @@ The **Hub** is responsible for dispatching actions to the store(s) registered to
 - PICTURE of hub (image 2)
   - example?
 
-### Scoped Effects<a name="scoped-effects"></a>
-
-**Scoped Effects** create effect streams scoped to a particular ACTION when an action is dispatch.
+**Scoped Effects** create effect streams scoped to a particular ACTION when an action is dispatch.<a name="scoped-effects"></a>
 
   - (image 3)
     - example?
