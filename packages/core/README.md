@@ -8,8 +8,10 @@ Reactive state management with RxJS.
 
 1. [Core concepts](#core-concepts)
   1. [Hub and Stores](#hub-stores)
-  1. [Effects](#scoped-effects)
-  1. [One Way In, One Way Out](#one-way)
+  1. [Effects](#effects)
+  1. [Scoped Effects](#scoped-effects)
+  1. [Reactive State Tree](#state-tree)
+  1. [Testing](#testing)
 
 ## Core concepts <a name="core-concepts"></a>
 
@@ -25,14 +27,14 @@ The **Hub** is responsible for dispatching actions to the store(s) registered to
 
 ### Effects<a name="effects"></a>
 
-- When initializing a hub we can declare effects. The hub can listen for various actions and perform side-effects as needed. Stores that are registered to the hub will be listening to these effects as well the dispatcher.
+- When initializing a hub we can declare effects. The hub can listen for various actions and perform side-effects as needed. Stores that are registered to the hub will be listening to these effects as well the `dispatcher$`.
 
 - PICTURE of hub (image 2)
   - example?
 
-### Scoped Effects<a name="scoped-effects">
+### Scoped Effects<a name="scoped-effects"></a>
 
-- **Scoped Effects** create effect streams scoped to a particular ACTION when an action is dispatch.
+**Scoped Effects** create effect streams scoped to a particular ACTION when an action is dispatch.
 
   - (image 3)
     - example?
@@ -40,7 +42,17 @@ The **Hub** is responsible for dispatching actions to the store(s) registered to
 
 - An effect can also be scoped to a unique to a unique composite key between
 
-- # 2023 09 12 (Thurs)
+### Reactive State tree <a name="state-tree"></a>
+
+A network of hubs and stores can be integrated with UI components without any tight coupling. The developer can model the state independent of presentation concerns.
+
+Picture of DOM and hubs and stores (image 4)
+
+### Testing <a name="testing"></a>
+
+Since the state management is decoupled from presentation. It can be tested without rendering the UI.
+
+- # 2023 09 17 (Sun)
   - documentation
   - Description
   - Core concepts
@@ -49,6 +61,8 @@ The **Hub** is responsible for dispatching actions to the store(s) registered to
       - key
 
     - diagram
+
+  - API
 
 # Motivation:
 
