@@ -1,16 +1,11 @@
 # Hubfx Core
 
 - # 2023 09 17 (Sun)
-  - documentation
-  - Description
-  - Core concepts
-    - hub
-    - scoped effects
-      - key
-
-    - diagram
-
   - API
+  - Publish Form story book
+    - update source code
+
+  - Motivation
 
 # Motivation:
 
