@@ -43,7 +43,7 @@ The **Hub** is responsible for dispatching actions to the store(s) registered to
 
 - An effect can also be scoped to a unique to a unique composite key between
 
-### Reactive State tree <a name="state-tree"></a>
+### Integrating with UI <a name="integration"></a>
 
 A network of hubs and stores can be integrated with UI components without any tight coupling. The developer can model the state independent of presentation concerns.
 
