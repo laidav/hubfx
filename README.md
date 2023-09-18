@@ -147,13 +147,14 @@ export const useObservable = <T>(obs$: Observable<T>) => {
 
 Scoped effects can be declared in the action declaration and created with action creators. When the action is dispatched the hub will register a stream with the Action & key (if it hasnt already).
 
-You can them manuipulate the stream as neccessary by piping operators.
+You can then manuipulate the stream as neccessary by piping operators.
 
 You can also have more than one effect and each stream will be independent of each other.
 
 ```typescript
 
 const UPDATE_TODO = 'UPDATE_TODO';
+const UPDATE_TODO_SUCCESS = 'UPDATE_TODO_SUCCESS';
 const updateTodo = ({ id, message }, todoService: TodoService) => ({
   type: UPDATE_TODO,
   payload: message,
@@ -163,6 +164,10 @@ const updateTodo = ({ id, message }, todoService: TodoService) => ({
       (actions$: Observable<Action<string>>) =>
         actions$.pipe(
           mergeMap((action) => todoService.updateTodo(id, action.payload))
+          map(({ data }) => ({
+            type: UPDATE_TODO_SUCCESS,
+            payload: data
+          }))
         )
     ]
   }
