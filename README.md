@@ -7,19 +7,17 @@ Reactive state management with RxJS.
 ## Table of Contents
 
 1. [Core concepts](#core-concepts)
-  1. [Hub and Stores](#hub-stores)
-  1. [Effects](#effects)
-     1. [Scoped Effects](#scoped-effects)
-  1. [Integrating with UI](#integration)
+    1. [Hub and Stores](#hub-stores)
+    1. [Effects](#effects)
+       1. [Scoped Effects](#scoped-effects)
+    1. [Integrating with UI](#integration)
 1. [API](#api)
-  1. [Hub](#hub)
-    1. [Basic Usage](#hub-usage)
-    1. [Create a hub](#hub-create)
-    1. [Methods](#hub-methods)
-      1. [dispatch](#hub-dispatch)
-      1. [store](#hub-store-create)
-    1. [Properties](#hub-properties)
-      1. [messages$](#hub-messages)
+    1. [Hub](#hub)
+        1. [Basic Usage](#hub-usage)
+        1. [messages$](#hub-messages)
+        1. [React Example](#hub-react-example)
+
+    1. [Scoped Effects in Action](#action-scoped-effects)
 
 ## Core concepts <a name="core-concepts"></a>
 
@@ -38,7 +36,7 @@ The **Hub** is responsible for dispatching actions to the store(s) registered to
 When initializing a hub we can declare effects. The hub can listen for various actions and perform side-effects as needed. Stores that are registered to the hub will be listening to these effects as well the `dispatcher$`.
 
 - (slide 2)
-**Scoped Effects** create effect streams scoped to a particular ACTION when an action is dispatch.<a name="scoped-effects"></a>
+**Scoped Effects** dynamically create effect streams scoped to a particular action & key combination when an action is dispatch.<a name="scoped-effects"></a>
 
   - (slide 3)
 
@@ -48,5 +46,126 @@ A network of hubs and stores can be integrated with UI components without tight 
 - (slide 4 & 5)
 
 ## API <a name="api"></a>
-### HubFactory
+
+### Hub <a name="hub"></a>
+
+#### Basic Usage <a name="hub-usage"></a>
+
+```typescript
+const hub = HubFactory();
+
+const countReducer = (state = { counter: 0 }, action) => {
+  switch (action.type) {
+    case 'increment':
+      return { counter: state.counter + 1 };
+    default:
+      return state;
+  }
+}
+
+const count$ = hub.store({ reducer: countReducer });
+
+count$.subscribe((count) => console.log(count));
+
+hub.dispatch({ type: 'increment' });
+
+// Output
+// 1
+```
+
+#### messages$ <a name="hub-messages"></a>
+The hub also exposes a `Hub.messages$` observable of all the actions stores receive. It can be helpful for testing how your hub is handling actions and effects.
+
+#### React Example <a name="react-example"></a>
+
+Using our above count example we can integrate with a React component. 
+
+```typescript
+import { useHub } from './useHub';
+import { useObservable } from './useObservable';
+import { countReducer } from './countReducer';
+
+const Counter = (({ hub = useHub() })) => {
+
+  const count = useObservable(hub.store(countReducer));
+
+  return (
+    <div>
+      Count: {count}
+      <button onClick={ () => {hub.dispatch({ type: 'increment' }); }}>
+        Increment
+      </button>
+    </div>
+  )
+}
+
+
+```
+
+Hook to store a hub reference.
+
+```typescript
+// useHub.ts
+
+import { useRef } from 'react';
+import { HubFactory } from '@hubfx/core';
+
+export const useHub = () => {
+  return useRef(HubFactory()).current;
+};
+```
+
+Hook to bind observable to React state.
+
+```typescript
+// useObservable.ts
+
+import { useEffect, useState, useRef } from 'react';
+import { Observable } from 'rxjs';
+
+export const useObservable = <T>(obs$: Observable<T>) => {
+  const currentObs$ = useRef(obs$).current;
+  const [state, setState] = useState<T | undefined>(undefined);
+
+  useEffect(() => {
+    const subscription = currentObs$.subscribe((result) => {
+      setState(result);
+    });
+
+    const unsubscribe = subscription.unsubscribe.bind(
+      subscription,
+    ) as () => void;
+
+    return unsubscribe;
+  }, []);
+
+  return state;
+};
+```
+
+### Scoped Effects in Action <a name="action-scoped-effects"></a>
+
+Scoped effects can be declared in the action declaration and created with action creators. When the action is dispatched the hub will register a stream with the Action & key (if it hasnt already).
+
+You can them manuipulate the stream as neccessary by piping operators.
+
+You can also have more than one effect and each stream will be independent of each other.
+
+```typescript
+
+const UPDATE_TODO = 'UPDATE_TODO';
+const updateTodo = ({ id, message }, todoService: TodoService) => ({
+  type: UPDATE_TODO,
+  payload: message,
+  scopedEffects: {
+    key: id,
+    effects: [
+      (actions$: Observable<Action<string>>) =>
+        actions$.pipe(
+          mergeMap((action) => todoService.updateTodo(id, action.payload))
+        )
+    ]
+  }
+})
+```
 
