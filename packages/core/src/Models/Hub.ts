@@ -15,7 +15,7 @@ export type Dispatcher = (...actions: Action<unknown>[]) => void;
 
 export interface HubConfig {
   effects?: Effect<unknown, unknown>[];
-  sources?: Observable<Action>;
+  sources?: Observable<Action<unknown>>[];
 }
 export interface Hub {
   messages$: Observable<Action<unknown>>;

@@ -16,7 +16,7 @@ import { Effect } from '../Models/Effect';
 const getScopedEffectSignature = (actionType: string, key: string) =>
   `type: ${actionType}, scoped: true${key ? `,key:${key}` : ''}`;
 
-export const HubFactory = ({ effects, sources }: HubConfig = {}): Hub => {
+export const HubFactory = ({ effects }: HubConfig = {}): Hub => {
   const dispatcher$ = new ReplaySubject<Action<unknown>>(1);
 
   const genericEffects =
