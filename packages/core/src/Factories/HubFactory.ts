@@ -1,4 +1,4 @@
-import { Hub, StoreConfig } from '../Models/Hub';
+import { Hub, HubConfig, StoreConfig } from '../Models/Hub';
 import { Observable, ReplaySubject, merge } from 'rxjs';
 import {
   filter,
@@ -16,20 +16,18 @@ import { Effect } from '../Models/Effect';
 const getScopedEffectSignature = (actionType: string, key: string) =>
   `type: ${actionType}, scoped: true${key ? `,key:${key}` : ''}`;
 
-export const HubFactory = (effects$: Effect<unknown, unknown>[] = []): Hub => {
+export const HubFactory = ({ effects, sources }: HubConfig = {}): Hub => {
   const dispatcher$ = new ReplaySubject<Action<unknown>>(1);
 
-  const genericEffects = effects$.reduce(
-    (result: Observable<Action<unknown>>[], effect) => {
+  const genericEffects =
+    effects?.reduce((result: Observable<Action<unknown>>[], effect) => {
       return result.concat(dispatcher$.pipe(effect));
-    },
-    [],
-  );
+    }, []) || [];
 
   // Should we keep this in the stream with a scan operator instead?
   const scopedEffectsDict: { [key: string]: Effect<unknown, unknown>[] } = {};
 
-  const mergedScopedEffects$ = dispatcher$.pipe(
+  const mergedScopedeffects = dispatcher$.pipe(
     filter(({ type, scopedEffects }) => {
       const hasEffects = Boolean(scopedEffects && scopedEffects.effects.length);
 
@@ -69,7 +67,7 @@ export const HubFactory = (effects$: Effect<unknown, unknown>[] = []): Hub => {
 
   const messages$ = merge(
     dispatcher$,
-    mergedScopedEffects$,
+    mergedScopedeffects,
     ...genericEffects,
   ).pipe(share());
 

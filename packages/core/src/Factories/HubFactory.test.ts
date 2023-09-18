@@ -72,7 +72,7 @@ describe('HubFactory', () => {
           ),
       );
 
-      const { messages$, dispatch } = HubFactory([effect$]);
+      const { messages$, dispatch } = HubFactory({ effects: [effect$] });
 
       const subscription = messages$.subscribe((message) => {
         if (message.type === TEST_ACTION_SUCCESS) {
