@@ -12,7 +12,6 @@ import { Contact } from '../Testing/Models/Contact';
 
 const meta: Meta<typeof Form> = {
   component: Form,
-  tags: ['autodocs'],
 };
 
 export default meta;
