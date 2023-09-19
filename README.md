@@ -15,6 +15,7 @@ Reactive state management with RxJS.
     1. [Hub](#hub)
         1. [Basic Usage](#hub-usage)
         1. [messages$](#hub-messages)
+        1. [Angular Example](#hub-angular-example)
         1. [React Example](#hub-react-example)
 
     1. [Scoped Effects in Action](#action-scoped-effects)
@@ -76,7 +77,31 @@ hub.dispatch({ type: 'increment' });
 #### messages$ <a name="hub-messages"></a>
 The hub also exposes a `Hub.messages$` observable of all the actions stores receive. It can be helpful for testing how your hub is handling actions and effects.
 
-#### React Example <a name="react-example"></a>
+#### Angular Example <a name="hub-angular-example"></a>
+
+Using our above count example we can integrate with an Angular component. 
+
+```typescript
+import { Component, Input, OnInit } from '@angular/core';
+import { HubFactory } from '@hubfx/core';
+import { countReducer } from '/countReducer;
+
+export class CounterComponent {
+  @Input() hub = HubFactory();
+  count$: Observable<number>;
+
+  increment() {
+    this.hub.dispatch({ type: 'increment' });
+  }
+
+  ngOnInit() {
+    this.count$ = this.hub.store({ reducer: countReducer });
+  }
+}
+
+```
+
+#### React Example <a name="hub-react-example"></a>
 
 Using our above count example we can integrate with a React component. 
 
