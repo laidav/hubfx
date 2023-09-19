@@ -6,7 +6,6 @@
     "dist"
   ],
   "scripts": {
-    "test": "jest",
     "build": "rimraf dist && rollup --config",
     "lint": "eslint --max-warnings 0 \"src/**/*.ts*\" && prettier --check src/",
     "fix": "eslint --fix \"src/**/*.ts*\" && prettier --write \"src/**/*.(ts*|scss)\"",
