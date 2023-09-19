@@ -1,11 +1,12 @@
 # Hubfx Core
 
-- # 2023 09 17 (Sun)
-  - API
-  - Publish Form story book
-    - update source code
-
+- # 2023 09 19 (Tues)
+  - API - DONE
+  - insert slides
   - Motivation
+  - PUBLISH npm
+  - Update read me
+  - Publish Form story book
 
 # Motivation:
 
