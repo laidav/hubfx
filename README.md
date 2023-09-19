@@ -85,7 +85,7 @@ export interface StoreConfig<T> {
   debug?: boolean; // This will console log all messages the store receives and the prev and new state
 }
 ```
-- image of the logging
+- (slide 6)
 
 #### messages$ <a name="hub-messages"></a>
 The hub also exposes a `Hub.messages$` observable of all the actions stores receive. It can be helpful for testing how your hub is handling actions and effects.

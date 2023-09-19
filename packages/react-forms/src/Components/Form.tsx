@@ -33,7 +33,9 @@ interface FormProps {
 
 export const Form = ({ formConfig, hub = useHub(), children }: FormProps) => {
   const reducer = useRef(buildReducer(formConfig)).current;
-  const state = useObservable(hub.store({ reducer, debug: true }));
+  const state = useObservable(
+    hub.store({ reducer, debug: true, name: 'Demo Form' }),
+  );
 
   const formChildrenProps: FormChildrenProps = {
     state,
