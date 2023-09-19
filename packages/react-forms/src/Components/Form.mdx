@@ -3,7 +3,27 @@ import * as FormStories from './Form.stories';
 
 <Meta of={FormStories} />
 
-# BasicControl
+<div style={{
+  position: 'fixed',
+  top: 0,
+  right: 0,
+  height: '100vh',
+  zIndex: 10,
+  padding: 16,
+  background: 'white',
+  borderLeft: '1px solid black'}}>
+  <div>Contents</div>
+  <nav>
+    <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
+      <li>[Basic Control](#basic-control)</li>
+      <li>[Validation](#validation)</li>
+      <li>[Async Validation](#async-validation)</li>
+      <li>[Form Arrays](#form-arrays)</li>
+      <li>[Resetting Forms](#resetting-forms)</li>
+    </ul>
+  </nav>
+</div>
+# BasicControl <a name="basic-control"></a>
 <Story of={FormStories.BasicControl} />
 <Source of={FormStories.BasicControl} language="tsx" code={`
 import { FormGroup, FormBuilder } from '@hubfx/forms';
@@ -30,7 +50,7 @@ const MyForm = () => {
   );
 };`}/>
 
-# Validation
+# Validation <a name="validation"></a>
 <Story of={FormStories.Validation} />
 <Source of={FormStories.Validation} language="tsx" code={`
 import { Form, FormBuilder, Validators } from '@hubfx/react-forms';
@@ -73,7 +93,7 @@ const MyForm = () => {
   );
 };`}/>
 
-# Async Validation
+# Async Validation <a name="async-validation"></a>
 <Story of={FormStories.AsyncValidation} />
 <Source of={FormStories.AsyncValidation} language="tsx" code={`
 import { Form, FormBuilder, Validators, ValidatorAsyncFn } from '@hubfx/react-forms';
@@ -148,82 +168,7 @@ const MyForm = () => {
   );
 };`}/>
 
-# Async Validation
-<Story of={FormStories.AsyncValidation} />
-<Source of={FormStories.AsyncValidation} language="tsx" code={`
-import { Form, FormBuilder, Validators, ValidatorAsyncFn } from '@hubfx/react-forms';
-import { of } from 'rxjs';
-import { mergeMap, delay, debounceTime } from 'rxjs/operators';
-
-const blacklistedEmail: ValidatorAsyncFn = (control$) => {
-  const blacklisted = ['not@allowed.com'];
-
-  return control$.pipe(
-    debounceTime(500),
-    mergeMap((control) => {
-      return of({
-        blacklistedEmail: blacklisted.includes(control.value as string),
-      }).pipe(delay(1000));
-    }),
-  );
-};
-
-const contactFormConfig = ({ firstName, lastName, email }) =>
-  FormBuilder.group({
-    controls: {
-      firstName: FormBuilder.control({
-        initialValue: firstName,
-        validators: [Validators.required],
-      }),
-      lastName: FormBuilder.control({
-        initialValue: lastName,
-        validators: [Validators.required],
-      }),
-      email: FormBuilder.control({
-        initialValue: email,
-        validators: [Validators.required, Validators.email],
-        asyncValidators: [blacklistedEmail],
-      }),
-    },
-  });
-
-const MyForm = () => {
-  return (
-    <Form
-      formConfig={contactFormConfig({
-        firstName: 'John',
-        lastName: 'Doe',
-        email: '',
-      })}
-    >
-      {() => 
-        <div className="form-group">
-          <Field
-            controlRef={['firstName']}
-            component={Input}
-            label="First Name"
-          />
-          <Field
-            controlRef={['lastName']}
-            component={Input}
-            label="Last Name"
-          />
-          <Field
-            controlRef={['email']}
-            component={Input}
-            label={
-              <span>
-                Email <i>(not@allowed.com is blacklisted)</i>
-              </span>
-            }
-          />
-        </div>
-      }
-    </Form>
-  );
-};`}/>
-
-# Form Arrays
+# Form Arrays <a name="form-arrays"></a>
 <Story of={FormStories.FormArrays} />
 <Source of={FormStories.FormArrays} language="tsx" code={`
 import { Form, FormArray, FormBuilder } from '@hubfx/react-forms';
@@ -318,7 +263,7 @@ const MyForm = () => {
   );
 };`}/>
 
-# Resetting Controls
+# Resetting Controls <a name="resetting-forms"></a>
 <Story of={FormStories.ResetForm} />
 <Source of={FormStories.ResetForm} language="tsx" code={`
 import { Form, FormArray, FormBuilder } from '@hubfx/react-forms';
