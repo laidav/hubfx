@@ -11,5 +11,5 @@ export default {
     },
   ],
   plugins: [typescript()],
-  external: ['rxjs', 'rxjs/operators', '@hubfx/core', '@hubfx/forms'],
+  external: ['rxjs', 'rxjs/operators', '@hubfx/core', '@hubfx/forms', 'react'],
 };

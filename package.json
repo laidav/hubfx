@@ -6,7 +6,7 @@
   ],
   "scripts": {
     "link-packages": "npm link --workspaces --if-present && npm link @hubfx/core --workspace=@hubfx/forms && npm link @hubfx/core @hubfx/forms --workspace=@hubfx/react-forms",
-    "build": "npm run build -w packages/core && npm run build -w packages/forms",
+    "build": "npm run build -w packages/core && npm run build -w packages/forms && npm run build -w packages/react-forms",
     "test": "npm run test --workspaces --if-present",
     "lint": "npm run lint --workspaces",
     "fix": "npm run fix --workspaces",
