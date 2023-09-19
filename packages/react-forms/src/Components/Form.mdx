@@ -76,8 +76,22 @@ const MyForm = () => {
 # Async Validation
 <Story of={FormStories.AsyncValidation} />
 <Source of={FormStories.AsyncValidation} language="tsx" code={`
-import { Form, FormBuilder, Validators } from '@hubfx/react-forms';
-import { blacklistedEmail } from '../AsyncValidators/blacklistedEmail';
+import { Form, FormBuilder, Validators, ValidatorAsyncFn } from '@hubfx/react-forms';
+import { of } from 'rxjs';
+import { mergeMap, delay, debounceTime } from 'rxjs/operators';
+
+const blacklistedEmail: ValidatorAsyncFn = (control$) => {
+  const blacklisted = ['not@allowed.com'];
+
+  return control$.pipe(
+    debounceTime(500),
+    mergeMap((control) => {
+      return of({
+        blacklistedEmail: blacklisted.includes(control.value as string),
+      }).pipe(delay(1000));
+    }),
+  );
+};
 
 const contactFormConfig = ({ firstName, lastName, email }) =>
   FormBuilder.group({
