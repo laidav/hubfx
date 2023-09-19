@@ -1,11 +1,11 @@
 import React from 'react';
-import { FormGroup } from '@hubfx/forms';
+import { ControlModels } from '@hubfx/forms';
 import { Input } from './Input';
 import { Contact } from '../Testing/Models/Contact';
 import { Field } from './Field';
 
 export interface ContactFormProps {
-  formGroup: FormGroup<Contact>;
+  formGroup: ControlModels.FormGroup<Contact>;
 }
 
 export const ContactForm = ({

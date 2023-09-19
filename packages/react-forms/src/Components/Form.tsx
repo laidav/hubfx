@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
 import { Hub, Dispatcher, Reducer } from '@hubfx/core';
-import { buildReducer, AbstractControl } from '@hubfx/forms';
 import {
   AbstractControlConfig,
+  buildReducer,
+  ControlModels,
   getControl,
   ControlRef,
   resetControl,
@@ -11,14 +12,16 @@ import { useObservable } from '../Hooks/useObservable';
 import { useHub } from '../Hooks/useHub';
 
 export const FormContext = React.createContext(null) as React.Context<{
-  state: AbstractControl<unknown>;
+  state: ControlModels.AbstractControl<unknown>;
   dispatch: Dispatcher;
-  reducer: Reducer<AbstractControl<unknown>>;
+  reducer: Reducer<ControlModels.AbstractControl<unknown>>;
 }>;
 
 export interface FormChildrenProps {
-  state: AbstractControl<unknown>;
-  getControl: (controlRef: ControlRef) => AbstractControl<unknown>;
+  state: ControlModels.AbstractControl<unknown>;
+  getControl: (
+    controlRef: ControlRef,
+  ) => ControlModels.AbstractControl<unknown>;
   resetControl: (controlRef: ControlRef) => void;
 }
 

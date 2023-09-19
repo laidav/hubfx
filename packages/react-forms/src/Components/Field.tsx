@@ -11,7 +11,7 @@ import {
   ControlRef,
   getControl,
   markControlAsTouched,
-  FormControl,
+  ControlModels,
 } from '@hubfx/forms';
 import { FormContext } from './Form';
 
@@ -37,7 +37,7 @@ export interface WrappedFieldInputProps extends CommonFieldInputProps {
 
 export interface WrappedFieldProps {
   input: WrappedFieldInputProps;
-  meta: FormControl<unknown>;
+  meta: ControlModels.FormControl<unknown>;
 }
 
 export interface FieldProps {

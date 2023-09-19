@@ -6,7 +6,7 @@ export {
 } from './Configs';
 
 export { ControlRef } from './ControlRef';
-export { AbstractControl, FormControl, FormArray, FormGroup } from './Controls';
+export * as ControlModels from './Controls';
 export { FormErrors } from './FormErrors';
 export {
   ControlChange,

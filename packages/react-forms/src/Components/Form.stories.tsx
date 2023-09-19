@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import { Validators, FormGroup, FormBuilder } from '@hubfx/forms';
+import { Validators, FormBuilder, ControlModels } from '@hubfx/forms';
 import { Form } from './Form';
 import { Field } from './Field';
 import { Input } from './Input';
@@ -103,7 +103,9 @@ export const AsyncValidation: Story = {
       })}
     >
       {({ state }) => {
-        return <ContactForm formGroup={state as FormGroup<Contact>} />;
+        return (
+          <ContactForm formGroup={state as ControlModels.FormGroup<Contact>} />
+        );
       }}
     </Form>
   ),
@@ -156,7 +158,9 @@ export const FormArrays: Story = {
                         </p>
                         <div className="d-flex align-items-center">
                           <ContactForm
-                            formGroup={control as FormGroup<Contact>}
+                            formGroup={
+                              control as ControlModels.FormGroup<Contact>
+                            }
                           />
                           <button
                             className="ml-5"
@@ -208,7 +212,7 @@ export const ResetForm: Story = {
     >
       {({ state, resetControl }) => (
         <>
-          <ContactForm formGroup={state as FormGroup<Contact>} />
+          <ContactForm formGroup={state as ControlModels.FormGroup<Contact>} />
           <button
             type="button"
             onClick={() => {

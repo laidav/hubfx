@@ -1,17 +1,16 @@
 import React, { useContext } from 'react';
 import {
   AbstractControlConfig,
-  AbstractControl,
   ControlRef,
-  FormArray as IFormArray,
+  ControlModels,
   getControl,
   addFormArrayControl,
-  removeControl as removeFormArrayControl,
+  removeControl,
 } from '@hubfx/forms';
 import { FormContext } from './Form';
 
 export interface FormArrayChildrenProps {
-  formArray: IFormArray<unknown>;
+  formArray: ControlModels.FormArray<unknown>;
   addControl: (config: AbstractControlConfig) => void;
   removeControl: (controlRef: ControlRef) => void;
 }
@@ -23,7 +22,10 @@ export interface FormArrayProps {
 
 export const FormArray = ({ controlRef, children }: FormArrayProps) => {
   const { state, dispatch, reducer } = useContext(FormContext);
-  const formArray = getControl(controlRef, state) as IFormArray<unknown>;
+  const formArray = getControl(
+    controlRef,
+    state,
+  ) as ControlModels.FormArray<unknown>;
 
   const formArrayChildrenProps: FormArrayChildrenProps = {
     formArray,
@@ -31,7 +33,7 @@ export const FormArray = ({ controlRef, children }: FormArrayProps) => {
       dispatch(...addFormArrayControl({ controlRef, config }, state, reducer));
     },
     removeControl: (controlRef: ControlRef) => {
-      dispatch(...removeFormArrayControl(controlRef, state, reducer));
+      dispatch(...removeControl(controlRef, state, reducer));
     },
   };
 
