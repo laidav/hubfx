@@ -80,8 +80,8 @@ hub.dispatch({ type: 'increment' });
 ```typescript
 export interface StoreConfig<T> {
   reducer: Reducer<T>;
-  name?: string; // name for store to show up in debugging
   initialState?: T;
+  name?: string; // name for store to show up in debugging
   debug?: boolean; // This will console log all messages the store receives and the prev and new state
 }
 ```

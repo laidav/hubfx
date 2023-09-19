@@ -6,8 +6,8 @@ export type Reducer<T> = (state?: T, action?: Action<unknown>) => T;
 
 export interface StoreConfig<T> {
   reducer: Reducer<T>;
-  name?: string;
   initialState?: T;
+  name?: string;
   debug?: boolean;
 }
 
