@@ -1,8 +1,34 @@
-import { Meta, Source } from '@storybook/blocks';
+import { Meta, Source, Story } from '@storybook/blocks';
 import * as FormStories from './Form.stories';
 
 <Meta of={FormStories} />
 
 # BasicControl
 
-<Source of={FormStories.BasicControl} code={`const one = 1;`} />
+<br />
+
+<Story of={FormStories.BasicControl} />
+<Source of={FormStories.BasicControl} language="tsx" code={`
+import { FormGroup, FormBuilder } from '@hubfx/forms';
+import { Form, FormBuilder } from '@hubfx/react-forms';
+
+const MyForm = () => {
+  const formConfig = FormBuilder.control({
+    initialValue: 'john',
+  });
+
+  return (
+    <Form formConfig={formConfig}>
+      {({ state }) => {
+        return (
+          <>
+            <Field controlRef={[]} component={Input} />
+            <div>
+              First Name: <span>{state.value as string}</span>
+            </div>
+          </>
+        );
+      }}
+    </Form>
+  );
+};`}/>
