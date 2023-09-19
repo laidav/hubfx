@@ -317,3 +317,46 @@ const MyForm = () => {
     </Form>
   );
 };`}/>
+
+# Resetting Controls
+<Story of={FormStories.ResetForm} />
+<Source of={FormStories.ResetForm} language="tsx" code={`
+import { Form, FormArray, FormBuilder } from '@hubfx/react-forms';
+import { arrayLengthRequired } from './Validators';
+import { contactFormConfig } from './contactFormConfig';
+
+const MyForm = () => {
+  const formConfig = FormBuilder.group(
+    contactFormConfig({
+      firstName: 'Bart',
+      lastName: 'Simpson',
+      email: 'bart@man.com',
+    }),
+  );
+
+  return (
+    <Form
+      formConfig={FormBuilder.group(
+        contactFormConfig({
+          firstName: 'Bart',
+          lastName: 'Simpson',
+          email: 'bart@man.com',
+        }),
+      )}
+    >
+      {({ state, resetControl }) => (
+        <>
+          <ContactForm formGroup={state as FormGroup<Contact>} />
+          <button
+            type="button"
+            onClick={() => {
+              resetControl(state.controlRef);
+            }}
+          >
+            Reset Form
+          </button>
+        </>
+      )}
+    </Form>
+  );
+};`}/>
