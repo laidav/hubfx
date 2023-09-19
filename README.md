@@ -14,6 +14,7 @@ Reactive state management with RxJS.
 1. [API](#api)
     1. [Hub](#hub)
         1. [Basic Usage](#hub-usage)
+        1. [Store Config](#store-config)
         1. [messages$](#hub-messages)
         1. [Angular Example](#hub-angular-example)
         1. [React Example](#hub-react-example)
@@ -73,6 +74,18 @@ hub.dispatch({ type: 'increment' });
 // Output
 // 1
 ```
+
+#### Store Config <a name="store-config"></a>
+
+```typescript
+export interface StoreConfig<T> {
+  reducer: Reducer<T>;
+  name?: string; // name for store to show up in debugging
+  initialState?: T;
+  debug?: boolean; // This will console log all messages the store receives and the prev and new state
+}
+```
+- image of the logging
 
 #### messages$ <a name="hub-messages"></a>
 The hub also exposes a `Hub.messages$` observable of all the actions stores receive. It can be helpful for testing how your hub is handling actions and effects.
