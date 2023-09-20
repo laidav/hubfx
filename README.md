@@ -10,8 +10,8 @@ Reactive state management with RxJS.
     1. [Hub and Stores](#hub-stores)
     1. [Effects](#effects)
        1. [Scoped Effects](#scoped-effects)
-    1. [Unidirectional Flow](#unidirectional flow)
     1. [Integrating with UI](#integration)
+    1. [Unidirectional Flow](#unidirectional-flow)
 1. [API](#api)
     1. [Hub](#hub)
         1. [Basic Usage](#hub-usage)
@@ -48,6 +48,11 @@ When initializing a hub we can declare effects. The hub can listen for various a
 A network of hubs and stores can be integrated with UI components without tight coupling. The developer can then decide how best to integrate with UI components.
 
 <img src="https://github.com/laidav/hubfx/blob/main/documentation/SlideFourFiveIntegration.jpg?raw=true" />
+
+### Unidirectional Flow <a name="unidirectional=flow"></a>
+All actions and data will flow through the App in one direction.
+
+<img src="https://github.com/laidav/hubfx/blob/main/documentation/SlideSevenEightUnidirectionalFlow.jpg?raw=true" />
 
 ## API <a name="api"></a>
 
