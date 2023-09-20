@@ -49,7 +49,7 @@ A network of hubs and stores can be integrated with UI components without tight 
 
 <img src="https://github.com/laidav/hubfx/blob/main/documentation/SlideFourFiveIntegration.jpg?raw=true" />
 
-### Unidirectional Flow <a name="unidirectional=flow"></a>
+### Unidirectional Flow <a name="unidirectional-flow"></a>
 All actions and data will flow through the App in one direction.
 
 <img src="https://github.com/laidav/hubfx/blob/main/documentation/SlideSevenEightUnidirectionalFlow.jpg?raw=true" />
