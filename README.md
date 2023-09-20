@@ -45,7 +45,7 @@ When initializing a hub we can declare effects. The hub can listen for various a
 <img src="https://github.com/laidav/hubfx/blob/main/documentation/SlideThreeScopedEffects.jpg?raw=true" width="600" />
 
 ### Integrating with UI <a name="integration"></a>
-A network of hubs and stores can be integrated with UI components without tight coupling. The developer can then decide how best to integrate with UI components.
+A network of hubs and stores can be integrated with UI components without tight coupling. Separating presentation concerns improves testability and allows developers to decide how to integrate with UI components.
 
 <img src="https://github.com/laidav/hubfx/blob/main/documentation/SlideFourFiveIntegration.jpg?raw=true" />
 
