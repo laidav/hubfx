@@ -214,9 +214,11 @@ export const useObservable = <T>(obs$: Observable<T>) => {
 
 ### Scoped Effects in Action <a name="action-scoped-effects"></a>
 
+<img src="https://github.com/laidav/hubfx/blob/main/documentation/SlideThreeScopedEffects.jpg?raw=true" width="600" />
+
 Scoped effects can be declared in the action declaration and created with action creators. When the action is dispatched the hub will register a stream with the Action & key (if it hasnt already).
 
-You can then manuipulate the stream as neccessary by piping operators.
+The stream can then be manuipulated by piping operators as required.
 
 You can also have more than one effect and each stream will be independent of each other.
 
