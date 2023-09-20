@@ -2,11 +2,11 @@
 
 - # 2023 09 19 (Tues)
   - API - DONE
-  - insert slides
+  - insert slides - DONE
   - Motivation
   - PUBLISH npm
-  - Update read me
   - Publish Form story book
+  - refactor to two hub value effects
 
 # Motivation:
 
