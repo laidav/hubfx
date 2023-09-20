@@ -6,6 +6,7 @@ Reactive state management with RxJS.
 
 ## Table of Contents
 
+1. [Motivation](#motivation)
 1. [Core concepts](#core-concepts)
     1. [Hub and Stores](#hub-stores)
     1. [Effects](#effects)
@@ -19,12 +20,33 @@ Reactive state management with RxJS.
         1. [messages$](#hub-messages)
         1. [Angular Example](#hub-angular-example)
         1. [React Example](#hub-react-example)
-
     1. [Scoped Effects in Action](#action-scoped-effects)
+
+## Motivation <a name="motivation"></a>
+
+Purpose of this project is to provide a simple consistent pattern and api for managing both app state and local state in UI development.
+
+Reactive programming has made a lot of inroads in UI development because it provides a predictable way to update complex application state and reduce side effects. Redux is probably the most famouse example.
+
+However when it comes to local state there is still a lot of variation on how to handle it
+
+  i.e in React
+  - imperatively with `useState`
+  - declarative with `useReducer`
+
+  - and how about async actions?
+    - imperatively dispatching before and after a promise resolves.
+    - setting up middlewares to work with `useReducer`
+
+Imperatively managed state is often the choice for simple local state. But if state gets more complicated it becomes harder to keep track of side effects.
+
+Imperatively managed state is often more difficult to test vs state managed by pure reducer functions.
+
+This project hopes to provide a more consistent way of managing app and local state and make it easy to develop and test.
 
 ## Core concepts <a name="core-concepts"></a>
 
-Taking inspiraton from [redux](https://redux.js.org/introduction/core-concepts), Hubfx uses the same concepts regarding Actions, Reducers, Store. These concepts are coupled with RxJS observables to manage state modelled as reactive streams.
+Taking inspiraton from [redux](https://redux.js.org/introduction/core-concepts) and [NgRx](https://ngrx.io/guide/store), Hubfx uses the same concepts regarding Actions, Effects, Reducers, Store. These concepts are coupled with RxJS observables to manage state modelled as reactive streams.
 
 In this documentation the term *stream* will refer to an RxJS observable stream.
 
