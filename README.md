@@ -10,6 +10,7 @@ Reactive state management with RxJS.
     1. [Hub and Stores](#hub-stores)
     1. [Effects](#effects)
        1. [Scoped Effects](#scoped-effects)
+    1. [Unidirectional Flow](#unidirectional flow)
     1. [Integrating with UI](#integration)
 1. [API](#api)
     1. [Hub](#hub)
