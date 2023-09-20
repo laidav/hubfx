@@ -31,21 +31,22 @@ In this documentation the term *stream* will refer to an RxJS observable stream.
 
 The **Hub** is responsible for dispatching actions to the store(s) registered to the hub. It is also responsible for handling side effects. The main stream that initiates all actions and effects is the `dispatcher$` 
 
-- (Slide 1)
+<img src="https://github.com/laidav/hubfx/blob/main/documentation/SlideOneHubStore.jpg?raw=true" width="400" />
 
 ### Effects<a name="effects"></a>
 
 When initializing a hub we can declare effects. The hub can listen for various actions and perform side-effects as needed. Stores that are registered to the hub will be listening to these effects as well the `dispatcher$`.
 
-- (slide 2)
+<img src="https://github.com/laidav/hubfx/blob/main/documentation/SlideTwoEffect.jpg?raw=true" width="400" />
+
 **Scoped Effects** dynamically create effect streams scoped to a particular action & key combination when an action is dispatch.<a name="scoped-effects"></a>
 
-  - (slide 3)
+<img src="https://github.com/laidav/hubfx/blob/main/documentation/SlideThreeScopedEffects.jpg?raw=true" width="400" />
 
 ### Integrating with UI <a name="integration"></a>
 A network of hubs and stores can be integrated with UI components without tight coupling. The developer can then decide how best to integrate with UI components.
 
-- (slide 4 & 5)
+<img src="https://github.com/laidav/hubfx/blob/main/documentation/SlideFourFiveIntegration.jpg?raw=true" />
 
 ## API <a name="api"></a>
 
@@ -85,7 +86,9 @@ export interface StoreConfig<T> {
   debug?: boolean; // This will console log all messages the store receives and the prev and new state
 }
 ```
-- (slide 6)
+Debug Example
+
+<img src="https://github.com/laidav/hubfx/blob/main/documentation/SlideSixDebug.jpg?raw=true" width="400" />
 
 #### messages$ <a name="hub-messages"></a>
 The hub also exposes a `Hub.messages$` observable of all the actions stores receive. It can be helpful for testing how your hub is handling actions and effects.
@@ -211,4 +214,3 @@ const updateTodo = ({ id, message }, todoService: TodoService) => ({
   }
 })
 ```
-
