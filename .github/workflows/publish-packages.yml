@@ -24,10 +24,10 @@ jobs:
       - run: npm ci
       - run: npm --no-git-tag-version version ${{ github.event.release.tag_name || inputs.tag_name }} --workspaces
       - run: npm run build --workspace=@hubfx/core
-      - run: npm publish --workspace=@hubfx/core
+      - run: npm publish --workspace=@hubfx/core --access public
       - run: npm install @hubfx/core@${{ github.event.release.tag_name || inputs.tag_name }} --workspace=@hubfx/forms
       - run: npm run build --workspace=@hubfx/forms
-      - run: npm publish --workspace=@hubfx/forms
+      - run: npm publish --workspace=@hubfx/forms --access public
       - run: npm install @hubfx/forms@${{ github.event.release.tag_name || inputs.tag_name }} --workspace=@hubfx/react-forms
       - run: npm run build --workspace=@hubfx/react-forms
-      - run: npm publish --workspace=@hubfx/react-forms
+      - run: npm publish --workspace=@hubfx/react-forms --access public
