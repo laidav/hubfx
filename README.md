@@ -82,6 +82,10 @@ All actions and data will flow through the App in one direction.
 
 #### Basic Usage <a name="hub-usage"></a>
 
+```
+npm i @hubfx/core
+```
+
 ```typescript
 import { HubFactory } from '@hubfx/core';
 
