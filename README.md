@@ -26,7 +26,7 @@ Reactive state management with RxJS.
 
 Purpose of this project is to provide a simple consistent pattern and api for managing both app state and local state in UI development.
 
-Reactive programming has made a lot of inroads in UI development because it provides a predictable way to update complex application state and reduce side effects. Redux is probably the most famouse example.
+Reactive programming has become popular in UI development because it provides a predictable way to update complex application state and reduce side effects. Redux is probably the most famous example.
 
 However when it comes to local state there is still a lot of variation on how to handle it
 
@@ -35,8 +35,8 @@ However when it comes to local state there is still a lot of variation on how to
   - declarative with `useReducer`
 
   - and how about async actions?
-    - imperatively dispatching before and after a promise resolves.
-    - setting up middlewares to work with `useReducer`
+    - imperatively dispatching before and after a promises resolves.
+    - declaratively setting up middlewares to work with `useReducer`
 
 Imperatively managed state is often the choice for simple local state. But if state gets more complicated it becomes harder to keep track of side effects.
 
@@ -62,7 +62,7 @@ When initializing a hub we can declare effects. The hub can listen for various a
 
 <img src="https://github.com/laidav/hubfx/blob/main/documentation/SlideTwoEffect.jpg?raw=true" width="600" />
 
-**Scoped Effects** dynamically create effect streams scoped to a particular action & key combination when an action is dispatch.<a name="scoped-effects"></a>
+**Scoped Effects** are dynamically created streams scoped to a particular action & key combination when an action is dispatch.<a name="scoped-effects"></a>
 
 <img src="https://github.com/laidav/hubfx/blob/main/documentation/SlideThreeScopedEffects.jpg?raw=true" width="600" />
 
