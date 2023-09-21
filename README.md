@@ -83,6 +83,8 @@ All actions and data will flow through the App in one direction.
 #### Basic Usage <a name="hub-usage"></a>
 
 ```typescript
+import { HubFactory } from '@hubfx/core';
+
 const hub = HubFactory();
 
 const countReducer = (state = { counter: 0 }, action) => {
