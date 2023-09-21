@@ -1,9 +1,9 @@
 # Hubfx Core
 
-- # 2023 09 19 (Tues)
+- # 2023 09 21 (Thurs)
   - API - DONE
   - insert slides - DONE
-  - Motivation
+  - Motivation - DONE
   - PUBLISH npm
   - Publish Form story book
   - refactor to two hub value effects
